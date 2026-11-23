@@ -1,0 +1,50 @@
+{
+  "name": "trading-app",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "lint": "ng lint"
+  },
+  "private": true,
+  "packageManager": "npm@10.9.2",
+  "dependencies": {
+    "@a2ui/angular": "0.14.0",
+    "@a2ui/markdown-it": "0.2.2",
+    "@a2ui/web_core": "0.14.0",
+    "@angular/cdk": "21.2.14",
+    "@angular/common": "21.2.26",
+    "@angular/compiler": "21.2.26",
+    "@angular/core": "21.2.26",
+    "@angular/forms": "21.2.26",
+    "@angular/material": "21.2.14",
+    "@angular/platform-browser": "21.2.26",
+    "@angular/router": "21.2.26",
+    "@copilotkit/angular": "0.3.1",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "21.2.31",
+    "@angular/cli": "21.2.31",
+    "@angular/compiler-cli": "21.2.26",
+    "@eslint/js": "^10.0.1",
+    "angular-eslint": "21.4.0",
+    "eslint": "^10.3.0",
+    "jsdom": "28.1.0",
+    "prettier": "^3.8.1",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "8.59.2",
+    "vite": "7.3.8",
+    "vitest": "4.1.12"
+  },
+  "engines": {
+    "node": "^20.19.0 || ^22.12.0 || >=24.0.0"
+  },
+  "overrides": {
+    "vite": "$vite"
+  }
+}

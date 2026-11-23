@@ -1,0 +1,16 @@
+// Stand-in theme for `@app/ui` (Angular Material). The real build swaps this
+// file for the internal library's theme. Screens and adapters use only the
+// neutral `ui-*` classes below, never Material classes.
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((color: mat.$azure-palette, typography: Roboto, density: 0));
+}
+
+.ui-text {
+  font: var(--mat-sys-body-medium);
+}
+
+.ui-text--caption {
+  font: var(--mat-sys-body-small);
+}
