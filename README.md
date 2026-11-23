@@ -33,13 +33,9 @@ All data is mock data until security and compliance sign off (CLAUDE.md rule 6).
 
 Requirements: Node `^22.12.0` (`frontend/.nvmrc`), JDK 25 for running services outside Docker, Docker for compose.
 
-## CI
-
-GitHub Actions ([.github/workflows/ci.yml](.github/workflows/ci.yml)) runs on every pull request and push to `main`: frontend lint, test and build; `./mvnw verify` for each service; then a build of every container image. To block merges on failure, turn on branch protection for `main` in the GitHub repo settings and require the CI checks.
-
 ## Secrets
 
-None in the repo. Services read secrets from environment variables, which come from the company secret manager in CI and deployed environments. [.env.example](.env.example) lists the variable names; `.env` is git-ignored.
+None in the repo. Services read secrets from environment variables, which come from the company secret manager in deployed environments. [.env.example](.env.example) lists the variable names; `.env` is git-ignored.
 
 ## Version matrix
 
