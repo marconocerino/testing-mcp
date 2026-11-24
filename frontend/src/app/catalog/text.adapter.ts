@@ -1,14 +1,16 @@
-import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
-import { CatalogComponent } from '@a2ui/angular';
-import { TextApi } from '@a2ui/web_core/v1_0';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { UiTextComponent, type UiTextVariant } from '@app/ui';
+import { CatalogAdapter } from './adapter';
+import { TextApi } from './schemas';
 
-/** The A2UI `Text` type. Plain text only, no markdown or HTML rendering. */
+/** The A2UI `Text` type. Plain text only: no markdown or HTML is ever rendered. */
 @Component({
   selector: 'app-catalog-text',
+  imports: [UiTextComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<span class="ui-text" [class.ui-text--caption]="variant() === 'caption'">{{ text() }}</span>`,
+  template: `<ui-text [variant]="variant()">{{ text() }}</ui-text>`,
 })
-export class TextAdapterComponent extends CatalogComponent<typeof TextApi> {
-  protected readonly text = computed(() => String(this.props().text?.value() ?? ''));
-  protected readonly variant = computed(() => this.props().variant?.value() ?? 'body');
+export class TextAdapterComponent extends CatalogAdapter<typeof TextApi> {
+  protected readonly text = this.prop<string>('text', '');
+  protected readonly variant = this.prop<UiTextVariant>('variant', 'body');
 }

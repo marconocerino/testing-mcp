@@ -9,6 +9,10 @@ Static HTML mockups of the main screens. Open any file in a browser. They use **
 | `03-order-ticket.html` | Locked OrderTicket at the Preview step, prepared by the assistant | E4-S4, E7-S1 |
 | `04-copilot-mcp-app.html` | The MCP App widget inside a generic Copilot chat; orders confirmed back in the app | E8-S1, E8-S3 |
 
+## Out of scope in these mockups
+
+Predictions, holdings, quotes and today's movers were dropped (decision 2026-11-24). Where a mockup shows them (the Predictions nav item, Holdings and Today's movers on the dashboard, the predictions view in screen 2, the 30-day prediction in screen 3, Top holdings in screen 4), ignore those parts and follow the stories. Screen 2 is still the reference for a generated view's layout, badge and Save view.
+
 ## How to use them
 
 - They show **layout, content and behaviour**, not code to copy. Build screens from `@app/ui` contract components and A2UI specs, never from these inline styles.

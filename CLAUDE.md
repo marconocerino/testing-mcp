@@ -1,6 +1,6 @@
 # Generative UI Trading App
 
-A trading app (accounts, orders, predictions) whose screens are **generated as A2UI specs** and rendered with our **internal Angular component library**. It runs as a web app first, and later inside Microsoft 365 Copilot as an **MCP App**.
+A trading app (accounts and orders, paper trading) whose screens are **generated as A2UI specs** and rendered with our **internal Angular component library**. It runs as a web app first, and later inside Microsoft 365 Copilot as an **MCP App**.
 
 ## Where things are
 
