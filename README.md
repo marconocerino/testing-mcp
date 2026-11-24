@@ -23,7 +23,7 @@ All data is mock data until security and compliance sign off (CLAUDE.md rule 6).
 | | Frontend (`cd frontend`) | Each service (`cd services/<name>`) |
 | --- | --- | --- |
 | Install | `npm ci` | (Maven wrapper downloads on first run) |
-| Lint | `npx ng lint` | `./mvnw spotless:check` (fix: `./mvnw spotless:apply`) |
+| Lint | (none) | `./mvnw spotless:check` (fix: `./mvnw spotless:apply`) |
 | Test | `npx ng test --watch=false` | `./mvnw test` |
 | Build | `npx ng build` | `./mvnw package` |
 | All checks | | `./mvnw verify` (tests + lint + build) |
