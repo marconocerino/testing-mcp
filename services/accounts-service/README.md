@@ -2,7 +2,7 @@
 
 Accounts and transactions (mock bank data). E2-S1.
 
-Spring Boot 4.2, Java 25. Mock data only. Port **8081** (override with `SERVER_PORT`).
+Spring Boot 4.2, Java 21 (Amazon Corretto). Mock data only. Port **8081** (override with `SERVER_PORT`).
 
 ```sh
 ./mvnw verify            # tests + lint (Spotless)

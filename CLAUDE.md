@@ -35,7 +35,7 @@ A trading app (accounts, orders, predictions) whose screens are **generated as A
 - `@copilotkit/angular`, `@copilotkit/runtime` (self-hosted only, no CopilotKit cloud)
 - Internal LLM platform: `<endpoint name>`, configured through environment variables only
 - MCP: official MCP SDK + MCP Apps extension (`@modelcontextprotocol/ext-apps`)
-- Backend: one microservice per folder under `services/`, each in its own container. Domain services are mock Spring Boot 4.2 services on Java 25. Frontend in `frontend/` is Angular only.
+- Backend: one microservice per folder under `services/`, each in its own container. Domain services (accounts, orders) are mock Spring Boot 4.2 services on Java 21, running on Amazon Corretto 21.0.10. Frontend in `frontend/` is Angular only.
 
 ## Commands
 
