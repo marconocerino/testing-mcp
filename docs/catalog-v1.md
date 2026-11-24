@@ -68,36 +68,36 @@ Full schemas with descriptions, enums and defaults are E1-S4. This is the agreed
 
 ## Library selectors
 
-Fill in one row per library component. The ftmkit implementation of `@app/ui` (`frontend/src/ui/ftmkit/`) is written from this table, so the class name and import path must match the package exactly.
+One row per library component. **Filled with Angular Material 21.2** (our stand-in), checked against the installed package: `@app/ui` currently points at `frontend/src/ui/stand-in/`, and its wrappers are written from this table. Where Material has no equivalent, the wrapper composes one, so adapters and specs never notice. When the real library's typings are available, replace each row with its component (known so far: Button is `FttButton`, Numeric Input is `FttNumericInput`) and add `frontend/src/ui/ftmkit/` next to the stand-in.
 
 | Library component | Used for | Angular selector | Class name | Import path |
 | --- | --- | --- | --- | --- |
-| Grid | `Column`, `Row` | |  | |
-| Card | `Card` | |  | |
-| Title | `Text`, `Stat` | |  | |
-| Microcopy | `Text` | |  | |
-| Label | `Stat` | |  | |
-| Divider | `Divider` | |  | |
-| Description List | `KeyValueList`, `OrderTicket` | |  | |
-| Table | `Table` | |  | |
-| Pagination | `Table` | |  | |
-| Data Table Layout | `Table` | |  | |
-| Tag | `Badge`, `Stat`, `Table` | |  | |
-| Inline Message | `Alert`, `OrderTicket` | |  | |
-| Footnotes and Disclosures | `Alert`, `OrderTicket` | |  | |
-| Message | `EmptyState` | |  | |
-| Button | `Button`, `EmptyState`, `OrderTicket` | | `FttButton` | |
-| Button Loading | `Button`, `OrderTicket` | |  | |
-| Dropdown | `Select`, `OrderTicket` | |  | |
-| Date Select | `DateField` | |  | |
-| Form | `OrderTicket` | |  | |
-| Field Group | `OrderTicket` | |  | |
-| Form Actions | `OrderTicket` | |  | |
-| Autocomplete | `OrderTicket` | |  | |
-| Button group | `OrderTicket` | |  | |
-| Numeric Input | `OrderTicket` | | `FttNumericInput` | |
-| Currency Input | `OrderTicket` | |  | |
-| Progress status | `OrderTicket` | |  | |
+| Grid | `Column`, `Row` | `mat-grid-list` | `MatGridList` | @angular/material/grid-list |
+| Card | `Card` | `mat-card` | `MatCard` | @angular/material/card |
+| Title | `Text`, `Stat` | none in Material: typography class `mat-headline-small` / `mat-title-medium` | — | — |
+| Microcopy | `Text` | none in Material: typography class `mat-body-small` | — | — |
+| Label | `Stat` | none in Material: typography class `mat-label-medium` | — | — |
+| Divider | `Divider` | `mat-divider` | `MatDivider` | @angular/material/divider |
+| Description List | `KeyValueList`, `OrderTicket` | none in Material: native `<dl>` styled in the wrapper | — | — |
+| Table | `Table` | `table[mat-table]` | `MatTable` (+ `MatColumnDef`, `MatHeaderRowDef`, `MatRowDef`) | @angular/material/table |
+| Pagination | `Table` | `mat-paginator` | `MatPaginator` | @angular/material/paginator |
+| Data Table Layout | `Table` | none in Material: the wrapper's own layout | — | — |
+| Tag | `Badge`, `Stat`, `Table` | `mat-chip` | `MatChip` | @angular/material/chips |
+| Inline Message | `Alert`, `OrderTicket` | none in Material: `mat-card` + `mat-icon` in the wrapper | `MatCard`, `MatIcon` | @angular/material/card, @angular/material/icon |
+| Footnotes and Disclosures | `Alert`, `OrderTicket` | none in Material: `mat-body-small` text in the wrapper | — | — |
+| Message | `EmptyState` | none in Material: composed in the wrapper | — | — |
+| Button | `Button`, `EmptyState`, `OrderTicket` | `button[matButton]` | `MatButton` | @angular/material/button |
+| Button Loading | `Button`, `OrderTicket` | none in Material: `MatButton` with `mat-spinner` inside | `MatButton`, `MatProgressSpinner` | @angular/material/button, @angular/material/progress-spinner |
+| Dropdown | `Select`, `OrderTicket` | `mat-select` (inside `mat-form-field`) | `MatSelect` | @angular/material/select |
+| Date Select | `DateField` | `input[matDatepicker]` + `mat-datepicker` | `MatDatepickerInput`, `MatDatepicker` | @angular/material/datepicker (needs `provideNativeDateAdapter()`) |
+| Form | `OrderTicket` | none in Material: native `<form>` with Angular reactive forms | `ReactiveFormsModule` | @angular/forms |
+| Field Group | `OrderTicket` | `mat-form-field` | `MatFormField` | @angular/material/form-field |
+| Form Actions | `OrderTicket` | none in Material: a button row in the wrapper | — | — |
+| Autocomplete | `OrderTicket` | `mat-autocomplete` | `MatAutocomplete` | @angular/material/autocomplete |
+| Button group | `OrderTicket` | `mat-button-toggle-group` | `MatButtonToggleGroup` | @angular/material/button-toggle |
+| Numeric Input | `OrderTicket` | `input[matInput][type=number]` | `MatInput` | @angular/material/input |
+| Currency Input | `OrderTicket` | none in Material: `input[matInput]` with a `matTextPrefix` currency symbol | `MatInput`, `MatPrefix` | @angular/material/input, @angular/material/form-field |
+| Progress status | `OrderTicket` | `mat-stepper` | `MatStepper` | @angular/material/stepper |
 
 ## Components that need a special adapter approach
 
@@ -128,7 +128,8 @@ Fill in one row per library component. The ftmkit implementation of `@app/ui` (`
 ## Open before sign-off
 
 - [x] Map every type to a library component (from the component inventory, 2026-11-24).
-- [ ] Fill in the [Library selectors](#library-selectors) table.
+- [x] Fill in the [Library selectors](#library-selectors) table with the Angular Material stand-in.
+- [ ] Replace the Material rows with the real library's selectors once its typings are available.
 - [x] Design choices (2026-11-24): Grid for `Column`/`Row`, Dropdown for `Select`, Message for `EmptyState`, Tag for `Badge`.
 - [ ] Compliance confirms disclaimers come from a central store referenced by id and are rendered with Footnotes and Disclosures (`Alert.disclaimerId`, E7-S3).
 
