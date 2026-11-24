@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Trading app dashboard with chat</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F9}
+a{color:#1F47B8}a:hover{color:#16348A}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
+</head>
+<body>
+<div style="font-family: Inter, system-ui, sans-serif; color: #14171C; background: #F6F7F9; min-height: 940px; display: flex; flex-direction: column">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; padding: 12px 24px; background: #FFFFFF; border-bottom: 1px solid #E3E6EB">
+<div style="display: flex; align-items: center; gap: 10px">
+<div style="width: 28px; height: 28px; border-radius: 8px; background: #2B5CE6" aria-hidden="true"></div>
+<span style="font-weight: 700; font-size: 16px">Trading</span>
+<span style="font-size: 12px; font-weight: 600; color: #8A4B00; background: #FFF1DC; padding: 3px 8px; border-radius: 999px">Mock data</span>
+</div>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 4px">
+<a href="#" style="padding: 8px 12px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; color: #1F47B8; background: #EAF0FD">Dashboard</a>
+<a href="#" style="padding: 8px 12px; border-radius: 8px; font-size: 14px; text-decoration: none; color: #3D4451">Accounts</a>
+<a href="#" style="padding: 8px 12px; border-radius: 8px; font-size: 14px; text-decoration: none; color: #3D4451">Orders</a>
+<a href="#" style="padding: 8px 12px; border-radius: 8px; font-size: 14px; text-decoration: none; color: #3D4451">Predictions</a>
+<a href="#" style="padding: 8px 12px; border-radius: 8px; font-size: 14px; text-decoration: none; color: #3D4451">Saved views</a>
+</nav>
+<div style="flex: 1 1 0"></div>
+<div style="width: 36px; height: 36px; border-radius: 50%; background: #DDE3EC; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #3D4451" aria-label="Signed in user">JD</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; flex: 1 1 auto; align-items: stretch">
+
+<main style="flex: 999 1 560px; min-width: 0; padding: 32px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.01em">Dashboard</h1>
+<p style="margin: 0; font-size: 14px; color: #5B6472">Default view · built from a hand-authored A2UI spec</p>
+</div>
+<span style="font-size: 13px; color: #5B6472">Prices as of 10:42</span>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+<section style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; color: #5B6472">Total balance</span>
+<span style="font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums">$48,210.55</span>
+<span style="font-size: 13px; color: #1F7A4D; font-weight: 600">+$412.30 today</span>
+</section>
+<section style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; color: #5B6472">Invested</span>
+<span style="font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums">$31,904.20</span>
+<span style="font-size: 13px; color: #5B6472">5 holdings</span>
+</section>
+<section style="background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; color: #5B6472">Cash</span>
+<span style="font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums">$16,306.35</span>
+<span style="font-size: 13px; color: #5B6472">Across 4 accounts</span>
+</section>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<section style="flex: 2 1 420px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Holdings</h2>
+<a href="#" style="font-size: 13px; font-weight: 600; text-decoration: none">View all</a>
+</div>
+<div style="overflow-x: auto">
+<table style="width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums">
+<thead>
+<tr style="text-align: left; color: #5B6472; font-size: 12px">
+<th style="padding: 8px 8px 8px 0; font-weight: 600">Symbol</th>
+<th style="padding: 8px; font-weight: 600">Name</th>
+<th style="padding: 8px; font-weight: 600; text-align: right">Qty</th>
+<th style="padding: 8px; font-weight: 600; text-align: right">Price</th>
+<th style="padding: 8px; font-weight: 600; text-align: right">Day</th>
+<th style="padding: 8px 0 8px 8px; font-weight: 600; text-align: right">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-top: 1px solid #EEF0F3"><td style="padding: 12px 8px 12px 0; font-weight: 600">ALPN</td><td style="padding: 12px 8px">Alpine Robotics</td><td style="padding: 12px 8px; text-align: right">60</td><td style="padding: 12px 8px; text-align: right">$128.40</td><td style="padding: 12px 8px; text-align: right; color: #1F7A4D">+2.1%</td><td style="padding: 12px 0 12px 8px; text-align: right">$7,704.00</td></tr>
+<tr style="border-top: 1px solid #EEF0F3"><td style="padding: 12px 8px 12px 0; font-weight: 600">VELO</td><td style="padding: 12px 8px">Velo Energy</td><td style="padding: 12px 8px; text-align: right">120</td><td style="padding: 12px 8px; text-align: right">$54.15</td><td style="padding: 12px 8px; text-align: right; color: #B42318">−0.8%</td><td style="padding: 12px 0 12px 8px; text-align: right">$6,498.00</td></tr>
+<tr style="border-top: 1px solid #EEF0F3"><td style="padding: 12px 8px 12px 0; font-weight: 600">NRTH</td><td style="padding: 12px 8px">Northgate Bank</td><td style="padding: 12px 8px; text-align: right">200</td><td style="padding: 12px 8px; text-align: right">$31.80</td><td style="padding: 12px 8px; text-align: right; color: #1F7A4D">+0.4%</td><td style="padding: 12px 0 12px 8px; text-align: right">$6,360.00</td></tr>
+<tr style="border-top: 1px solid #EEF0F3"><td style="padding: 12px 8px 12px 0; font-weight: 600">CRSL</td><td style="padding: 12px 8px">Carousel Media</td><td style="padding: 12px 8px; text-align: right">85</td><td style="padding: 12px 8px; text-align: right">$72.02</td><td style="padding: 12px 8px; text-align: right; color: #1F7A4D">+1.2%</td><td style="padding: 12px 0 12px 8px; text-align: right">$6,121.70</td></tr>
+<tr style="border-top: 1px solid #EEF0F3"><td style="padding: 12px 8px 12px 0; font-weight: 600">MERI</td><td style="padding: 12px 8px">Meridian Foods</td><td style="padding: 12px 8px; text-align: right">110</td><td style="padding: 12px 8px; text-align: right">$47.65</td><td style="padding: 12px 8px; text-align: right; color: #B42318">−1.5%</td><td style="padding: 12px 0 12px 8px; text-align: right">$5,241.50</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section style="flex: 1 1 260px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E6EB; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Today's movers</h2>
+<div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #EEF0F3; font-size: 14px"><span style="font-weight: 600">ALPN</span><span style="color: #1F7A4D; font-weight: 600">+2.1%</span></div>
+<div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #EEF0F3; font-size: 14px"><span style="font-weight: 600">MERI</span><span style="color: #B42318; font-weight: 600">−1.5%</span></div>
+<div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #EEF0F3; font-size: 14px"><span style="font-weight: 600">CRSL</span><span style="color: #1F7A4D; font-weight: 600">+1.2%</span></div>
+<div style="display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px"><span style="font-weight: 600">VELO</span><span style="color: #B42318; font-weight: 600">−0.8%</span></div>
+<a href="#" style="margin-top: auto; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 8px; border: 1px solid #C9D1DC; font-size: 14px; font-weight: 600; text-decoration: none; color: #14171C">New order</a>
+</section>
+</div>
+</main>
+
+<aside aria-label="Assistant" style="flex: 1 1 340px; max-width: 440px; min-width: 0; background: #FFFFFF; border-left: 1px solid #E3E6EB; display: flex; flex-direction: column; box-sizing: border-box">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #E3E6EB">
+<div style="display: flex; align-items: center; gap: 8px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2B5CE6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"></path><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"></path></svg>
+<h2 style="margin: 0; font-size: 15px; font-weight: 600">Assistant</h2>
+</div>
+<button type="button" aria-label="Collapse assistant" style="width: 44px; height: 44px; border: none; background: transparent; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B6472" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+</div>
+
+<div style="flex: 1 1 auto; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<div style="align-self: flex-start; max-width: 88%; background: #F3F5F8; border-radius: 12px 12px 12px 4px; padding: 12px 14px; font-size: 14px; line-height: 1.5">Hi! Ask me to build a view of your accounts, holdings or predictions. I'll lay it out with the app's components, and you can save it.</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 12px; font-weight: 600; color: #5B6472">Try</span>
+<button type="button" style="text-align: left; min-height: 44px; padding: 10px 14px; border: 1px solid #C9D1DC; background: #FFFFFF; border-radius: 10px; font: inherit; font-size: 14px; color: #14171C; cursor: pointer">Compact view of my accounts</button>
+<button type="button" style="text-align: left; min-height: 44px; padding: 10px 14px; border: 1px solid #C9D1DC; background: #FFFFFF; border-radius: 10px; font: inherit; font-size: 14px; color: #14171C; cursor: pointer">What did I spend this month?</button>
+<button type="button" style="text-align: left; min-height: 44px; padding: 10px 14px; border: 1px solid #C9D1DC; background: #FFFFFF; border-radius: 10px; font: inherit; font-size: 14px; color: #14171C; cursor: pointer">Predictions for my top holdings</button>
+</div>
+</div>
+
+<form style="padding: 16px 20px; border-top: 1px solid #E3E6EB; display: flex; gap: 8px; align-items: center">
+<label for="chat-input" class="sr-only">Message the assistant</label>
+<input id="chat-input" type="text" placeholder="Ask for a view…" style="flex: 1 1 auto; min-width: 0; min-height: 44px; padding: 0 14px; border: 1px solid #C9D1DC; border-radius: 10px; font: inherit; font-size: 14px">
+<button type="submit" aria-label="Send" style="width: 44px; height: 44px; border: none; border-radius: 10px; background: #2B5CE6; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></button>
+</form>
+<p style="margin: 0; padding: 0 20px 16px; font-size: 12px; color: #5B6472">Runs on the internal LLM. It can prepare orders, never place them.</p>
+</aside>
+</div>
+</div>
+</body>
+</html>

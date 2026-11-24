@@ -1,27 +1,45 @@
 # Generative UI Trading App
 
-See [CLAUDE.md](CLAUDE.md) for the architecture rules and [docs/](docs/) for epics, stories and decisions. The whole project lives in this one folder: the Angular workspace is at the root.
+A trading app whose screens are generated as A2UI specs and rendered with approved components. See [CLAUDE.md](CLAUDE.md) for the architecture rules and [docs/](docs/) for stories, decisions and design mockups.
 
-## Run
+## Packages
 
-Needs Node `^22.12.0` (`.nvmrc` pins 22.13.1).
+Every backend component is its own microservice in its own folder, with its own container.
 
-```sh
-npm install                 # clean: no --force / --legacy-peer-deps
-npx ng serve                # http://localhost:4200
-npx ng test --watch=false
-npx ng build
-```
+| Folder | What it is | Stack | Port |
+| --- | --- | --- | --- |
+| [frontend/](frontend/) | Angular app: shell, A2UI surface, catalog adapters, `@app/ui` contract | Angular 21, `@a2ui/angular` 0.14.0 | 4200 |
+| [services/accounts-service/](services/accounts-service/) | Accounts, balances, transactions (mock) | Spring Boot 4.2, Java 25 | 8081 |
+| [services/orders-service/](services/orders-service/) | Order preview, paper trading, list, cancel (mock) | Spring Boot 4.2, Java 25 | 8082 |
+| [services/market-data-service/](services/market-data-service/) | Instruments, quotes, holdings (mock) | Spring Boot 4.2, Java 25 | 8083 |
+| [services/predictions-service/](services/predictions-service/) | Synthetic forecasts (placeholder model) | Spring Boot 4.2, Java 25 | 8084 |
+| [services/agent-service/](services/agent-service/) | Generates A2UI specs on the internal LLM (E5) | Placeholder, language undecided | |
+| [services/mcp-server/](services/mcp-server/) | MCP App for Microsoft 365 Copilot (E8) | Placeholder, language undecided | |
 
-## Layout
+All data is mock data until security and compliance sign off (CLAUDE.md rule 6).
 
-- `src/app/catalog/`: the A2UI catalog. Each A2UI type maps to a library component (Angular Material stands in for the internal library). Strict validation is configured here.
-- `src/app/spec/`: the hand-written A2UI spec from E0-S1 (layout plus data bindings) and its mock data
-- `docs/`: stories, decisions, verifier notes
+## Commands
+
+| | Frontend (`cd frontend`) | Each service (`cd services/<name>`) |
+| --- | --- | --- |
+| Install | `npm ci` | (Maven wrapper downloads on first run) |
+| Lint | `npx ng lint` | `./mvnw spotless:check` (fix: `./mvnw spotless:apply`) |
+| Test | `npx ng test --watch=false` | `./mvnw test` |
+| Build | `npx ng build` | `./mvnw package` |
+| All checks | | `./mvnw verify` (tests + lint + build) |
+| Run | `npx ng serve` | `./mvnw spring-boot:run` |
+
+**Everything at once (local dev environment):** `docker compose up --build`. Frontend on http://localhost:4200, services on ports 8081 to 8084 (`/actuator/health`).
+
+Requirements: Node `^22.12.0` (`frontend/.nvmrc`), JDK 25 for running services outside Docker, Docker for compose.
+
+## Secrets
+
+None in the repo. Services read secrets from environment variables, which come from the company secret manager in deployed environments. [.env.example](.env.example) lists the variable names; `.env` is git-ignored.
 
 ## Version matrix
 
-Confirmed by E0-S1 on 2026-11-23. Use these exact versions until a decision in [docs/decisions.md](docs/decisions.md) changes them.
+Frontend versions, confirmed by E0-S1 on 2026-11-23. Use these exact versions until a decision in [docs/decisions.md](docs/decisions.md) changes them.
 
 | Component | Version | Constraint that sets it |
 | --- | --- | --- |

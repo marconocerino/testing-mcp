@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Trading MCP App inside a Copilot chat</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EEF0F3}
+a{color:#1F47B8}a:hover{color:#16348A}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
+</head>
+<body>
+<div style="font-family: Inter, system-ui, sans-serif; color: #14171C; background: #EEF0F3; min-height: 1180px; display: flex; flex-wrap: wrap; align-items: stretch">
+
+<nav aria-label="Host navigation" style="flex: 0 1 240px; min-width: 200px; background: #E4E7EC; padding: 20px 16px; display: flex; flex-direction: column; gap: 6px; box-sizing: border-box">
+<span style="font-size: 15px; font-weight: 700; padding: 4px 8px 12px">Copilot chat</span>
+<span style="font-size: 12px; font-weight: 600; color: #5B6472; padding: 4px 8px">Agents</span>
+<a href="#" style="padding: 10px 8px; border-radius: 8px; font-size: 14px; text-decoration: none; color: #14171C; background: #FFFFFF; font-weight: 600; display: flex; align-items: center; gap: 8px"><span style="width: 18px; height: 18px; border-radius: 5px; background: #2B5CE6" aria-hidden="true"></span>Trading app</a>
+<a href="#" style="padding: 10px 8px; border-radius: 8px; font-size: 14px; text-decoration: none; color: #3D4451">Other agent</a>
+<span style="font-size: 12px; font-weight: 600; color: #5B6472; padding: 16px 8px 4px">Recent chats</span>
+<a href="#" style="padding: 10px 8px; border-radius: 8px; font-size: 14px; text-decoration: none; color: #3D4451">Spending and holdings</a>
+<a href="#" style="padding: 10px 8px; border-radius: 8px; font-size: 14px; text-decoration: none; color: #3D4451">Weekly report draft</a>
+<p style="margin: auto 0 0; padding: 8px; font-size: 12px; color: #5B6472; line-height: 1.5">Host app shown generically for illustration. Real Copilot chrome will differ.</p>
+</nav>
+
+<div style="flex: 999 1 560px; min-width: 0; display: flex; flex-wrap: wrap; gap: 24px; padding: 32px; box-sizing: border-box; align-items: flex-start">
+
+<main style="flex: 999 1 560px; min-width: 0; max-width: 820px; display: flex; flex-direction: column; gap: 20px">
+
+<div style="align-self: flex-end; max-width: 80%; background: #FFFFFF; border: 1px solid #DDE1E7; border-radius: 14px 14px 4px 14px; padding: 12px 16px; font-size: 14px; line-height: 1.5">Show my spending this month and my top holdings</div>
+
+<div style="display: flex; gap: 12px; align-items: flex-start">
+<div style="flex: none; width: 32px; height: 32px; border-radius: 50%; background: #3D4451" aria-hidden="true"></div>
+<div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<p style="margin: 0; font-size: 14px; line-height: 1.6; display: flex; gap: 8px; align-items: flex-start"><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #14171C; color: #FFFFFF; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center">1</span><span>Here's your spending for November and your top holdings from the Trading app.</span></p>
+
+<section aria-label="Trading app widget" style="background: #FFFFFF; border: 1px solid #D5DAE1; border-radius: 14px; overflow: hidden">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #E3E6EB">
+<span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #14171C; color: #FFFFFF; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center">2</span>
+<span style="width: 20px; height: 20px; border-radius: 6px; background: #2B5CE6" aria-hidden="true"></span>
+<span style="font-size: 14px; font-weight: 600">Trading app</span>
+<span style="font-size: 11px; font-weight: 600; color: #3D4451; background: #EEF0F3; padding: 3px 8px; border-radius: 999px">MCP App</span>
+<span style="font-size: 11px; font-weight: 600; color: #8A4B00; background: #FFF1DC; padding: 3px 8px; border-radius: 999px">Mock data</span>
+<div style="flex: 1 1 0"></div>
+<a href="01-dashboard-with-chat.html" style="font-size: 13px; font-weight: 600; text-decoration: none">Open in Trading app</a>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; padding: 16px">
+<div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: baseline"><h3 style="margin: 0; font-size: 14px; font-weight: 600">Spending this month</h3><span style="font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums">$2,318.40</span></div>
+<div style="display: flex; flex-direction: column; gap: 5px"><div style="display: flex; justify-content: space-between; font-size: 12px"><span>Rent and bills</span><span style="font-variant-numeric: tabular-nums">$1,150.00</span></div><div style="height: 6px; background: #EEF0F3; border-radius: 3px"><div style="width: 100%; height: 6px; background: #2B5CE6; border-radius: 3px"></div></div></div>
+<div style="display: flex; flex-direction: column; gap: 5px"><div style="display: flex; justify-content: space-between; font-size: 12px"><span>Groceries</span><span style="font-variant-numeric: tabular-nums">$486.20</span></div><div style="height: 6px; background: #EEF0F3; border-radius: 3px"><div style="width: 42%; height: 6px; background: #2B5CE6; border-radius: 3px"></div></div></div>
+<div style="display: flex; flex-direction: column; gap: 5px"><div style="display: flex; justify-content: space-between; font-size: 12px"><span>Transport</span><span style="font-variant-numeric: tabular-nums">$264.80</span></div><div style="height: 6px; background: #EEF0F3; border-radius: 3px"><div style="width: 23%; height: 6px; background: #2B5CE6; border-radius: 3px"></div></div></div>
+<div style="display: flex; flex-direction: column; gap: 5px"><div style="display: flex; justify-content: space-between; font-size: 12px"><span>Eating out</span><span style="font-variant-numeric: tabular-nums">$231.40</span></div><div style="height: 6px; background: #EEF0F3; border-radius: 3px"><div style="width: 20%; height: 6px; background: #2B5CE6; border-radius: 3px"></div></div></div>
+</div>
+<div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<h3 style="margin: 0; font-size: 14px; font-weight: 600">Top holdings</h3>
+<table style="width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums">
+<tbody>
+<tr><td style="padding: 6px 0; font-weight: 600">ALPN</td><td style="padding: 6px 0; text-align: right; color: #1F7A4D">+2.1%</td><td style="padding: 6px 0; text-align: right">$7,704.00</td></tr>
+<tr style="border-top: 1px solid #EEF0F3"><td style="padding: 6px 0; font-weight: 600">VELO</td><td style="padding: 6px 0; text-align: right; color: #B42318">−0.8%</td><td style="padding: 6px 0; text-align: right">$6,498.00</td></tr>
+<tr style="border-top: 1px solid #EEF0F3"><td style="padding: 6px 0; font-weight: 600">NRTH</td><td style="padding: 6px 0; text-align: right; color: #1F7A4D">+0.4%</td><td style="padding: 6px 0; text-align: right">$6,360.00</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 16px; border-top: 1px solid #E3E6EB; background: #FAFBFC">
+<span style="font-size: 12px; color: #1F47B8; font-weight: 600">AI-generated layout</span>
+<div style="flex: 1 1 0"></div>
+<button type="button" style="min-height: 44px; padding: 0 14px; border-radius: 8px; border: 1px solid #C9D1DC; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 600; color: #14171C; cursor: pointer">Show more months</button>
+<button type="button" style="min-height: 44px; padding: 0 14px; border-radius: 8px; border: none; background: #2B5CE6; font: inherit; font-size: 13px; font-weight: 600; color: #FFFFFF; cursor: pointer">Save view</button>
+</div>
+</section>
+</div>
+</div>
+
+<div style="align-self: flex-end; max-width: 80%; background: #FFFFFF; border: 1px solid #DDE1E7; border-radius: 14px 14px 4px 14px; padding: 12px 16px; font-size: 14px; line-height: 1.5">Buy 5 more ALPN</div>
+
+<div style="display: flex; gap: 12px; align-items: flex-start">
+<div style="flex: none; width: 32px; height: 32px; border-radius: 50%; background: #3D4451" aria-hidden="true"></div>
+<div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<p style="margin: 0; font-size: 14px; line-height: 1.6">I've prepared the order. For your security, you review and confirm it in the Trading app.</p>
+<section aria-label="Prepared order widget" style="background: #FFFFFF; border: 1px solid #D5DAE1; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #14171C; color: #FFFFFF; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center">3</span>
+<span style="width: 20px; height: 20px; border-radius: 6px; background: #2B5CE6" aria-hidden="true"></span>
+<h3 style="margin: 0; font-size: 14px; font-weight: 600">Prepared order · not placed</h3>
+</div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; font-size: 13px">
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="color: #5B6472">Side</span><span style="font-weight: 600; color: #1F7A4D">Buy</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="color: #5B6472">Instrument</span><span style="font-weight: 600">5 × ALPN</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="color: #5B6472">Type</span><span style="font-weight: 600">Market</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="color: #5B6472">Est. total</span><span style="font-weight: 600; font-variant-numeric: tabular-nums">$643.50</span></div>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+<a href="03-order-ticket.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 8px; background: #2B5CE6; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">Review and confirm in Trading app</a>
+<span style="font-size: 12px; color: #5B6472">Orders can't be placed from this chat. Preview expires in 2 min.</span>
+</div>
+</section>
+</div>
+</div>
+
+<form style="margin-top: 12px; display: flex; gap: 8px; align-items: center; background: #FFFFFF; border: 1px solid #D5DAE1; border-radius: 14px; padding: 8px 8px 8px 16px">
+<label for="host-input" class="sr-only">Message Copilot</label>
+<input id="host-input" type="text" placeholder="Message Copilot" style="flex: 1 1 auto; min-width: 0; min-height: 44px; border: none; font: inherit; font-size: 14px; outline-offset: 2px">
+<button type="submit" aria-label="Send" style="width: 44px; height: 44px; border: none; border-radius: 10px; background: #3D4451; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"></path><path d="M6 11l6-6 6 6"></path></svg></button>
+</form>
+</main>
+
+<aside aria-label="What each part is" style="flex: 1 1 260px; min-width: 0; max-width: 340px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 700; color: #3D4451">What you're looking at</h2>
+<div style="background: #FFFFFF; border-radius: 12px; padding: 14px; display: flex; gap: 10px; font-size: 13px; line-height: 1.5"><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #14171C; color: #FFFFFF; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center">1</span><span>Copilot's own model writes this text. It only receives a short, non-sensitive summary from our tool.</span></div>
+<div style="background: #FFFFFF; border-radius: 12px; padding: 14px; display: flex; gap: 10px; font-size: 13px; line-height: 1.5"><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #14171C; color: #FFFFFF; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center">2</span><span>Our Angular bundle in a sandboxed iframe. Same A2UI renderer and components as the web app; the layout came from our agent's generate_view.</span></div>
+<div style="background: #FFFFFF; border-radius: 12px; padding: 14px; display: flex; gap: 10px; font-size: 13px; line-height: 1.5"><span style="flex: none; width: 20px; height: 20px; border-radius: 50%; background: #14171C; color: #FFFFFF; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center">3</span><span>prepare_order ran after a verifier pre-action check. Placing the order only happens on the Confirm step inside the Trading app.</span></div>
+</aside>
+</div>
+</div>
+</body>
+</html>

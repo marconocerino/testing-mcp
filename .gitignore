@@ -1,0 +1,13 @@
+# Secrets: never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# OS / editors
+.DS_Store
+.idea/
+*.iml
+
+# Each package has its own .gitignore for build output (frontend/, services/*/).
