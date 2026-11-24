@@ -1,5 +1,6 @@
 import { AngularCatalog } from '@a2ui/angular';
-import { CardApi, TextApi } from '@a2ui/web_core/v1_0';
+import { ButtonApi, CardApi, TextApi } from '@a2ui/web_core/v1_0';
+import { ButtonAdapterComponent } from './button.adapter';
 import { CardAdapterComponent } from './card.adapter';
 import { TextAdapterComponent } from './text.adapter';
 
@@ -11,6 +12,7 @@ export const CATALOG_ID = 'urn:trading-app:catalog:v1';
  */
 export function createCatalog(): AngularCatalog {
   return new AngularCatalog(CATALOG_ID, 'v0.9', [
+    { ...ButtonApi, component: ButtonAdapterComponent },
     { ...CardApi, component: CardAdapterComponent },
     { ...TextApi, component: TextAdapterComponent },
   ]);

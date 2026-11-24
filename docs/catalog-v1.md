@@ -61,7 +61,7 @@ Full schemas with descriptions, enums and defaults are E1-S4. This is the agreed
 | `Badge` | `text` (string or binding), `tone` (`neutral`, `info`, `success`, `warning`, `danger`) |
 | `Alert` | `tone` (`info`, `warning`, `danger`), `title` (optional), `text`, or `disclaimerId` (text loaded from the central store, E7-S3) |
 | `EmptyState` | `title`, `text`, `action` (optional, one action) |
-| `Button` | `child`, `variant`, `action` (A2UI basic; actions go only to allow-listed handlers) |
+| `Button` | `child`, `variant`, `action` (**required**; A2UI basic; actions go only to allow-listed handlers) |
 | `Select` | `label`, `options` (list of `{ value, label }`), `value` (binding) |
 | `DateField` | `label`, `value` (binding, ISO date), `min`, `max` |
 | `OrderTicket` | `instrument`, `side` (`buy`, `sell`), `quantity`, `orderType` (`market`, `limit`): all optional pre-fill values. No children, no actions |

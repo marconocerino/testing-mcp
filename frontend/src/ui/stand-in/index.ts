@@ -7,4 +7,5 @@
  *
  * Only files under src/ui/ may import @angular/material or @angular/cdk.
  */
+export { UiButtonComponent, type UiButtonVariant } from './ui-button.component';
 export { UiCardComponent } from './ui-card.component';
