@@ -39,6 +39,8 @@ protected readonly variant = this.prop<UiButtonVariant>('variant', 'default');
 </ui-card>
 ```
 
+**Input values.** For inputs, call `this.write('value', newValue)` before dispatching. It writes to the data-model path the spec bound the prop to (a literal value is left alone), so the action's context sees the new value.
+
 **Actions.** When the user does something, call `this.dispatch('action')`. It emits the spec's action with its context resolved from the data model at that moment, for example `{ name: "openOrderTicket", context: { accountId: "ACC-1" } }`. The renderer passes it to the `actionHandler` in the A2UI config, which routes it to an allow-listed handler (E4).
 
 ```html
@@ -52,6 +54,19 @@ protected readonly variant = this.prop<UiButtonVariant>('variant', 'default');
 - **No HTML from specs.** Text is rendered as text (`{{ }}`), never with `innerHTML` or markdown.
 - **No custom styling** of library components in adapters. Styling lives in the wrapper and the library theme.
 - **No trading.** No action an adapter emits can place, modify or cancel an order (rule 4). Orders only go through `OrderTicket`'s confirm step.
+
+## Writing a schema (our own types)
+
+Our types' schemas live in [schemas.ts](../frontend/src/app/catalog/schemas.ts). A2UI decides which props to resolve from the schema, so:
+
+- Bindable props use the `Dynamic*` schemas with a `REF:#/$defs/<Def>|<description>` description (the `dynString`, `bound` and `action` helpers). A prop typed as a bare `DataBindingSchema` is **not** resolved and can't be written.
+- Values that are financial data (figures, rows) use `bound(...)`, which rejects literals (rule 5).
+- Every object is `.strict()`. Keep lists bounded (`.min()`, `.max()`) and prefer enums over free strings.
+- Formatting is a `format` prop handled by [format.ts](../frontend/src/app/catalog/format.ts), never done by the spec.
+
+## Testing
+
+Use the harness in [testing/surface-harness.ts](../frontend/src/app/catalog/testing/surface-harness.ts): it renders components through the real catalog with strict validation and records every action. Each adapter's tests cover its required props (missing or invalid ones are rejected), optional props and defaults, a bound value that changes, and each action. To trigger an input, emit the `@app/ui` wrapper's output (for example `valueChange`) rather than driving Material's overlay.
 
 ## Notes from building the reference adapters
 

@@ -47,7 +47,7 @@ Rules applied:
 
 ### Props at a glance
 
-Full schemas with descriptions, enums and defaults are E1-S4. This is the agreed shape to build against.
+Implemented in E1-S3: [`frontend/src/app/catalog/schemas.ts`](../frontend/src/app/catalog/schemas.ts) for our types, A2UI's basic schemas for the rest. **Binding only** means a literal value is rejected, so specs can't carry balances, prices or transactions (rule 5). Every component also accepts `weight` (flex-grow inside a Row or Column).
 
 | A2UI type | Props |
 | --- | --- |
@@ -55,15 +55,15 @@ Full schemas with descriptions, enums and defaults are E1-S4. This is the agreed
 | `Card` | `child` (A2UI basic) |
 | `Text` | `text` (string or binding), `variant` |
 | `Divider` | `axis` (A2UI basic) |
-| `Stat` | `label`, `value` (binding), `format` (`currency`, `number`, `percent`), `change` (binding, optional), `currency` (binding, optional) |
-| `KeyValueList` | `items`: list of `{ label, value (binding), format }`, max 8 |
-| `Table` | `rows` (binding to a list), `columns`: list of `{ key, header, format (text, currency, number, percent, date, status), align }`, `pageSize` (optional), `rowAction` (optional action) |
+| `Stat` | `label`, `value` (**binding only**), `format` (`currency`, `number`, `percent`), `change` (**binding only**, optional), `currency` (optional) |
+| `KeyValueList` | `items`: list of `{ label, value (**binding only**), format }`, 1 to 8; `currency` (optional) |
+| `Table` | `rows` (**binding only**), `columns`: 1 to 8 of `{ key, header, format (text, currency, number, percent, date, status), align }`, `currency`, `pageSize` (5 to 50, default 10), `rowKey` (default `id`), `selection` (path the picked row's key is written to), `rowAction` (emitted after the write) |
 | `Badge` | `text` (string or binding), `tone` (`neutral`, `info`, `success`, `warning`, `danger`) |
 | `Alert` | `tone` (`info`, `warning`, `danger`), `title` (optional), `text`, or `disclaimerId` (text loaded from the central store, E7-S3) |
-| `EmptyState` | `title`, `text`, `action` (optional, one action) |
+| `EmptyState` | `title`, `text` (optional), `actionLabel` + `action` (optional; the button shows only with both) |
 | `Button` | `child`, `variant`, `action` (**required**; A2UI basic; actions go only to allow-listed handlers) |
-| `Select` | `label`, `options` (list of `{ value, label }`), `value` (binding) |
-| `DateField` | `label`, `value` (binding, ISO date), `min`, `max` |
+| `Select` | `label`, `options` (1 to 50 of `{ value, label }`), `value` (bind it: the choice is written there), `action` (optional, emitted after the write) |
+| `DateField` | `label`, `value` (bind it, `YYYY-MM-DD`: the choice is written there), `min`, `max` (`YYYY-MM-DD`), `action` (optional, emitted after the write) |
 | `OrderTicket` | `instrument`, `side` (`buy`, `sell`), `quantity`, `orderType` (`market`, `limit`): all optional pre-fill values. No children, no actions |
 
 ## Library selectors
@@ -72,7 +72,7 @@ One row per library component. **Filled with Angular Material 21.2** (our stand-
 
 | Library component | Used for | Angular selector | Class name | Import path |
 | --- | --- | --- | --- | --- |
-| Grid | `Column`, `Row` | `mat-grid-list` | `MatGridList` | @angular/material/grid-list |
+| Grid | `Column`, `Row` | none used: `mat-grid-list` needs fixed row heights, so the stand-in wrapper uses flexbox | — | — |
 | Card | `Card` | `mat-card` | `MatCard` | @angular/material/card |
 | Title | `Text`, `Stat` | none in Material: typography class `mat-headline-small` / `mat-title-medium` | — | — |
 | Microcopy | `Text` | none in Material: typography class `mat-body-small` | — | — |

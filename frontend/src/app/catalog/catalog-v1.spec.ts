@@ -8,10 +8,8 @@ describe('E1-S1: v1 component list', () => {
     expect(CATALOG_V1_TYPES.length).toBeLessThanOrEqual(15);
   });
 
-  it('the catalog registers only types from the v1 list', () => {
-    const registered = [...createCatalog().components.keys()];
-    const allowed: readonly string[] = CATALOG_V1_TYPES;
-    expect(registered.filter((type) => !allowed.includes(type))).toEqual([]);
+  it('E1-S3: the catalog registers exactly the v1 list, each under its A2UI type name', () => {
+    expect([...createCatalog().components.keys()].sort()).toEqual([...CATALOG_V1_TYPES].sort());
   });
 });
 
