@@ -5,7 +5,6 @@
  * build points the `@app/ui` path alias at a wrapper over the internal company
  * library that exports the same names, selectors and inputs.
  *
- * Only files under src/ui/ may import @angular/material or @angular/cdk
- * (enforced by ESLint).
+ * Only files under src/ui/ may import @angular/material or @angular/cdk.
  */
 export { UiCardComponent } from './ui-card.component';

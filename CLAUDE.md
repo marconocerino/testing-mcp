@@ -43,7 +43,7 @@ Frontend (run in `frontend/`):
 - Install: `npm ci`
 - Build: `npx ng build`
 - Test: `npx ng test --watch=false`
-- Lint: `npx ng lint`
+- Lint: none (no frontend linter)
 
 Each Spring Boot service (run in `services/<name>/`):
 - Build: `./mvnw package`
