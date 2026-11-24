@@ -9,10 +9,8 @@ Every backend component is its own microservice in its own folder, with its own 
 | Folder | What it is | Stack | Port |
 | --- | --- | --- | --- |
 | [frontend/](frontend/) | Angular app: shell, A2UI surface, catalog adapters, `@app/ui` contract | Angular 21, `@a2ui/angular` 0.14.0 | 4200 |
-| [services/accounts-service/](services/accounts-service/) | Accounts, balances, transactions (mock) | Spring Boot 4.2, Java 25 | 8081 |
-| [services/orders-service/](services/orders-service/) | Order preview, paper trading, list, cancel (mock) | Spring Boot 4.2, Java 25 | 8082 |
-| [services/market-data-service/](services/market-data-service/) | Instruments, quotes, holdings (mock) | Spring Boot 4.2, Java 25 | 8083 |
-| [services/predictions-service/](services/predictions-service/) | Synthetic forecasts (placeholder model) | Spring Boot 4.2, Java 25 | 8084 |
+| [services/accounts-service/](services/accounts-service/) | Accounts, balances, transactions (mock) | Spring Boot 4.2, Java 21 | 8081 |
+| [services/orders-service/](services/orders-service/) | Order preview, paper trading, list, cancel (mock) | Spring Boot 4.2, Java 21 | 8082 |
 | [services/agent-service/](services/agent-service/) | Generates A2UI specs on the internal LLM (E5) | Placeholder, language undecided | |
 | [services/mcp-server/](services/mcp-server/) | MCP App for Microsoft 365 Copilot (E8) | Placeholder, language undecided | |
 
@@ -29,9 +27,9 @@ All data is mock data until security and compliance sign off (CLAUDE.md rule 6).
 | All checks | | `./mvnw verify` (tests + lint + build) |
 | Run | `npx ng serve` | `./mvnw spring-boot:run` |
 
-**Everything at once (local dev environment):** `docker compose up --build`. Frontend on http://localhost:4200, services on ports 8081 to 8084 (`/actuator/health`).
+**Everything at once (local dev environment):** `docker compose up --build`. Frontend on http://localhost:4200, services on ports 8081 and 8082 (`/actuator/health`).
 
-Requirements: Node `^22.12.0` (`frontend/.nvmrc`), JDK 25 for running services outside Docker, Docker for compose.
+Requirements: Node `^22.12.0` (`frontend/.nvmrc`), JDK 21 (Amazon Corretto) for running services outside Docker, Docker for compose.
 
 ## Secrets
 

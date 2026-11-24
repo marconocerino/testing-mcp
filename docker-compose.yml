@@ -5,7 +5,7 @@ services:
   frontend:
     build: ./frontend
     ports: ["4200:80"]
-    depends_on: [accounts-service, orders-service, market-data-service, predictions-service]
+    depends_on: [accounts-service, orders-service]
 
   accounts-service:
     build: ./services/accounts-service
@@ -14,11 +14,3 @@ services:
   orders-service:
     build: ./services/orders-service
     ports: ["8082:8082"]
-
-  market-data-service:
-    build: ./services/market-data-service
-    ports: ["8083:8083"]
-
-  predictions-service:
-    build: ./services/predictions-service
-    ports: ["8084:8084"]

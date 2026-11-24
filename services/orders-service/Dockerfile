@@ -1,5 +1,5 @@
 # Build
-FROM maven:3.9-eclipse-temurin-25 AS build
+FROM maven:3.9-amazoncorretto-21-alpine AS build
 WORKDIR /src
 COPY pom.xml .
 RUN mvn -q -B dependency:go-offline
@@ -7,7 +7,8 @@ COPY src ./src
 RUN mvn -q -B package -DskipTests -Dspotless.check.skip=true
 
 # Run
-FROM eclipse-temurin:25-jre-alpine
+# Amazon Corretto 21.0.10 on Alpine
+FROM amazoncorretto:21.0.10-alpine3.22
 RUN addgroup -S app && adduser -S app -G app
 USER app
 WORKDIR /app
