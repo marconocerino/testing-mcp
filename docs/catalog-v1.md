@@ -25,25 +25,25 @@ Rules applied:
 
 ## The list
 
-`ui-*` is our `@app/ui` contract selector; the adapter only ever renders that. The **internal library component** column is what the ftmkit implementation of `@app/ui` wraps, by name from the library's component inventory (2026-11-24). Angular selectors and class names (like `FttButton`, `FttNumericInput`) come from the ftmkit typings; only those two are known so far.
+`ui-*` is our `@app/ui` contract selector; the adapter only ever renders that. The **internal library component** column is what the ftmkit implementation of `@app/ui` wraps, by name from the library's component inventory (2026-11-24). Angular selectors, class names and import paths go in [Library selectors](#library-selectors) below.
 
 | # | A2UI type | Model-facing description | Schema | `@app/ui` selector | Internal library component | Used by |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `Column` | Use Column to stack components vertically; it is the usual root of a view. | A2UI basic | `ui-stack` (vertical) | Grid / Grid Section (to confirm; else flex in the wrapper) | All screens |
-| 2 | `Row` | Use Row to place 2-4 components side by side, such as stat tiles or buttons. | A2UI basic | `ui-stack` (horizontal) | Grid / Grid Section (to confirm; else flex in the wrapper) | Dashboard tiles, button bars |
+| 1 | `Column` | Use Column to stack components vertically; it is the usual root of a view. | A2UI basic | `ui-stack` (vertical) | Grid | All screens |
+| 2 | `Row` | Use Row to place 2-4 components side by side, such as stat tiles or buttons. | A2UI basic | `ui-stack` (horizontal) | Grid | Dashboard tiles, button bars |
 | 3 | `Card` | Use Card to group one section of a view under a single surface; put a Column inside for several children. | A2UI basic | `ui-card` | Card | All screens |
 | 4 | `Text` | Use Text for headings, labels and short plain-text sentences; never for numbers that come from data, use Stat or KeyValueList. | Own (`variant`: `title`, `heading`, `body`, `caption`) | `ui-text` | Title (`title`, `heading`), Microcopy (`caption`); `body` is plain library typography | All screens |
 | 5 | `Divider` | Use Divider to separate groups inside a Card. | A2UI basic | `ui-divider` | Divider | Order summary, cards |
-| 6 | `Stat` | Use Stat for one headline figure with a label and optional change, such as total balance or cash. | Own | `ui-stat` | None. Composed in the wrapper from Label + Title + Status | Dashboard tiles |
+| 6 | `Stat` | Use Stat for one headline figure with a label and optional change, such as total balance or cash. | Own | `ui-stat` | None. Composed in the wrapper from Label + Title + Tag | Dashboard tiles |
 | 7 | `KeyValueList` | Use KeyValueList for 2-8 labelled values, such as an order summary or spending by category. | Own | `ui-key-value-list` | Description List | Spending breakdown, prepared order, order preview |
 | 8 | `Table` | Use Table for lists of 5+ comparable items with the same fields, such as accounts, transactions or orders. | Own | `ui-table` | Table (+ Pagination; Data Table Layout for the frame) | Accounts, transactions, orders, generated views |
-| 9 | `Badge` | Use Badge for a short status label, such as an order status or "Paper trading". | Own | `ui-badge` | Status (order status); Tag for neutral labels | Order status, table cells |
+| 9 | `Badge` | Use Badge for a short status label, such as an order status or "Paper trading". | Own | `ui-badge` | Tag | Order status, table cells |
 | 10 | `Alert` | Use Alert for a message the user must notice: a warning, an error or a required disclaimer. | Own | `ui-alert` | Inline Message; Footnotes and Disclosures for `disclaimerId` | Order warnings, disclaimers, errors |
-| 11 | `EmptyState` | Use EmptyState when a section has no data yet, with a short explanation and one next step. | Own | `ui-empty-state` | Message Card (to confirm) or Message | Dashboard, accounts (E4-S2 AC) |
+| 11 | `EmptyState` | Use EmptyState when a section has no data yet, with a short explanation and one next step. | Own | `ui-empty-state` | Message (+ Button for the next step) | Dashboard, accounts (E4-S2 AC) |
 | 12 | `Button` | Use Button for an action the user starts, such as "View all" or "New order"; it never places a trade. | A2UI basic | `ui-button` | Button (`FttButton`); Button Loading while an action runs | All screens |
-| 13 | `Select` | Use Select to pick one value from a short fixed list, such as an account or transaction type. | Own | `ui-select` | Select (or Dropdown, to confirm which) | Transaction filters |
+| 13 | `Select` | Use Select to pick one value from a short fixed list, such as an account or transaction type. | Own | `ui-select` | Dropdown | Transaction filters |
 | 14 | `DateField` | Use DateField to pick a date, for example the start or end of a transaction filter. | Own | `ui-date-field` | Date Select | Transaction date-range filter (E4-S3) |
-| 15 | `OrderTicket` | Use OrderTicket to start an order; you may pre-fill instrument, side, quantity and type, nothing else. | Own (locked) | composed from `ui-*` inputs | Composite: Form, Field Group, Autocomplete (instrument), Button group (side), Numeric Input `FttNumericInput` (quantity), Currency Input (limit price), Select (type), Progress status (steps), Description List (preview), Inline Message (warnings), Form Actions, Button Loading, Footnotes and Disclosures | Order ticket (E4-S4), trading requests (E5-S5) |
+| 15 | `OrderTicket` | Use OrderTicket to start an order; you may pre-fill instrument, side, quantity and type, nothing else. | Own (locked) | composed from `ui-*` inputs | Composite: Form, Field Group, Autocomplete (instrument), Button group (side), Numeric Input `FttNumericInput` (quantity), Currency Input (limit price), Dropdown (type), Progress status (steps), Description List (preview), Inline Message (warnings), Form Actions, Button Loading, Footnotes and Disclosures | Order ticket (E4-S4), trading requests (E5-S5) |
 
 ### Props at a glance
 
@@ -66,6 +66,39 @@ Full schemas with descriptions, enums and defaults are E1-S4. This is the agreed
 | `DateField` | `label`, `value` (binding, ISO date), `min`, `max` |
 | `OrderTicket` | `instrument`, `side` (`buy`, `sell`), `quantity`, `orderType` (`market`, `limit`): all optional pre-fill values. No children, no actions |
 
+## Library selectors
+
+Fill in one row per library component. The ftmkit implementation of `@app/ui` (`frontend/src/ui/ftmkit/`) is written from this table, so the class name and import path must match the package exactly.
+
+| Library component | Used for | Angular selector | Class name | Import path |
+| --- | --- | --- | --- | --- |
+| Grid | `Column`, `Row` | |  | |
+| Card | `Card` | |  | |
+| Title | `Text`, `Stat` | |  | |
+| Microcopy | `Text` | |  | |
+| Label | `Stat` | |  | |
+| Divider | `Divider` | |  | |
+| Description List | `KeyValueList`, `OrderTicket` | |  | |
+| Table | `Table` | |  | |
+| Pagination | `Table` | |  | |
+| Data Table Layout | `Table` | |  | |
+| Tag | `Badge`, `Stat`, `Table` | |  | |
+| Inline Message | `Alert`, `OrderTicket` | |  | |
+| Footnotes and Disclosures | `Alert`, `OrderTicket` | |  | |
+| Message | `EmptyState` | |  | |
+| Button | `Button`, `EmptyState`, `OrderTicket` | | `FttButton` | |
+| Button Loading | `Button`, `OrderTicket` | |  | |
+| Dropdown | `Select`, `OrderTicket` | |  | |
+| Date Select | `DateField` | |  | |
+| Form | `OrderTicket` | |  | |
+| Field Group | `OrderTicket` | |  | |
+| Form Actions | `OrderTicket` | |  | |
+| Autocomplete | `OrderTicket` | |  | |
+| Button group | `OrderTicket` | |  | |
+| Numeric Input | `OrderTicket` | | `FttNumericInput` | |
+| Currency Input | `OrderTicket` | |  | |
+| Progress status | `OrderTicket` | |  | |
+
 ## Components that need a special adapter approach
 
 | A2UI type | Why it is not a plain prop mapping | Adapter approach |
@@ -73,7 +106,7 @@ Full schemas with descriptions, enums and defaults are E1-S4. This is the agreed
 | `Card`, `Column`, `Row` | Render other components (content projection). | Adapter renders `<a2ui-v09-component-host>` for each child id inside the `ui-*` wrapper's `<ng-content>`, as the existing Card adapter does (E1-S2 reference). |
 | `Button` | Child component plus a click callback. | Child via component host. The click dispatches the A2UI `action` through the renderer; the adapter never calls a service (E1-S2 AC). |
 | `Table` | Data tables usually take cell templates and sort/page callbacks. | No templates from specs. The adapter builds the table from the `columns` config and formats each cell by `format` (`status` renders a Badge inside the wrapper). Paging is local to the adapter; row clicks dispatch `rowAction` with the row id as payload. |
-| `Stat`, `EmptyState` | The library has no Stat component and no dedicated empty state. | The `@app/ui` wrapper composes them from library parts (Stat: Label, Title, Status; EmptyState: Message Card or Message with one Button). Specs don't change if the library adds one later. |
+| `Stat`, `EmptyState` | The library has no Stat component and no dedicated empty state. | The `@app/ui` wrapper composes them from library parts (Stat: Label, Title, Tag; EmptyState: Message with one Button). Specs don't change if the library adds one later. |
 | `Select`, `DateField` | Two-way value binding and change callbacks. | Adapter writes the new value back to the bound data-model path; filtering is done by an allow-listed handler reacting to that path (E4-S3). |
 | `Alert` with `disclaimerId` | Text must come from compliance, not the spec (E7-S3). | Adapter looks up the id in the central disclaimer store; unknown ids fail validation. Specs cannot supply disclaimer text. |
 | `OrderTicket` | Must be locked (E4-S4, rule 4): the agent may pre-fill but not change structure or actions. | One composite catalog type. Its internal steps (enter, preview, confirm) are a fixed Angular component built from `@app/ui` inputs, not a spec tree. Preview and place go through the orders service with the verifier pre-action check (rule 7); no spec action can reach them. |
@@ -95,8 +128,8 @@ Full schemas with descriptions, enums and defaults are E1-S4. This is the agreed
 ## Open before sign-off
 
 - [x] Map every type to a library component (from the component inventory, 2026-11-24).
-- [ ] Angular selectors and class names for each mapped component, from the ftmkit typings (known: `FttButton`, `FttNumericInput`).
-- [ ] Design owner confirms: Grid for `Column`/`Row`, Select vs Dropdown for `Select`, Message Card vs Message for `EmptyState`, Status vs Tag for `Badge`.
+- [ ] Fill in the [Library selectors](#library-selectors) table.
+- [x] Design choices (2026-11-24): Grid for `Column`/`Row`, Dropdown for `Select`, Message for `EmptyState`, Tag for `Badge`.
 - [ ] Compliance confirms disclaimers come from a central store referenced by id and are rendered with Footnotes and Disclosures (`Alert.disclaimerId`, E7-S3).
 
 ## Sign-off
