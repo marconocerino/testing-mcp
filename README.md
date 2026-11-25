@@ -34,6 +34,10 @@ All data is mock data until security and compliance sign off (CLAUDE.md rule 6).
 
 Requirements: Node `^22.12.0` (`frontend/.nvmrc`), JDK 21 (Amazon Corretto) for running services outside Docker, Docker for compose.
 
+## Generative UI (MVP)
+
+Run `npx ng serve` in `frontend/` and open http://localhost:4200. Ask the assistant (right panel) for a view; it streams into the workspace. Until the agent service exists (E5), the app uses `MockTransport`, which replays recorded agent responses from `frontend/src/app/transport/recordings/` (try "Show my recent orders", then "New order"). Switch to the real agent by changing `provideAgentTransport(MockTransport)` to `HttpTransport` in `frontend/src/app/app.config.ts`; the protocol is in [docs/agent-protocol.md](docs/agent-protocol.md).
+
 ## Secrets
 
 None in the repo. Services read secrets from environment variables, which come from the company secret manager in deployed environments. [.env.example](.env.example) lists the variable names; `.env` is git-ignored.

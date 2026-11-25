@@ -17,6 +17,8 @@ export interface MockRecording {
   title: string;
   /** Words that select this recording, matched case-insensitively anywhere in the prompt. */
   keywords: string[];
+  /** Action names this recording also answers (for example a "New order" button). */
+  actions?: string[];
   messages: A2uiMessage[];
 }
 

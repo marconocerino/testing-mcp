@@ -74,6 +74,12 @@ describe('E3-S2: AgentTransport and MockTransport', () => {
     expect(transport.sentActions()).toEqual([action]);
     expect(received).toEqual([]);
   });
+
+  it('answers an action with the recording that lists it', () => {
+    transport.sendAction({ name: 'openOrderTicket', surfaceId: 'main', sourceComponentId: 'new', context: {} });
+    vi.runAllTimers();
+    expect(received).toEqual(MOCK_RECORDINGS.find((r) => r.id === 'prepare-order')!.messages);
+  });
 });
 
 describe('E3-S2: swapping the transport', () => {

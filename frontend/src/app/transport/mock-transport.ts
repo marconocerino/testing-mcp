@@ -20,7 +20,8 @@ export const MOCK_TRANSPORT_RECORDINGS = new InjectionToken<readonly MockRecordi
 /**
  * Replays recorded A2UI message files instead of calling an agent (E3-S2), for tests, demos and
  * working without an LLM. A prompt picks the recording whose keywords it matches best, or the
- * `fallback` recording. Actions are recorded in {@link sentActions} and answered with nothing.
+ * `fallback` recording. Actions are recorded in {@link sentActions}; a recording that lists the
+ * action's name in `actions` is replayed for it, other actions get no answer.
  */
 @Injectable()
 export class MockTransport extends AgentTransport implements OnDestroy {
@@ -36,10 +37,19 @@ export class MockTransport extends AgentTransport implements OnDestroy {
   readonly sentActions = signal<AgentAction[]>([]);
 
   override sendPrompt(prompt: string, context: AgentContext = {}): void {
+    this.replay(pickRecording(this.recordings, prompt), context.surfaceId);
+  }
+
+  override sendAction(action: AgentAction): void {
+    this.sentActions.update((list) => [...list, action]);
+    const recording = this.recordings.find((r) => r.actions?.includes(action.name));
+    if (recording) this.replay(recording, action.surfaceId);
+  }
+
+  private replay(recording: MockRecording, surfaceId: string | undefined): void {
     this.cancel();
     this.error.set(null);
-    const recording = pickRecording(this.recordings, prompt);
-    const messages = recording.messages.map((m) => retarget(m, context.surfaceId));
+    const messages = recording.messages.map((m) => retarget(m, surfaceId));
     this.status.set('connecting');
     let at = 0;
     messages.forEach((message, i) => {
@@ -52,10 +62,6 @@ export class MockTransport extends AgentTransport implements OnDestroy {
         }, at),
       );
     });
-  }
-
-  override sendAction(action: AgentAction): void {
-    this.sentActions.update((list) => [...list, action]);
   }
 
   ngOnDestroy(): void {

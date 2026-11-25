@@ -7,6 +7,8 @@ html {
   @include mat.theme((color: mat.$azure-palette, typography: Roboto, density: 0));
 }
 
+body { margin: 0; font: var(--mat-sys-body-medium); }
+
 // Typography (Title, Microcopy, Label in the internal library).
 .ui-type-headline { font: var(--mat-sys-headline-small); margin: 0; }
 .ui-type-title { font: var(--mat-sys-title-medium); margin: 0; }
@@ -103,3 +105,16 @@ ui-divider .mat-divider-vertical { min-height: 1.5em; }
 .ui-spacer { flex: 1; }
 
 .ui-prompt-input { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+
+// Loading skeleton (E3-S4).
+.ui-skeleton { display: flex; flex-direction: column; gap: 16px; }
+.ui-skeleton__line, .ui-skeleton__block {
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--mat-sys-surface-container) 25%, var(--mat-sys-surface-container-high) 50%, var(--mat-sys-surface-container) 75%);
+  background-size: 200% 100%;
+  animation: ui-skeleton-shimmer 1.4s ease-in-out infinite;
+}
+.ui-skeleton__line--title { height: 28px; width: 40%; }
+.ui-skeleton__block { height: 96px; }
+@keyframes ui-skeleton-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .ui-skeleton__line, .ui-skeleton__block { animation: none; } }

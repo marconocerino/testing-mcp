@@ -19,6 +19,7 @@ export { UiNavLinkComponent } from './ui-nav-link.component';
 export { UiKeyValueListComponent, type UiKeyValueItem } from './ui-key-value-list.component';
 export { UiPromptInputComponent } from './ui-prompt-input.component';
 export { UiSelectComponent, type UiSelectOption } from './ui-select.component';
+export { UiSkeletonComponent } from './ui-skeleton.component';
 export { UiStackComponent, type UiStackAlign, type UiStackDirection, type UiStackJustify } from './ui-stack.component';
 export { UiStatComponent } from './ui-stat.component';
 export { UiTableComponent, type UiTableCell, type UiTableColumn, type UiTableRow } from './ui-table.component';
