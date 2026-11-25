@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideA2Ui } from '@a2ui/angular';
 import { CATALOG_V1_TYPES } from '../../catalog/catalog-v1';
 import { a2uiConfig } from '../../catalog/catalog';
-import { CatalogGalleryPage, readableError } from './catalog-gallery.page';
+import { CatalogGalleryPage } from './catalog-gallery.page';
 import { SAMPLE_FILES } from './samples';
 
 describe('E1-S5: catalog gallery page', () => {
@@ -82,17 +82,5 @@ describe('E1-S5: catalog gallery page', () => {
   it('shows the spec of each sample', async () => {
     const { el } = await renderPage();
     expect(el.querySelector('[data-sample="gallery-Card-0"] .gallery-json')?.textContent).toContain('"component": "Card"');
-  });
-});
-
-describe('E1-S5: readableError', () => {
-  it('puts each distinct schema issue on its own line', () => {
-    const err = new Error("Validation failed for component 'Stat' (root): value: Expected object, received number; value: Expected object, received number; label: Required");
-    expect(readableError(err)).toBe("Validation failed for component 'Stat' (root)\nvalue: Expected object, received number\nlabel: Required");
-  });
-
-  it('keeps other messages as they are', () => {
-    expect(readableError(new Error('Component "missing" not found'))).toBe('Component "missing" not found');
-    expect(readableError('boom')).toBe('boom');
   });
 });

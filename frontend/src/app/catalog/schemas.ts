@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import {
   ActionSchema,
+  ButtonApi as BasicButtonApi,
   DataBindingSchema,
   DynamicStringSchema,
   FunctionCallSchema,
@@ -9,9 +10,9 @@ import { DISCLAIMER_IDS } from '../compliance/disclaimers';
 import { TONES, VALUE_FORMATS } from './format';
 
 /**
- * Schemas of the catalog types that are ours (E1-S1). Column, Row, Card, Divider and Button
- * reuse A2UI's basic schemas. E1-S4 turns these into the single schema source for the agent
- * prompt and MCP tools.
+ * Schemas of the catalog types that are ours (E1-S1). Column, Row, Card and Divider reuse
+ * A2UI's basic schemas; Button is A2UI's with small changes. `catalog-definition.ts` lists
+ * them all with their model-facing purpose; that list is the single schema source (E1-S4).
  *
  * Conventions, which the A2UI resolver depends on:
  * - Bindable props use the `Dynamic*` schemas with a `REF:#/$defs/<Def>|<description>`
@@ -167,7 +168,7 @@ export const SelectApi = {
     .object({
       label: dynString('Field label.'),
       options: z
-        .array(z.object({ value: z.string(), label: dynString('Option text.') }).strict())
+        .array(z.object({ value: z.string().describe('Value written to the bound path when this option is picked.'), label: dynString('Option text.') }).strict())
         .min(1)
         .max(50)
         .describe('The choices, 1 to 50.'),
@@ -190,6 +191,17 @@ export const DateFieldApi = {
       weight,
     })
     .strict(),
+};
+
+/**
+ * A2UI's basic Button without `checks`: checks run catalog functions, and this catalog has
+ * none. `action` gets a description, which the basic schema lacks (E1-S4).
+ */
+export const ButtonApi = {
+  name: 'Button',
+  schema: BasicButtonApi.schema.omit({ checks: true }).extend({
+    action: action('What happens when the button is pressed. A button never places, changes or cancels an order.'),
+  }),
 };
 
 /**

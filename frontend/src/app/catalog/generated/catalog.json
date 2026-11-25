@@ -1,0 +1,2960 @@
+{
+  "catalogId": "urn:trading-app:catalog:v1",
+  "schemaVersion": "1.0.0",
+  "protocolVersion": "v0.9",
+  "components": {
+    "Column": {
+      "group": "Layout",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Column",
+        "description": "Use Column to stack components vertically; it is the usual root of a view.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "Column",
+            "description": "The component type."
+          },
+          "children": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "x-kind": "ComponentId",
+                  "description": "The unique identifier for a component, used for both definitions and references within the same surface."
+                },
+                "description": "A static list of child component IDs."
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "componentId": {
+                    "type": "string",
+                    "x-kind": "ComponentId",
+                    "description": "The unique identifier for a component, used for both definitions and references within the same surface."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "The path to the list of component property objects in the data model."
+                  }
+                },
+                "required": [
+                  "componentId",
+                  "path"
+                ],
+                "additionalProperties": false,
+                "description": "A template for generating a dynamic list of children from a data model list. The `componentId` is the component to use as a template."
+              }
+            ],
+            "x-kind": "ChildList",
+            "description": "Defines the children. Use an array of strings for a fixed set of children, or a template object to generate children from a data list. Children cannot be defined inline, they must be referred to by ID."
+          },
+          "justify": {
+            "type": "string",
+            "enum": [
+              "start",
+              "center",
+              "end",
+              "spaceBetween",
+              "spaceAround",
+              "spaceEvenly",
+              "stretch"
+            ],
+            "default": "start",
+            "description": "Defines the arrangement of children along the main axis (vertically). Use 'spaceBetween' to push items to the edges (e.g. header at top, footer at bottom), or 'start'/'end'/'center' to pack them together."
+          },
+          "align": {
+            "type": "string",
+            "enum": [
+              "center",
+              "end",
+              "start",
+              "stretch"
+            ],
+            "default": "stretch",
+            "description": "Defines the alignment of children along the cross axis (horizontally). This is similar to the CSS 'align-items' property."
+          },
+          "weight": {
+            "type": "number",
+            "description": "The relative weight of this component within a Row or Column. This is similar to the CSS 'flex-grow' property. Note: this may ONLY be set when the component is a direct descendant of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component",
+          "children"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Row": {
+      "group": "Layout",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Row",
+        "description": "Use Row to place 2-4 components side by side, such as stat tiles or buttons.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "Row",
+            "description": "The component type."
+          },
+          "children": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "x-kind": "ComponentId",
+                  "description": "The unique identifier for a component, used for both definitions and references within the same surface."
+                },
+                "description": "A static list of child component IDs."
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "componentId": {
+                    "type": "string",
+                    "x-kind": "ComponentId",
+                    "description": "The unique identifier for a component, used for both definitions and references within the same surface."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "The path to the list of component property objects in the data model."
+                  }
+                },
+                "required": [
+                  "componentId",
+                  "path"
+                ],
+                "additionalProperties": false,
+                "description": "A template for generating a dynamic list of children from a data model list. The `componentId` is the component to use as a template."
+              }
+            ],
+            "x-kind": "ChildList",
+            "description": "Defines the children. Use an array of strings for a fixed set of children, or a template object to generate children from a data list. Children cannot be defined inline, they must be referred to by ID."
+          },
+          "justify": {
+            "type": "string",
+            "enum": [
+              "center",
+              "end",
+              "spaceAround",
+              "spaceBetween",
+              "spaceEvenly",
+              "start",
+              "stretch"
+            ],
+            "default": "start",
+            "description": "Defines the arrangement of children along the main axis (horizontally). Use 'spaceBetween' to push items to the edges, or 'start'/'end'/'center' to pack them together."
+          },
+          "align": {
+            "type": "string",
+            "enum": [
+              "start",
+              "center",
+              "end",
+              "stretch"
+            ],
+            "default": "stretch",
+            "description": "Defines the alignment of children along the cross axis (vertically). This is similar to the CSS 'align-items' property, but uses camelCase values (e.g., 'start')."
+          },
+          "weight": {
+            "type": "number",
+            "description": "The relative weight of this component within a Row or Column. This is similar to the CSS 'flex-grow' property. Note: this may ONLY be set when the component is a direct descendant of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component",
+          "children"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Card": {
+      "group": "Layout",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Card",
+        "description": "Use Card to group one section of a view under a single surface; put a Column inside for several children.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "Card",
+            "description": "The component type."
+          },
+          "child": {
+            "type": "string",
+            "x-kind": "Child",
+            "description": "The ID of the single child component to be rendered inside the card. To display multiple elements, you MUST wrap them in a layout component (like Column or Row) and pass that container's ID here. Do NOT pass multiple IDs or a non-existent ID."
+          },
+          "weight": {
+            "type": "number",
+            "description": "The relative weight of this component within a Row or Column. This is similar to the CSS 'flex-grow' property. Note: this may ONLY be set when the component is a direct descendant of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component",
+          "child"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Text": {
+      "group": "Content",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Text",
+        "description": "Use Text for headings, labels and short plain-text sentences; never for numbers that come from data, use Stat or KeyValueList.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "Text",
+            "description": "The component type."
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "The text to show. Plain text only: no markdown or HTML."
+          },
+          "variant": {
+            "type": "string",
+            "enum": [
+              "title",
+              "heading",
+              "body",
+              "caption"
+            ],
+            "default": "body",
+            "description": "'title' for the page or view title, 'heading' for a section heading, 'caption' for small print."
+          },
+          "weight": {
+            "type": "number",
+            "description": "Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component",
+          "text"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Divider": {
+      "group": "Layout",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Divider",
+        "description": "Use Divider to separate groups inside a Card.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "Divider",
+            "description": "The component type."
+          },
+          "axis": {
+            "type": "string",
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "default": "horizontal",
+            "description": "The orientation of the divider."
+          },
+          "weight": {
+            "type": "number",
+            "description": "The relative weight of this component within a Row or Column. This is similar to the CSS 'flex-grow' property. Note: this may ONLY be set when the component is a direct descendant of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Stat": {
+      "group": "Content",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Stat",
+        "description": "Use Stat for one headline figure with a label and optional change, such as total balance or cash.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "Stat",
+            "description": "The component type."
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "What the figure is, such as \"Total balance\"."
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicValue",
+            "description": "The figure, bound to a number in the data model."
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "number",
+              "currency",
+              "percent"
+            ],
+            "default": "number",
+            "description": "How to display value and change."
+          },
+          "currency": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "ISO 4217 currency code for `currency` values. Defaults to USD."
+          },
+          "change": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicValue",
+            "description": "Optional change since the previous period, bound to a number, shown in the same format as value."
+          },
+          "weight": {
+            "type": "number",
+            "description": "Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component",
+          "label",
+          "value"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "KeyValueList": {
+      "group": "Content",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "KeyValueList",
+        "description": "Use KeyValueList for 2-8 labelled values, such as an order summary or spending by category.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "KeyValueList",
+            "description": "The component type."
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "@path": {
+                          "type": "string",
+                          "description": "A JSON Pointer path to a value in the data model."
+                        },
+                        "path": {
+                          "type": "string",
+                          "description": "A JSON Pointer path to a value in the data model."
+                        }
+                      },
+                      "additionalProperties": false,
+                      "x-kind": "DataBinding"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "@call": {
+                              "type": "string",
+                              "description": "The name of the function to call."
+                            },
+                            "call": {
+                              "type": "string",
+                              "description": "The name of the function to call."
+                            },
+                            "catalogId": {
+                              "type": "string",
+                              "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                            }
+                          },
+                          "x-kind": "FunctionCommon",
+                          "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                        },
+                        {}
+                      ],
+                      "x-kind": "FunctionCall",
+                      "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                    }
+                  ],
+                  "x-kind": "DynamicString",
+                  "description": "The label, such as \"Fees\"."
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "@path": {
+                          "type": "string",
+                          "description": "A JSON Pointer path to a value in the data model."
+                        },
+                        "path": {
+                          "type": "string",
+                          "description": "A JSON Pointer path to a value in the data model."
+                        }
+                      },
+                      "additionalProperties": false,
+                      "x-kind": "DataBinding"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "@call": {
+                              "type": "string",
+                              "description": "The name of the function to call."
+                            },
+                            "call": {
+                              "type": "string",
+                              "description": "The name of the function to call."
+                            },
+                            "catalogId": {
+                              "type": "string",
+                              "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                            }
+                          },
+                          "x-kind": "FunctionCommon",
+                          "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                        },
+                        {}
+                      ],
+                      "x-kind": "FunctionCall",
+                      "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                    }
+                  ],
+                  "x-kind": "DynamicValue",
+                  "description": "The value, bound to the data model."
+                },
+                "format": {
+                  "type": "string",
+                  "enum": [
+                    "text",
+                    "number",
+                    "currency",
+                    "percent",
+                    "date"
+                  ],
+                  "description": "How to display the value.",
+                  "default": "text"
+                }
+              },
+              "required": [
+                "label",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "maxItems": 8,
+            "description": "The labelled values, 1 to 8."
+          },
+          "currency": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "ISO 4217 currency code for `currency` values. Defaults to USD."
+          },
+          "weight": {
+            "type": "number",
+            "description": "Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component",
+          "items"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Table": {
+      "group": "Content",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Table",
+        "description": "Use Table for lists of 5+ comparable items with the same fields, such as accounts, transactions or orders.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "Table",
+            "description": "The component type."
+          },
+          "rows": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicValue",
+            "description": "The rows: bind to a list of objects in the data model."
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Field of each row object to show in this column."
+                },
+                "header": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Column header."
+                },
+                "format": {
+                  "type": "string",
+                  "enum": [
+                    "text",
+                    "number",
+                    "currency",
+                    "percent",
+                    "date",
+                    "status"
+                  ],
+                  "default": "text",
+                  "description": "How to display the cells. 'status' shows a coloured badge."
+                },
+                "align": {
+                  "type": "string",
+                  "enum": [
+                    "start",
+                    "end"
+                  ],
+                  "default": "start",
+                  "description": "Use 'end' for numbers."
+                }
+              },
+              "required": [
+                "key",
+                "header"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "maxItems": 8,
+            "description": "The columns, 1 to 8."
+          },
+          "currency": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "ISO 4217 currency code for `currency` values. Defaults to USD."
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 50,
+            "default": 10,
+            "description": "Rows per page."
+          },
+          "rowKey": {
+            "type": "string",
+            "minLength": 1,
+            "default": "id",
+            "description": "Row field that identifies a row."
+          },
+          "selection": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "Where to write the rowKey of the row the user picks. Bind it to a data-model path."
+          },
+          "rowAction": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "The name of the action to be dispatched to the agent."
+                      },
+                      "userMessage": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "@path": {
+                                "type": "string",
+                                "description": "A JSON Pointer path to a value in the data model."
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "A JSON Pointer path to a value in the data model."
+                              }
+                            },
+                            "additionalProperties": false,
+                            "x-kind": "DataBinding"
+                          },
+                          {
+                            "allOf": [
+                              {
+                                "type": "object",
+                                "additionalProperties": {}
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "@call": {
+                                    "type": "string",
+                                    "description": "The name of the function to call."
+                                  },
+                                  "call": {
+                                    "type": "string",
+                                    "description": "The name of the function to call."
+                                  },
+                                  "catalogId": {
+                                    "type": "string",
+                                    "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                                  }
+                                },
+                                "x-kind": "FunctionCommon",
+                                "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                              },
+                              {}
+                            ],
+                            "x-kind": "FunctionCall",
+                            "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                          }
+                        ],
+                        "x-kind": "DynamicString",
+                        "description": "Represents a string"
+                      },
+                      "context": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "array"
+                            },
+                            {
+                              "type": "object",
+                              "additionalProperties": {}
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "@path": {
+                                  "type": "string",
+                                  "description": "A JSON Pointer path to a value in the data model."
+                                },
+                                "path": {
+                                  "type": "string",
+                                  "description": "A JSON Pointer path to a value in the data model."
+                                }
+                              },
+                              "additionalProperties": false,
+                              "x-kind": "DataBinding"
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "type": "object",
+                                  "additionalProperties": {}
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "@call": {
+                                      "type": "string",
+                                      "description": "The name of the function to call."
+                                    },
+                                    "call": {
+                                      "type": "string",
+                                      "description": "The name of the function to call."
+                                    },
+                                    "catalogId": {
+                                      "type": "string",
+                                      "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                                    }
+                                  },
+                                  "x-kind": "FunctionCommon",
+                                  "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                                },
+                                {}
+                              ],
+                              "x-kind": "FunctionCall",
+                              "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                            }
+                          ],
+                          "x-kind": "DynamicValue",
+                          "description": "A value that can be a literal, a path, or a function call returning any type."
+                        },
+                        "description": "A JSON object containing the key-value pairs for the action context. Values can be literals or paths. Use literal values unless the value must be dynamically bound to the data model. Do NOT use paths for static IDs."
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "additionalProperties": false,
+                    "description": "The event to dispatch to the agent."
+                  }
+                },
+                "required": [
+                  "event"
+                ],
+                "additionalProperties": false,
+                "description": "Triggers an agent-side event."
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "functionCall": {
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": {}
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "@call": {
+                            "type": "string",
+                            "description": "The name of the function to call."
+                          },
+                          "call": {
+                            "type": "string",
+                            "description": "The name of the function to call."
+                          },
+                          "catalogId": {
+                            "type": "string",
+                            "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                          }
+                        },
+                        "x-kind": "FunctionCommon",
+                        "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                      },
+                      {}
+                    ],
+                    "x-kind": "FunctionCall",
+                    "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                  }
+                },
+                "required": [
+                  "functionCall"
+                ],
+                "additionalProperties": false,
+                "description": "Executes a renderer or agent-side function."
+              }
+            ],
+            "x-kind": "Action",
+            "description": "Emitted when the user picks a row, after selection is written."
+          },
+          "weight": {
+            "type": "number",
+            "description": "Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component",
+          "rows",
+          "columns"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Badge": {
+      "group": "Content",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Badge",
+        "description": "Use Badge for a short status label, such as an order status or \"Paper trading\".",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "Badge",
+            "description": "The component type."
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "The short label, such as an order status."
+          },
+          "tone": {
+            "type": "string",
+            "enum": [
+              "neutral",
+              "info",
+              "success",
+              "warning",
+              "danger"
+            ],
+            "default": "neutral",
+            "description": "Colour meaning of the badge."
+          },
+          "weight": {
+            "type": "number",
+            "description": "Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component",
+          "text"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Alert": {
+      "group": "Content",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Alert",
+        "description": "Use Alert for a message the user must notice: a warning, an error or a required disclaimer.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "Alert",
+            "description": "The component type."
+          },
+          "tone": {
+            "type": "string",
+            "enum": [
+              "info",
+              "warning",
+              "danger"
+            ],
+            "default": "info",
+            "description": "How serious the message is."
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "Optional short title."
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "The message. Leave out when using disclaimerId."
+          },
+          "disclaimerId": {
+            "type": "string",
+            "enum": [
+              "paper-trading",
+              "ai-generated"
+            ],
+            "description": "Show an approved disclaimer from the central store instead of text. Never write disclaimer text yourself."
+          },
+          "weight": {
+            "type": "number",
+            "description": "Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "EmptyState": {
+      "group": "Content",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "EmptyState",
+        "description": "Use EmptyState when a section has no data yet, with a short explanation and one next step.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "EmptyState",
+            "description": "The component type."
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "What is empty, such as \"No orders yet\"."
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "One sentence on what the user can do."
+          },
+          "actionLabel": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "Label of the one next-step button. Needs action."
+          },
+          "action": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "The name of the action to be dispatched to the agent."
+                      },
+                      "userMessage": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "@path": {
+                                "type": "string",
+                                "description": "A JSON Pointer path to a value in the data model."
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "A JSON Pointer path to a value in the data model."
+                              }
+                            },
+                            "additionalProperties": false,
+                            "x-kind": "DataBinding"
+                          },
+                          {
+                            "allOf": [
+                              {
+                                "type": "object",
+                                "additionalProperties": {}
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "@call": {
+                                    "type": "string",
+                                    "description": "The name of the function to call."
+                                  },
+                                  "call": {
+                                    "type": "string",
+                                    "description": "The name of the function to call."
+                                  },
+                                  "catalogId": {
+                                    "type": "string",
+                                    "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                                  }
+                                },
+                                "x-kind": "FunctionCommon",
+                                "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                              },
+                              {}
+                            ],
+                            "x-kind": "FunctionCall",
+                            "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                          }
+                        ],
+                        "x-kind": "DynamicString",
+                        "description": "Represents a string"
+                      },
+                      "context": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "array"
+                            },
+                            {
+                              "type": "object",
+                              "additionalProperties": {}
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "@path": {
+                                  "type": "string",
+                                  "description": "A JSON Pointer path to a value in the data model."
+                                },
+                                "path": {
+                                  "type": "string",
+                                  "description": "A JSON Pointer path to a value in the data model."
+                                }
+                              },
+                              "additionalProperties": false,
+                              "x-kind": "DataBinding"
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "type": "object",
+                                  "additionalProperties": {}
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "@call": {
+                                      "type": "string",
+                                      "description": "The name of the function to call."
+                                    },
+                                    "call": {
+                                      "type": "string",
+                                      "description": "The name of the function to call."
+                                    },
+                                    "catalogId": {
+                                      "type": "string",
+                                      "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                                    }
+                                  },
+                                  "x-kind": "FunctionCommon",
+                                  "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                                },
+                                {}
+                              ],
+                              "x-kind": "FunctionCall",
+                              "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                            }
+                          ],
+                          "x-kind": "DynamicValue",
+                          "description": "A value that can be a literal, a path, or a function call returning any type."
+                        },
+                        "description": "A JSON object containing the key-value pairs for the action context. Values can be literals or paths. Use literal values unless the value must be dynamically bound to the data model. Do NOT use paths for static IDs."
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "additionalProperties": false,
+                    "description": "The event to dispatch to the agent."
+                  }
+                },
+                "required": [
+                  "event"
+                ],
+                "additionalProperties": false,
+                "description": "Triggers an agent-side event."
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "functionCall": {
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": {}
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "@call": {
+                            "type": "string",
+                            "description": "The name of the function to call."
+                          },
+                          "call": {
+                            "type": "string",
+                            "description": "The name of the function to call."
+                          },
+                          "catalogId": {
+                            "type": "string",
+                            "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                          }
+                        },
+                        "x-kind": "FunctionCommon",
+                        "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                      },
+                      {}
+                    ],
+                    "x-kind": "FunctionCall",
+                    "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                  }
+                },
+                "required": [
+                  "functionCall"
+                ],
+                "additionalProperties": false,
+                "description": "Executes a renderer or agent-side function."
+              }
+            ],
+            "x-kind": "Action",
+            "description": "The next step, emitted when the button is pressed."
+          },
+          "weight": {
+            "type": "number",
+            "description": "Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component",
+          "title"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Button": {
+      "group": "Inputs",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Button",
+        "description": "Use Button for an action the user starts, such as \"View all\" or \"New order\"; it never places a trade.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "Button",
+            "description": "The component type."
+          },
+          "child": {
+            "type": "string",
+            "x-kind": "Child",
+            "description": "The ID of the child component. Use a 'Text' component for a labeled button. Only use an 'Icon' if the requirements explicitly ask for an icon-only button."
+          },
+          "variant": {
+            "type": "string",
+            "enum": [
+              "default",
+              "primary",
+              "borderless"
+            ],
+            "default": "default",
+            "description": "A hint for the button style. If omitted, a default button style is used. 'primary' indicates this is the main call-to-action button. 'borderless' means the button has no visual border or background, making its child content appear like a clickable link."
+          },
+          "action": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "The name of the action to be dispatched to the agent."
+                      },
+                      "userMessage": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "@path": {
+                                "type": "string",
+                                "description": "A JSON Pointer path to a value in the data model."
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "A JSON Pointer path to a value in the data model."
+                              }
+                            },
+                            "additionalProperties": false,
+                            "x-kind": "DataBinding"
+                          },
+                          {
+                            "allOf": [
+                              {
+                                "type": "object",
+                                "additionalProperties": {}
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "@call": {
+                                    "type": "string",
+                                    "description": "The name of the function to call."
+                                  },
+                                  "call": {
+                                    "type": "string",
+                                    "description": "The name of the function to call."
+                                  },
+                                  "catalogId": {
+                                    "type": "string",
+                                    "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                                  }
+                                },
+                                "x-kind": "FunctionCommon",
+                                "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                              },
+                              {}
+                            ],
+                            "x-kind": "FunctionCall",
+                            "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                          }
+                        ],
+                        "x-kind": "DynamicString",
+                        "description": "Represents a string"
+                      },
+                      "context": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "array"
+                            },
+                            {
+                              "type": "object",
+                              "additionalProperties": {}
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "@path": {
+                                  "type": "string",
+                                  "description": "A JSON Pointer path to a value in the data model."
+                                },
+                                "path": {
+                                  "type": "string",
+                                  "description": "A JSON Pointer path to a value in the data model."
+                                }
+                              },
+                              "additionalProperties": false,
+                              "x-kind": "DataBinding"
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "type": "object",
+                                  "additionalProperties": {}
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "@call": {
+                                      "type": "string",
+                                      "description": "The name of the function to call."
+                                    },
+                                    "call": {
+                                      "type": "string",
+                                      "description": "The name of the function to call."
+                                    },
+                                    "catalogId": {
+                                      "type": "string",
+                                      "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                                    }
+                                  },
+                                  "x-kind": "FunctionCommon",
+                                  "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                                },
+                                {}
+                              ],
+                              "x-kind": "FunctionCall",
+                              "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                            }
+                          ],
+                          "x-kind": "DynamicValue",
+                          "description": "A value that can be a literal, a path, or a function call returning any type."
+                        },
+                        "description": "A JSON object containing the key-value pairs for the action context. Values can be literals or paths. Use literal values unless the value must be dynamically bound to the data model. Do NOT use paths for static IDs."
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "additionalProperties": false,
+                    "description": "The event to dispatch to the agent."
+                  }
+                },
+                "required": [
+                  "event"
+                ],
+                "additionalProperties": false,
+                "description": "Triggers an agent-side event."
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "functionCall": {
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": {}
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "@call": {
+                            "type": "string",
+                            "description": "The name of the function to call."
+                          },
+                          "call": {
+                            "type": "string",
+                            "description": "The name of the function to call."
+                          },
+                          "catalogId": {
+                            "type": "string",
+                            "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                          }
+                        },
+                        "x-kind": "FunctionCommon",
+                        "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                      },
+                      {}
+                    ],
+                    "x-kind": "FunctionCall",
+                    "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                  }
+                },
+                "required": [
+                  "functionCall"
+                ],
+                "additionalProperties": false,
+                "description": "Executes a renderer or agent-side function."
+              }
+            ],
+            "x-kind": "Action",
+            "description": "What happens when the button is pressed. A button never places, changes or cancels an order."
+          },
+          "weight": {
+            "type": "number",
+            "description": "The relative weight of this component within a Row or Column. This is similar to the CSS 'flex-grow' property. Note: this may ONLY be set when the component is a direct descendant of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component",
+          "child",
+          "action"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Select": {
+      "group": "Inputs",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Select",
+        "description": "Use Select to pick one value from a short fixed list, such as an account or transaction type.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "Select",
+            "description": "The component type."
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "Field label."
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "description": "Value written to the bound path when this option is picked."
+                },
+                "label": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "@path": {
+                          "type": "string",
+                          "description": "A JSON Pointer path to a value in the data model."
+                        },
+                        "path": {
+                          "type": "string",
+                          "description": "A JSON Pointer path to a value in the data model."
+                        }
+                      },
+                      "additionalProperties": false,
+                      "x-kind": "DataBinding"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "additionalProperties": {}
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "@call": {
+                              "type": "string",
+                              "description": "The name of the function to call."
+                            },
+                            "call": {
+                              "type": "string",
+                              "description": "The name of the function to call."
+                            },
+                            "catalogId": {
+                              "type": "string",
+                              "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                            }
+                          },
+                          "x-kind": "FunctionCommon",
+                          "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                        },
+                        {}
+                      ],
+                      "x-kind": "FunctionCall",
+                      "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                    }
+                  ],
+                  "x-kind": "DynamicString",
+                  "description": "Option text."
+                }
+              },
+              "required": [
+                "value",
+                "label"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "maxItems": 50,
+            "description": "The choices, 1 to 50."
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "The selected value. Bind it to a data-model path so the choice is written there."
+          },
+          "action": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "The name of the action to be dispatched to the agent."
+                      },
+                      "userMessage": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "@path": {
+                                "type": "string",
+                                "description": "A JSON Pointer path to a value in the data model."
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "A JSON Pointer path to a value in the data model."
+                              }
+                            },
+                            "additionalProperties": false,
+                            "x-kind": "DataBinding"
+                          },
+                          {
+                            "allOf": [
+                              {
+                                "type": "object",
+                                "additionalProperties": {}
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "@call": {
+                                    "type": "string",
+                                    "description": "The name of the function to call."
+                                  },
+                                  "call": {
+                                    "type": "string",
+                                    "description": "The name of the function to call."
+                                  },
+                                  "catalogId": {
+                                    "type": "string",
+                                    "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                                  }
+                                },
+                                "x-kind": "FunctionCommon",
+                                "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                              },
+                              {}
+                            ],
+                            "x-kind": "FunctionCall",
+                            "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                          }
+                        ],
+                        "x-kind": "DynamicString",
+                        "description": "Represents a string"
+                      },
+                      "context": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "array"
+                            },
+                            {
+                              "type": "object",
+                              "additionalProperties": {}
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "@path": {
+                                  "type": "string",
+                                  "description": "A JSON Pointer path to a value in the data model."
+                                },
+                                "path": {
+                                  "type": "string",
+                                  "description": "A JSON Pointer path to a value in the data model."
+                                }
+                              },
+                              "additionalProperties": false,
+                              "x-kind": "DataBinding"
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "type": "object",
+                                  "additionalProperties": {}
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "@call": {
+                                      "type": "string",
+                                      "description": "The name of the function to call."
+                                    },
+                                    "call": {
+                                      "type": "string",
+                                      "description": "The name of the function to call."
+                                    },
+                                    "catalogId": {
+                                      "type": "string",
+                                      "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                                    }
+                                  },
+                                  "x-kind": "FunctionCommon",
+                                  "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                                },
+                                {}
+                              ],
+                              "x-kind": "FunctionCall",
+                              "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                            }
+                          ],
+                          "x-kind": "DynamicValue",
+                          "description": "A value that can be a literal, a path, or a function call returning any type."
+                        },
+                        "description": "A JSON object containing the key-value pairs for the action context. Values can be literals or paths. Use literal values unless the value must be dynamically bound to the data model. Do NOT use paths for static IDs."
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "additionalProperties": false,
+                    "description": "The event to dispatch to the agent."
+                  }
+                },
+                "required": [
+                  "event"
+                ],
+                "additionalProperties": false,
+                "description": "Triggers an agent-side event."
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "functionCall": {
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": {}
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "@call": {
+                            "type": "string",
+                            "description": "The name of the function to call."
+                          },
+                          "call": {
+                            "type": "string",
+                            "description": "The name of the function to call."
+                          },
+                          "catalogId": {
+                            "type": "string",
+                            "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                          }
+                        },
+                        "x-kind": "FunctionCommon",
+                        "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                      },
+                      {}
+                    ],
+                    "x-kind": "FunctionCall",
+                    "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                  }
+                },
+                "required": [
+                  "functionCall"
+                ],
+                "additionalProperties": false,
+                "description": "Executes a renderer or agent-side function."
+              }
+            ],
+            "x-kind": "Action",
+            "description": "Optional, emitted after the value changes (for example to filter a list)."
+          },
+          "weight": {
+            "type": "number",
+            "description": "Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component",
+          "label",
+          "options",
+          "value"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "DateField": {
+      "group": "Inputs",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "DateField",
+        "description": "Use DateField to pick a date, for example the start or end of a transaction filter.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "DateField",
+            "description": "The component type."
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "Field label."
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "@path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "A JSON Pointer path to a value in the data model."
+                  }
+                },
+                "additionalProperties": false,
+                "x-kind": "DataBinding"
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": {}
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "call": {
+                        "type": "string",
+                        "description": "The name of the function to call."
+                      },
+                      "catalogId": {
+                        "type": "string",
+                        "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                      }
+                    },
+                    "x-kind": "FunctionCommon",
+                    "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                  },
+                  {}
+                ],
+                "x-kind": "FunctionCall",
+                "description": "Invokes a named function, combining common function properties with the catalog function definition."
+              }
+            ],
+            "x-kind": "DynamicString",
+            "description": "The date as YYYY-MM-DD. Bind it to a data-model path so the choice is written there."
+          },
+          "min": {
+            "type": "string",
+            "format": "date",
+            "description": "Earliest allowed date, YYYY-MM-DD.",
+            "pattern": "^((\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(0[469]|11)-(0[1-9]|[12]\\d|30)|(02)-(0[1-9]|1\\d|2[0-8])))$"
+          },
+          "max": {
+            "type": "string",
+            "format": "date",
+            "description": "Latest allowed date, YYYY-MM-DD.",
+            "pattern": "^((\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(0[469]|11)-(0[1-9]|[12]\\d|30)|(02)-(0[1-9]|1\\d|2[0-8])))$"
+          },
+          "action": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "The name of the action to be dispatched to the agent."
+                      },
+                      "userMessage": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "@path": {
+                                "type": "string",
+                                "description": "A JSON Pointer path to a value in the data model."
+                              },
+                              "path": {
+                                "type": "string",
+                                "description": "A JSON Pointer path to a value in the data model."
+                              }
+                            },
+                            "additionalProperties": false,
+                            "x-kind": "DataBinding"
+                          },
+                          {
+                            "allOf": [
+                              {
+                                "type": "object",
+                                "additionalProperties": {}
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "@call": {
+                                    "type": "string",
+                                    "description": "The name of the function to call."
+                                  },
+                                  "call": {
+                                    "type": "string",
+                                    "description": "The name of the function to call."
+                                  },
+                                  "catalogId": {
+                                    "type": "string",
+                                    "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                                  }
+                                },
+                                "x-kind": "FunctionCommon",
+                                "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                              },
+                              {}
+                            ],
+                            "x-kind": "FunctionCall",
+                            "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                          }
+                        ],
+                        "x-kind": "DynamicString",
+                        "description": "Represents a string"
+                      },
+                      "context": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "array"
+                            },
+                            {
+                              "type": "object",
+                              "additionalProperties": {}
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "@path": {
+                                  "type": "string",
+                                  "description": "A JSON Pointer path to a value in the data model."
+                                },
+                                "path": {
+                                  "type": "string",
+                                  "description": "A JSON Pointer path to a value in the data model."
+                                }
+                              },
+                              "additionalProperties": false,
+                              "x-kind": "DataBinding"
+                            },
+                            {
+                              "allOf": [
+                                {
+                                  "type": "object",
+                                  "additionalProperties": {}
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "@call": {
+                                      "type": "string",
+                                      "description": "The name of the function to call."
+                                    },
+                                    "call": {
+                                      "type": "string",
+                                      "description": "The name of the function to call."
+                                    },
+                                    "catalogId": {
+                                      "type": "string",
+                                      "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                                    }
+                                  },
+                                  "x-kind": "FunctionCommon",
+                                  "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                                },
+                                {}
+                              ],
+                              "x-kind": "FunctionCall",
+                              "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                            }
+                          ],
+                          "x-kind": "DynamicValue",
+                          "description": "A value that can be a literal, a path, or a function call returning any type."
+                        },
+                        "description": "A JSON object containing the key-value pairs for the action context. Values can be literals or paths. Use literal values unless the value must be dynamically bound to the data model. Do NOT use paths for static IDs."
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ],
+                    "additionalProperties": false,
+                    "description": "The event to dispatch to the agent."
+                  }
+                },
+                "required": [
+                  "event"
+                ],
+                "additionalProperties": false,
+                "description": "Triggers an agent-side event."
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "functionCall": {
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": {}
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "@call": {
+                            "type": "string",
+                            "description": "The name of the function to call."
+                          },
+                          "call": {
+                            "type": "string",
+                            "description": "The name of the function to call."
+                          },
+                          "catalogId": {
+                            "type": "string",
+                            "description": "The catalog ID for this function, overriding any surface-level default catalogId."
+                          }
+                        },
+                        "x-kind": "FunctionCommon",
+                        "description": "Baseline envelope properties common to all function calls. Function-specific argument schemas ('args') are defined individually by each function in the active catalog."
+                      },
+                      {}
+                    ],
+                    "x-kind": "FunctionCall",
+                    "description": "Invokes a named function, combining common function properties with the catalog function definition."
+                  }
+                },
+                "required": [
+                  "functionCall"
+                ],
+                "additionalProperties": false,
+                "description": "Executes a renderer or agent-side function."
+              }
+            ],
+            "x-kind": "Action",
+            "description": "Optional, emitted after the date changes."
+          },
+          "weight": {
+            "type": "number",
+            "description": "Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component",
+          "label",
+          "value"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "OrderTicket": {
+      "group": "Trading",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "OrderTicket",
+        "description": "Use OrderTicket to start an order; you may pre-fill instrument, side, quantity and type, nothing else.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique id of the component in the surface. The top component has the id \"root\"."
+          },
+          "component": {
+            "const": "OrderTicket",
+            "description": "The component type."
+          },
+          "instrument": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9.]{0,9}$",
+            "description": "Instrument symbol to pre-fill, such as \"ALPN\"."
+          },
+          "side": {
+            "type": "string",
+            "enum": [
+              "buy",
+              "sell"
+            ],
+            "description": "Side to pre-fill."
+          },
+          "quantity": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 1000000,
+            "description": "Quantity to pre-fill."
+          },
+          "orderType": {
+            "type": "string",
+            "enum": [
+              "market",
+              "limit"
+            ],
+            "description": "Order type to pre-fill."
+          },
+          "weight": {
+            "type": "number",
+            "description": "Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column."
+          }
+        },
+        "required": [
+          "id",
+          "component"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "modelDescription": "# UI component catalog urn:trading-app:catalog:v1 (schema 1.0.0, A2UI v0.9)\n\n## Rules\n\n- Start every surface with createSurface and catalogId \"urn:trading-app:catalog:v1\". Specs for another catalog id are rejected.\n- Use only the components listed below, with only the props listed. Anything else is rejected.\n- Components are a flat list. Exactly one has the id \"root\"; every other component is referenced as a child exactly once, by id.\n- Never write balances, prices, quantities held or transactions into a spec. Bind them to the data model with {\"path\": \"/...\"}. Props marked \"binding only\" reject literal values.\n- Text is plain text: no HTML, markdown, links or images.\n- You design views; you never place, change or cancel orders. OrderTicket only takes pre-fill values.\n- Every component also takes `id` (string, required) and `component` (its type name, required).\n\n## Layout\n\n### Column\n\nUse Column to stack components vertically; it is the usual root of a view.\n\n- `children` (list of component ids, required): Defines the children. Use an array of strings for a fixed set of children, or a template object to generate children from a data list. Children cannot be defined inline, they must be referred to by ID.\n- `justify` (one of \"start\" | \"center\" | \"end\" | \"spaceBetween\" | \"spaceAround\" | \"spaceEvenly\" | \"stretch\", optional, default \"start\"): Defines the arrangement of children along the main axis (vertically). Use 'spaceBetween' to push items to the edges (e.g. header at top, footer at bottom), or 'start'/'end'/'center' to pack them together.\n- `align` (one of \"center\" | \"end\" | \"start\" | \"stretch\", optional, default \"stretch\"): Defines the alignment of children along the cross axis (horizontally). This is similar to the CSS 'align-items' property.\n- `weight` (number, optional): The relative weight of this component within a Row or Column. This is similar to the CSS 'flex-grow' property. Note: this may ONLY be set when the component is a direct descendant of a Row or Column.\n\n### Row\n\nUse Row to place 2-4 components side by side, such as stat tiles or buttons.\n\n- `children` (list of component ids, required): Defines the children. Use an array of strings for a fixed set of children, or a template object to generate children from a data list. Children cannot be defined inline, they must be referred to by ID.\n- `justify` (one of \"center\" | \"end\" | \"spaceAround\" | \"spaceBetween\" | \"spaceEvenly\" | \"start\" | \"stretch\", optional, default \"start\"): Defines the arrangement of children along the main axis (horizontally). Use 'spaceBetween' to push items to the edges, or 'start'/'end'/'center' to pack them together.\n- `align` (one of \"start\" | \"center\" | \"end\" | \"stretch\", optional, default \"stretch\"): Defines the alignment of children along the cross axis (vertically). This is similar to the CSS 'align-items' property, but uses camelCase values (e.g., 'start').\n- `weight` (number, optional): The relative weight of this component within a Row or Column. This is similar to the CSS 'flex-grow' property. Note: this may ONLY be set when the component is a direct descendant of a Row or Column.\n\n### Card\n\nUse Card to group one section of a view under a single surface; put a Column inside for several children.\n\n- `child` (component id, required): The ID of the single child component to be rendered inside the card. To display multiple elements, you MUST wrap them in a layout component (like Column or Row) and pass that container's ID here. Do NOT pass multiple IDs or a non-existent ID.\n- `weight` (number, optional): The relative weight of this component within a Row or Column. This is similar to the CSS 'flex-grow' property. Note: this may ONLY be set when the component is a direct descendant of a Row or Column.\n\n### Divider\n\nUse Divider to separate groups inside a Card.\n\n- `axis` (one of \"horizontal\" | \"vertical\", optional, default \"horizontal\"): The orientation of the divider.\n- `weight` (number, optional): The relative weight of this component within a Row or Column. This is similar to the CSS 'flex-grow' property. Note: this may ONLY be set when the component is a direct descendant of a Row or Column.\n\n## Content\n\n### Text\n\nUse Text for headings, labels and short plain-text sentences; never for numbers that come from data, use Stat or KeyValueList.\n\n- `text` (text, or a binding {\"path\": \"/...\"}, required): The text to show. Plain text only: no markdown or HTML.\n- `variant` (one of \"title\" | \"heading\" | \"body\" | \"caption\", optional, default \"body\"): 'title' for the page or view title, 'heading' for a section heading, 'caption' for small print.\n- `weight` (number, optional): Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column.\n\n### Stat\n\nUse Stat for one headline figure with a label and optional change, such as total balance or cash.\n\n- `label` (text, or a binding {\"path\": \"/...\"}, required): What the figure is, such as \"Total balance\".\n- `value` (binding only: {\"path\": \"/...\"}, required): The figure, bound to a number in the data model.\n- `format` (one of \"number\" | \"currency\" | \"percent\", optional, default \"number\"): How to display value and change.\n- `currency` (text, or a binding {\"path\": \"/...\"}, optional): ISO 4217 currency code for `currency` values. Defaults to USD.\n- `change` (binding only: {\"path\": \"/...\"}, optional): Optional change since the previous period, bound to a number, shown in the same format as value.\n- `weight` (number, optional): Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column.\n\n### KeyValueList\n\nUse KeyValueList for 2-8 labelled values, such as an order summary or spending by category.\n\n- `items` (list of objects, 1 to 8 items, required): The labelled values, 1 to 8.\n  - `label` (text, or a binding {\"path\": \"/...\"}, required): The label, such as \"Fees\".\n  - `value` (binding only: {\"path\": \"/...\"}, required): The value, bound to the data model.\n  - `format` (one of \"text\" | \"number\" | \"currency\" | \"percent\" | \"date\", optional, default \"text\"): How to display the value.\n- `currency` (text, or a binding {\"path\": \"/...\"}, optional): ISO 4217 currency code for `currency` values. Defaults to USD.\n- `weight` (number, optional): Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column.\n\n### Table\n\nUse Table for lists of 5+ comparable items with the same fields, such as accounts, transactions or orders.\n\n- `rows` (binding only: {\"path\": \"/...\"}, required): The rows: bind to a list of objects in the data model.\n- `columns` (list of objects, 1 to 8 items, required): The columns, 1 to 8.\n  - `key` (string, required): Field of each row object to show in this column.\n  - `header` (string, required): Column header.\n  - `format` (one of \"text\" | \"number\" | \"currency\" | \"percent\" | \"date\" | \"status\", optional, default \"text\"): How to display the cells. 'status' shows a coloured badge.\n  - `align` (one of \"start\" | \"end\", optional, default \"start\"): Use 'end' for numbers.\n- `currency` (text, or a binding {\"path\": \"/...\"}, optional): ISO 4217 currency code for `currency` values. Defaults to USD.\n- `pageSize` (integer 5 to 50, optional, default 10): Rows per page.\n- `rowKey` (string, optional, default \"id\"): Row field that identifies a row.\n- `selection` (text, or a binding {\"path\": \"/...\"}, optional): Where to write the rowKey of the row the user picks. Bind it to a data-model path.\n- `rowAction` (action {\"event\": {\"name\": \"...\", \"context\": {...}}}, optional): Emitted when the user picks a row, after selection is written.\n- `weight` (number, optional): Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column.\n\n### Badge\n\nUse Badge for a short status label, such as an order status or \"Paper trading\".\n\n- `text` (text, or a binding {\"path\": \"/...\"}, required): The short label, such as an order status.\n- `tone` (one of \"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\", optional, default \"neutral\"): Colour meaning of the badge.\n- `weight` (number, optional): Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column.\n\n### Alert\n\nUse Alert for a message the user must notice: a warning, an error or a required disclaimer.\n\n- `tone` (one of \"info\" | \"warning\" | \"danger\", optional, default \"info\"): How serious the message is.\n- `title` (text, or a binding {\"path\": \"/...\"}, optional): Optional short title.\n- `text` (text, or a binding {\"path\": \"/...\"}, optional): The message. Leave out when using disclaimerId.\n- `disclaimerId` (one of \"paper-trading\" | \"ai-generated\", optional): Show an approved disclaimer from the central store instead of text. Never write disclaimer text yourself.\n- `weight` (number, optional): Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column.\n\n### EmptyState\n\nUse EmptyState when a section has no data yet, with a short explanation and one next step.\n\n- `title` (text, or a binding {\"path\": \"/...\"}, required): What is empty, such as \"No orders yet\".\n- `text` (text, or a binding {\"path\": \"/...\"}, optional): One sentence on what the user can do.\n- `actionLabel` (text, or a binding {\"path\": \"/...\"}, optional): Label of the one next-step button. Needs action.\n- `action` (action {\"event\": {\"name\": \"...\", \"context\": {...}}}, optional): The next step, emitted when the button is pressed.\n- `weight` (number, optional): Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column.\n\n## Inputs\n\n### Button\n\nUse Button for an action the user starts, such as \"View all\" or \"New order\"; it never places a trade.\n\n- `child` (component id, required): The ID of the child component. Use a 'Text' component for a labeled button. Only use an 'Icon' if the requirements explicitly ask for an icon-only button.\n- `variant` (one of \"default\" | \"primary\" | \"borderless\", optional, default \"default\"): A hint for the button style. If omitted, a default button style is used. 'primary' indicates this is the main call-to-action button. 'borderless' means the button has no visual border or background, making its child content appear like a clickable link.\n- `action` (action {\"event\": {\"name\": \"...\", \"context\": {...}}}, required): What happens when the button is pressed. A button never places, changes or cancels an order.\n- `weight` (number, optional): The relative weight of this component within a Row or Column. This is similar to the CSS 'flex-grow' property. Note: this may ONLY be set when the component is a direct descendant of a Row or Column.\n\n### Select\n\nUse Select to pick one value from a short fixed list, such as an account or transaction type.\n\n- `label` (text, or a binding {\"path\": \"/...\"}, required): Field label.\n- `options` (list of objects, 1 to 50 items, required): The choices, 1 to 50.\n  - `value` (string, required): Value written to the bound path when this option is picked.\n  - `label` (text, or a binding {\"path\": \"/...\"}, required): Option text.\n- `value` (text, or a binding {\"path\": \"/...\"}, required): The selected value. Bind it to a data-model path so the choice is written there.\n- `action` (action {\"event\": {\"name\": \"...\", \"context\": {...}}}, optional): Optional, emitted after the value changes (for example to filter a list).\n- `weight` (number, optional): Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column.\n\n### DateField\n\nUse DateField to pick a date, for example the start or end of a transaction filter.\n\n- `label` (text, or a binding {\"path\": \"/...\"}, required): Field label.\n- `value` (text, or a binding {\"path\": \"/...\"}, required): The date as YYYY-MM-DD. Bind it to a data-model path so the choice is written there.\n- `min` (date string YYYY-MM-DD, optional): Earliest allowed date, YYYY-MM-DD.\n- `max` (date string YYYY-MM-DD, optional): Latest allowed date, YYYY-MM-DD.\n- `action` (action {\"event\": {\"name\": \"...\", \"context\": {...}}}, optional): Optional, emitted after the date changes.\n- `weight` (number, optional): Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column.\n\n## Trading\n\n### OrderTicket\n\nUse OrderTicket to start an order; you may pre-fill instrument, side, quantity and type, nothing else.\n\n- `instrument` (string matching ^[A-Z][A-Z0-9.]{0,9}$, optional): Instrument symbol to pre-fill, such as \"ALPN\".\n- `side` (one of \"buy\" | \"sell\", optional): Side to pre-fill.\n- `quantity` (integer >0 to 1000000, optional): Quantity to pre-fill.\n- `orderType` (one of \"market\" | \"limit\", optional): Order type to pre-fill.\n- `weight` (number, optional): Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column.\n"
+}

@@ -26,6 +26,7 @@ All data is mock data until security and compliance sign off (CLAUDE.md rule 6).
 | Build | `npx ng build` | `./mvnw package` |
 | All checks | | `./mvnw verify` (tests + lint + build) |
 | Run | `npx ng serve` | `./mvnw spring-boot:run` |
+| Catalog export | `npm run catalog:export` (after changing the catalog) | |
 
 **Everything at once (local dev environment):** `docker compose up --build`. Frontend on http://localhost:4200, services on ports 8081 and 8082 (`/actuator/health`).
 

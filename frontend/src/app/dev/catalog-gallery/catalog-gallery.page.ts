@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { A2UI_RENDERER_CONFIG, A2uiRendererService, SurfaceComponent } from '@a2ui/angular';
 import { UiAlertComponent, UiBadgeComponent, UiCardComponent, UiStackComponent, UiTextComponent, UiTone } from '@app/ui';
 import { a2uiConfig } from '../../catalog/catalog';
+import { provideCatalogRenderer } from '../../catalog/catalog-renderer.service';
+import { formatSpecError } from '../../catalog/spec-errors';
 import { CatalogSample, SAMPLE_FILES, SampleKind, sampleMessages, sampleSurfaceId } from './samples';
 
 export interface GalleryAction {
@@ -53,7 +55,7 @@ const KIND_TONE: Record<SampleKind, UiTone> = { default: 'neutral', edge: 'info'
         return { ...a2uiConfig(), actionHandler: (a: Parameters<GalleryActionLog['record']>[0]) => log.record(a) };
       },
     },
-    A2uiRendererService,
+    provideCatalogRenderer(),
   ],
   styleUrl: './catalog-gallery.page.scss',
   template: `
@@ -126,7 +128,7 @@ export class CatalogGalleryPage {
           renderer.processMessages(sampleMessages(surfaceId, sample));
           return { surfaceId, sample, json };
         } catch (e) {
-          return { surfaceId, sample, json, error: readableError(e) };
+          return { surfaceId, sample, json, error: formatSpecError(e) };
         }
       }),
     }));
@@ -135,17 +137,4 @@ export class CatalogGalleryPage {
   protected stringify(value: unknown) {
     return JSON.stringify(value);
   }
-}
-
-/**
- * Makes a renderer error easier to read: a schema failure ("Validation failed for component 'X'
- * (id): issue; issue") becomes the header plus one line per distinct issue. Zod repeats an issue
- * once per union branch, so duplicates are dropped. Other errors are shown as they are.
- */
-export function readableError(e: unknown): string {
-  const message = e instanceof Error ? e.message : String(e);
-  const match = /^(Validation failed[^:]*):\s*([\s\S]*)$/.exec(message);
-  if (!match) return message;
-  const issues = [...new Set(match[2].split('; ').map((i) => i.trim()).filter(Boolean))];
-  return [match[1], ...issues].join('\n');
 }
