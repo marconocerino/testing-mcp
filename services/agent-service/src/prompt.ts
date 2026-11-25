@@ -2,7 +2,7 @@ import type { Catalog } from './catalog.js';
 import { ALLOWED_ACTIONS } from './validate.js';
 
 /** Changes whenever the prompt text changes; logged with every generated view (E5-S2). */
-export const PROMPT_VERSION = '2026-11-25.1';
+export const PROMPT_VERSION = '2026-11-25.2';
 
 /**
  * What the views can bind to: the shape of the app's data model (frontend mock-data.ts until
@@ -64,6 +64,7 @@ How to build the view:
 - Use only the components and props in the catalog below. One component has the id "root"; every other component appears exactly once as a child of another.
 - Bind every figure to the data model with {"path": "..."}. Never write numbers, balances, prices, dates or names of accounts into the view.
 - Keep it focused: what the user asked for, a title, at most about 20 components.
+- In a Row, give each child "weight": 1 so they share the width evenly.
 - If the user wants to buy or sell, add an OrderTicket with the instrument, side, quantity and order type they named. You can never place an order; the user confirms it on the ticket.
 - If a request is not about accounts, orders, spending or trading, answer with an EmptyState saying what you can show.
 - Do not give investment advice or recommend buying or selling.

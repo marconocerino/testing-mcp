@@ -8,7 +8,7 @@ import { provideCatalogRenderer } from './catalog/catalog-renderer.service';
 import { provideActionHandlers } from './surface/action-router';
 import { SurfaceSessionService } from './surface/surface-session.service';
 import { provideAgentTransport } from './transport/agent-transport';
-import { MockTransport } from './transport/mock-transport';
+import { CopilotKitTransport } from './transport/copilotkit-transport';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,14 +16,14 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideA2Ui(a2uiConfig()),
     provideCatalogRenderer(),
-    // The agent connection. MockTransport replays recorded views; swap for HttpTransport (E3-S3).
-    provideAgentTransport(MockTransport),
+    // The agent connection, through the CopilotKit runtime (E5-S4). For demos and work without
+    // the backend, use MockTransport (recorded views) instead.
+    provideAgentTransport(CopilotKitTransport),
     // Start rendering agent messages as soon as the app boots, before the first prompt.
     provideEnvironmentInitializer(() => inject(SurfaceSessionService)),
     // Allow-list of actions generated views may trigger (E3-S4). 'agent' forwards to the agent.
     provideActionHandlers({ showAccount: 'agent', openOrderTicket: 'agent', filterTransactions: 'agent' }),
-    // Only proves CopilotKit bootstraps alongside A2UI on the same Angular version.
-    // No runtimeUrl: the self-hosted runtime arrives in a later story.
-    provideCopilotKit({}),
+    // The self-hosted CopilotKit runtime (services/copilot-runtime), proxied same-origin.
+    provideCopilotKit({ runtimeUrl: '/api/copilotkit' }),
   ],
 };

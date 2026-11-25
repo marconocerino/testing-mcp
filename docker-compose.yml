@@ -5,7 +5,7 @@ services:
   frontend:
     build: ./frontend
     ports: ["4200:80"]
-    depends_on: [accounts-service, orders-service]
+    depends_on: [accounts-service, orders-service, copilot-runtime]
 
   accounts-service:
     build: ./services/accounts-service
@@ -23,3 +23,8 @@ services:
     env_file:
       - path: services/agent-service/.env
         required: false
+
+  # Browser-facing agent endpoint, reached only through the frontend's nginx (/api/copilotkit).
+  copilot-runtime:
+    build: ./services/copilot-runtime
+    depends_on: [agent-service]
