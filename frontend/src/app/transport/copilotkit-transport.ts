@@ -1,8 +1,7 @@
 import { DestroyRef, effect, inject, Injectable, signal, untracked } from '@angular/core';
 import { CopilotKit } from '@copilotkit/angular';
 import { Subject } from 'rxjs';
-import { A2uiMessage, AgentAction, AgentContext, AgentTransport, ConnectionStatus, TransportError } from './agent-transport';
-import { TRANSPORT_MESSAGES } from './http-transport';
+import { A2uiMessage, AgentAction, AgentContext, AgentTransport, ConnectionStatus, TRANSPORT_MESSAGES, TransportError } from './agent-transport';
 
 /** The agent the CopilotKit runtime hosts (services/copilot-runtime). */
 export const TRADING_AGENT_ID = 'trading';

@@ -1,9 +1,8 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { CopilotKit } from '@copilotkit/angular';
-import { A2uiMessage, AgentTransport, provideAgentTransport } from './agent-transport';
+import { A2uiMessage, AgentTransport, provideAgentTransport, TRANSPORT_MESSAGES } from './agent-transport';
 import { A2UI_EVENT, CopilotKitTransport, TRADING_AGENT_ID } from './copilotkit-transport';
-import { TRANSPORT_MESSAGES } from './http-transport';
 
 /** An AG-UI agent stand-in: records messages and lets the test fire subscriber hooks. */
 class FakeAgent {

@@ -60,6 +60,12 @@ export interface A2uiMessage {
   [key: string]: unknown;
 }
 
+/** Messages users see about the agent connection. Never raw errors or stack traces. */
+export const TRANSPORT_MESSAGES = {
+  unavailable: "The assistant isn't available right now.",
+  agentFailed: 'The assistant ran into a problem with that request.',
+} as const;
+
 /** The surface id a message targets, if any. */
 export function surfaceIdOf(message: A2uiMessage): string | undefined {
   return (message.createSurface ?? message.updateComponents ?? message.updateDataModel ?? message.deleteSurface)?.surfaceId;
