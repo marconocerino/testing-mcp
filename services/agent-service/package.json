@@ -1,0 +1,31 @@
+{
+  "name": "agent-service",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Generates A2UI views from user requests (E5-S1). Internal: reached through the CopilotKit runtime or the MCP server.",
+  "type": "module",
+  "engines": {
+    "node": "^22.12.0"
+  },
+  "scripts": {
+    "dev": "tsx watch --env-file-if-exists=.env src/main.ts",
+    "start": "node dist/main.js",
+    "build": "tsc -p tsconfig.json",
+    "test": "tsx --test src/**/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@ag-ui/core": "0.0.57",
+    "@ag-ui/encoder": "0.0.57",
+    "ajv": "8.18.0",
+    "ajv-formats": "3.0.1",
+    "express": "5.3.0",
+    "openai": "5.23.2"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.6",
+    "@types/node": "22.20.7",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  }
+}

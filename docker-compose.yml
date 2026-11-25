@@ -14,3 +14,12 @@ services:
   orders-service:
     build: ./services/orders-service
     ports: ["8082:8082"]
+
+  # Internal: no published port. Reached only through the CopilotKit runtime (E5-S4).
+  agent-service:
+    build:
+      context: .
+      dockerfile: services/agent-service/Dockerfile
+    env_file:
+      - path: services/agent-service/.env
+        required: false
