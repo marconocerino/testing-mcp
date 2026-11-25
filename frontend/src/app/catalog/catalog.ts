@@ -1,60 +1,54 @@
+import { Type } from '@angular/core';
 import { AngularCatalog } from '@a2ui/angular';
-import { ButtonApi, CardApi, ColumnApi, DividerApi, RowApi } from '@a2ui/web_core/v1_0';
 import { AlertAdapterComponent } from './alert.adapter';
 import { BadgeAdapterComponent } from './badge.adapter';
 import { ButtonAdapterComponent } from './button.adapter';
 import { CardAdapterComponent } from './card.adapter';
+import { CATALOG_ENTRIES, CATALOG_ID, CATALOG_PROTOCOL_VERSION } from './catalog-definition';
+import { CatalogV1Type } from './catalog-v1';
 import { DateFieldAdapterComponent } from './date-field.adapter';
 import { DividerAdapterComponent } from './divider.adapter';
 import { EmptyStateAdapterComponent } from './empty-state.adapter';
 import { KeyValueListAdapterComponent } from './key-value-list.adapter';
 import { OrderTicketAdapterComponent } from './order-ticket.adapter';
-import {
-  AlertApi,
-  BadgeApi,
-  DateFieldApi,
-  EmptyStateApi,
-  KeyValueListApi,
-  OrderTicketApi,
-  SelectApi,
-  StatApi,
-  TableApi,
-  TextApi,
-} from './schemas';
 import { SelectAdapterComponent } from './select.adapter';
 import { ColumnAdapterComponent, RowAdapterComponent } from './stack.adapters';
 import { StatAdapterComponent } from './stat.adapter';
 import { TableAdapterComponent } from './table.adapter';
 import { TextAdapterComponent } from './text.adapter';
 
-export const CATALOG_ID = 'urn:trading-app:catalog:v1';
+export { CATALOG_ID, CATALOG_SCHEMA_VERSION } from './catalog-definition';
+
+/** The adapter of each catalog type. The compiler fails if a type has none. */
+const ADAPTERS: Record<CatalogV1Type, Type<unknown>> = {
+  Column: ColumnAdapterComponent,
+  Row: RowAdapterComponent,
+  Card: CardAdapterComponent,
+  Divider: DividerAdapterComponent,
+  Text: TextAdapterComponent,
+  Stat: StatAdapterComponent,
+  KeyValueList: KeyValueListAdapterComponent,
+  Table: TableAdapterComponent,
+  Badge: BadgeAdapterComponent,
+  Alert: AlertAdapterComponent,
+  EmptyState: EmptyStateAdapterComponent,
+  Button: ButtonAdapterComponent,
+  Select: SelectAdapterComponent,
+  DateField: DateFieldAdapterComponent,
+  OrderTicket: OrderTicketAdapterComponent,
+};
 
 /**
- * The v1 catalog (docs/catalog-v1.md). Only these types exist. Anything else in a spec fails
- * validation in the MessageProcessor (architecture rule 1).
+ * The v1 catalog (docs/catalog-v1.md), built from the catalog schema in
+ * `catalog-definition.ts`. Only these types exist. Anything else in a spec fails validation
+ * in the MessageProcessor (architecture rule 1).
  */
 export function createCatalog(): AngularCatalog {
-  return new AngularCatalog(CATALOG_ID, 'v0.9', [
-    // Layout
-    { ...ColumnApi, component: ColumnAdapterComponent },
-    { ...RowApi, component: RowAdapterComponent },
-    { ...CardApi, component: CardAdapterComponent },
-    { ...DividerApi, component: DividerAdapterComponent },
-    // Content
-    { ...TextApi, component: TextAdapterComponent },
-    { ...StatApi, component: StatAdapterComponent },
-    { ...KeyValueListApi, component: KeyValueListAdapterComponent },
-    { ...TableApi, component: TableAdapterComponent },
-    { ...BadgeApi, component: BadgeAdapterComponent },
-    { ...AlertApi, component: AlertAdapterComponent },
-    { ...EmptyStateApi, component: EmptyStateAdapterComponent },
-    // Inputs
-    { ...ButtonApi, component: ButtonAdapterComponent },
-    { ...SelectApi, component: SelectAdapterComponent },
-    { ...DateFieldApi, component: DateFieldAdapterComponent },
-    // Trading
-    { ...OrderTicketApi, component: OrderTicketAdapterComponent },
-  ]);
+  return new AngularCatalog(
+    CATALOG_ID,
+    CATALOG_PROTOCOL_VERSION,
+    CATALOG_ENTRIES.map((e) => ({ name: e.name, schema: e.schema, component: ADAPTERS[e.name] })) as never,
+  );
 }
 
 /**

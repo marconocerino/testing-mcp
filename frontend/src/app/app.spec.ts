@@ -7,6 +7,7 @@ import { App } from './app';
 import { routes } from './app.routes';
 import { DEV_ROUTES } from './dev/dev.routes';
 import { a2uiConfig } from './catalog/catalog';
+import { provideCatalogRenderer } from './catalog/catalog-renderer.service';
 import { HomePage } from './home/home.page';
 import { SURFACE_ID } from './spec/account-card.a2ui';
 
@@ -14,7 +15,7 @@ describe('E0-S1: library component renders from a hand-written A2UI spec', () =>
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App, HomePage],
-      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), A2uiRendererService, provideCopilotKit({})],
+      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer(), provideCopilotKit({})],
     }).compileComponents();
   });
 
@@ -62,7 +63,7 @@ describe('E0-S1: library component renders from a hand-written A2UI spec', () =>
 describe('E1-S5: routes', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), A2uiRendererService],
+      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer()],
     });
   });
 

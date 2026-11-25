@@ -4,6 +4,7 @@ An adapter makes one A2UI component type renderable. It turns the props in a spe
 
 ```
 spec  { "component": "Button", "variant": "primary", "child": "l", "action": {…} }
+  → catalog-definition.ts     type name → schema (validation) + purpose (model)
   → catalog.ts                type name → adapter
   → button.adapter.ts         props → <ui-button>, click → A2UI action
   → @app/ui  ui-button        <ui-button> → library component (Material today, ftmkit later)
@@ -18,7 +19,7 @@ The reference adapters are [card.adapter.ts](../frontend/src/app/catalog/card.ad
    - extend `CatalogAdapter<typeof XxxApi>` ([adapter.ts](../frontend/src/app/catalog/adapter.ts));
    - import UI only from `@app/ui` (rule 1);
    - selector `app-catalog-<name>`, `ChangeDetectionStrategy.OnPush`.
-3. **Register** it in [catalog.ts](../frontend/src/app/catalog/catalog.ts): `{ ...XxxApi, component: XxxAdapterComponent }`. The type name comes from the API object, so it must be on the v1 list.
+3. **Register** it: add `entry(XxxApi, '<Group>', '<one-line purpose for the model>')` to `CATALOG_ENTRIES` in [catalog-definition.ts](../frontend/src/app/catalog/catalog-definition.ts) (the catalog schema, E1-S4), and the adapter to `ADAPTERS` in [catalog.ts](../frontend/src/app/catalog/catalog.ts). The type name comes from the API object, so it must be on the v1 list. Every prop needs a description. Then run `npm run catalog:export` and commit the regenerated files in `catalog/generated/`, and bump `CATALOG_SCHEMA_VERSION` (a new component is a minor change).
 4. **Test** it in `frontend/src/app/catalog/adapters.spec.ts` (or a file next to it): required props, optional props and their defaults, a data-bound prop that changes, children if it has any, and each action.
 5. **Gallery sample.** Add `frontend/src/app/dev/catalog-gallery/samples/<name>.json` with a `default`, an `edge` and an `invalid` sample, and import it in `samples.ts`. The gallery test fails until every catalog type has one. Check it at `/dev/catalog` under `npx ng serve`.
 

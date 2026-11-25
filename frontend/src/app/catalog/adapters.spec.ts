@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { A2uiRendererService, provideA2Ui, SurfaceComponent } from '@a2ui/angular';
 import { UiButtonComponent } from '@app/ui';
 import { a2uiConfig, CATALOG_ID } from './catalog';
+import { provideCatalogRenderer } from './catalog-renderer.service';
 
 const SURFACE = 'adapter-test';
 
@@ -27,7 +28,7 @@ describe('E1-S2: component adapter pattern', () => {
       imports: [SurfaceHost],
       providers: [
         provideA2Ui({ ...a2uiConfig(), actionHandler: (a) => void actions.push(a as DispatchedAction) }),
-        A2uiRendererService,
+        provideCatalogRenderer(),
       ],
     });
     renderer = TestBed.inject(A2uiRendererService);

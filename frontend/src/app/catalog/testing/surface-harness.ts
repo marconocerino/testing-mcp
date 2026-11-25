@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { A2uiRendererService, provideA2Ui, SurfaceComponent } from '@a2ui/angular';
 import { a2uiConfig, CATALOG_ID } from '../catalog';
+import { provideCatalogRenderer } from '../catalog-renderer.service';
 
 export const TEST_SURFACE = 'adapter-test';
 
@@ -36,7 +37,7 @@ export function createSurfaceHarness(): SurfaceHarness {
     imports: [SurfaceHost],
     providers: [
       provideA2Ui({ ...a2uiConfig(), actionHandler: (a) => void actions.push(a as DispatchedAction) }),
-      A2uiRendererService,
+      provideCatalogRenderer(),
     ],
   });
   const renderer = TestBed.inject(A2uiRendererService);

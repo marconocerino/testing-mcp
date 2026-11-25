@@ -4,6 +4,8 @@
 
 This is the complete set of component types a spec may use in v1. Anything not listed here is rejected by strict validation (CLAUDE.md rule 1). The machine-readable copy of the type names is [`frontend/src/app/catalog/catalog-v1.ts`](../frontend/src/app/catalog/catalog-v1.ts); a test fails if the catalog registers a type that is not on this list.
 
+**Source of truth (E1-S4):** the catalog schema in [`frontend/src/app/catalog/catalog-definition.ts`](../frontend/src/app/catalog/catalog-definition.ts) holds each type's model-facing description and props schema, and the version (`CATALOG_SCHEMA_VERSION`, 1.0.0). The renderer validates with it, and `npm run catalog:export` generates [`catalog.json`](../frontend/src/app/catalog/generated/catalog.json) (JSON Schema per component, for the agent, server-side validation and MCP tools) and [`catalog.prompt.md`](../frontend/src/app/catalog/generated/catalog.prompt.md) (the description the model reads). The tables below are a summary; where they differ, the code wins.
+
 ## How the list was chosen
 
 From the screens that remain in scope after market data and predictions were dropped (decision 2026-11-24):
@@ -18,8 +20,8 @@ From the screens that remain in scope after market data and predictions were dro
 Rules applied:
 
 - 15 types, inside the 10-15 limit, so the model has a small catalog to choose from.
-- Where A2UI's basic catalog already defines a type with the props we need, we reuse its schema and name: `Column`, `Row`, `Card`, `Divider`, `Button`. Models have seen these names, and the schemas are already strict. A2UI's `Text` and `DateTimeInput` are not reused: `Text` in A2UI 0.14 allows markdown and has no heading variant, and `DateTimeInput` carries time options we don't need.
-- Trading-specific types (`Stat`, `KeyValueList`, `Table`, `OrderTicket`) are our own schemas, written in E1-S4.
+- Where A2UI's basic catalog already defines a type with the props we need, we reuse its schema and name: `Column`, `Row`, `Card`, `Divider`, `Button` (Button without `checks`, see E1-S4 in decisions). Models have seen these names, and the schemas are already strict. A2UI's `Text` and `DateTimeInput` are not reused: `Text` in A2UI 0.14 allows markdown and has no heading variant, and `DateTimeInput` carries time options we don't need.
+- Trading-specific types (`Stat`, `KeyValueList`, `Table`, `OrderTicket`) are our own schemas (written in E1-S3, exported in E1-S4).
 - Formatting (currency, percent, date) is a `format` prop on the component, not A2UI functions, so specs stay data-free (rule 5) and validation stays simple.
 - No component takes raw HTML, markdown, URLs or images (see the `npm audit` decision: agent text is rendered as plain text).
 
@@ -40,7 +42,7 @@ Rules applied:
 | 9 | `Badge` | Use Badge for a short status label, such as an order status or "Paper trading". | Own | `ui-badge` | Tag | Order status, table cells |
 | 10 | `Alert` | Use Alert for a message the user must notice: a warning, an error or a required disclaimer. | Own | `ui-alert` | Inline Message; Footnotes and Disclosures for `disclaimerId` | Order warnings, disclaimers, errors |
 | 11 | `EmptyState` | Use EmptyState when a section has no data yet, with a short explanation and one next step. | Own | `ui-empty-state` | Message (+ Button for the next step) | Dashboard, accounts (E4-S2 AC) |
-| 12 | `Button` | Use Button for an action the user starts, such as "View all" or "New order"; it never places a trade. | A2UI basic | `ui-button` | Button (`FttButton`); Button Loading while an action runs | All screens |
+| 12 | `Button` | Use Button for an action the user starts, such as "View all" or "New order"; it never places a trade. | A2UI basic, without `checks` | `ui-button` | Button (`FttButton`); Button Loading while an action runs | All screens |
 | 13 | `Select` | Use Select to pick one value from a short fixed list, such as an account or transaction type. | Own | `ui-select` | Dropdown | Transaction filters |
 | 14 | `DateField` | Use DateField to pick a date, for example the start or end of a transaction filter. | Own | `ui-date-field` | Date Select | Transaction date-range filter (E4-S3) |
 | 15 | `OrderTicket` | Use OrderTicket to start an order; you may pre-fill instrument, side, quantity and type, nothing else. | Own (locked) | composed from `ui-*` inputs | Composite: Form, Field Group, Autocomplete (instrument), Button group (side), Numeric Input `FttNumericInput` (quantity), Currency Input (limit price), Dropdown (type), Progress status (steps), Description List (preview), Inline Message (warnings), Form Actions, Button Loading, Footnotes and Disclosures | Order ticket (E4-S4), trading requests (E5-S5) |
@@ -61,7 +63,7 @@ Implemented in E1-S3: [`frontend/src/app/catalog/schemas.ts`](../frontend/src/ap
 | `Badge` | `text` (string or binding), `tone` (`neutral`, `info`, `success`, `warning`, `danger`) |
 | `Alert` | `tone` (`info`, `warning`, `danger`), `title` (optional), `text`, or `disclaimerId` (text loaded from the central store, E7-S3) |
 | `EmptyState` | `title`, `text` (optional), `actionLabel` + `action` (optional; the button shows only with both) |
-| `Button` | `child`, `variant`, `action` (**required**; A2UI basic; actions go only to allow-listed handlers) |
+| `Button` | `child`, `variant`, `action` (**required**; A2UI basic without `checks`; actions go only to allow-listed handlers) |
 | `Select` | `label`, `options` (1 to 50 of `{ value, label }`), `value` (bind it: the choice is written there), `action` (optional, emitted after the write) |
 | `DateField` | `label`, `value` (bind it, `YYYY-MM-DD`: the choice is written there), `min`, `max` (`YYYY-MM-DD`), `action` (optional, emitted after the write) |
 | `OrderTicket` | `instrument`, `side` (`buy`, `sell`), `quantity`, `orderType` (`market`, `limit`): all optional pre-fill values. No children, no actions |
