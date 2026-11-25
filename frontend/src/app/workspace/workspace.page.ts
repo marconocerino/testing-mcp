@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { UiEmptyStateComponent } from '@app/ui';
-import { MAIN_SURFACE_ID } from '../shell/assistant-panel.component';
+import { MAIN_SURFACE_ID } from '../shell/assistant-sidebar.component';
 import { SurfaceHostComponent } from '../surface/surface-host.component';
 
 /** The main page: whatever view the assistant built last, or a welcome until it has built one. */

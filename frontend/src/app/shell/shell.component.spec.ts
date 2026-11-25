@@ -1,58 +1,47 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { provideA2Ui } from '@a2ui/angular';
+import { provideCopilotChatConfiguration } from '@copilotkit/angular';
 import { App } from '../app';
 import { routes } from '../app.routes';
 import { a2uiConfig } from '../catalog/catalog';
 import { provideCatalogRenderer } from '../catalog/catalog-renderer.service';
 import { AgentTransport, provideAgentTransport } from '../transport/agent-transport';
+import { TRADING_AGENT_ID } from '../transport/copilotkit-transport';
 import { MockTransport } from '../transport/mock-transport';
 import { provideTestCopilotKit } from '../transport/testing/test-copilotkit';
 
-describe('E3-S1: app shell', () => {
-  async function renderApp() {
-    TestBed.configureTestingModule({
-      imports: [App],
-      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer(), provideAgentTransport(MockTransport), provideTestCopilotKit()],
-    });
-    const fixture = TestBed.createComponent(App);
-    await TestBed.inject(Router).navigateByUrl('/');
-    await fixture.whenStable();
-    return { fixture, el: fixture.nativeElement as HTMLElement };
-  }
+async function renderApp(withAgent = true) {
+  TestBed.configureTestingModule({
+    imports: [App],
+    providers: [
+      provideRouter(routes),
+      provideA2Ui(a2uiConfig()),
+      provideCatalogRenderer(),
+      provideAgentTransport(MockTransport),
+      provideTestCopilotKit(withAgent),
+      provideCopilotChatConfiguration({ agentId: TRADING_AGENT_ID }),
+    ],
+  });
+  const fixture = TestBed.createComponent(App);
+  await TestBed.inject(Router).navigateByUrl('/');
+  await fixture.whenStable();
+  return { fixture, el: fixture.nativeElement as HTMLElement };
+}
 
-  it('has header, main and assistant landmarks, and a skip link to main', async () => {
+describe('E3-S1: app shell', () => {
+  it('has header and main landmarks, and a skip link to main', async () => {
     const { el } = await renderApp();
     expect(el.querySelector('header')?.textContent).toContain('Trading');
     expect(el.querySelector('header')?.textContent).toContain('Mock data');
     expect(el.querySelector('nav[aria-label="Main"]')).toBeTruthy();
     expect(el.querySelector('main#main')).toBeTruthy();
-    expect(el.querySelector('aside[aria-label="Assistant"]')).toBeTruthy();
     expect(el.querySelector<HTMLAnchorElement>('a[href="#main"]')?.textContent).toContain('Skip to main content');
   });
 
   it('renders the routed page inside the main region', async () => {
     const { el } = await renderApp();
-    expect(el.querySelector('main router-outlet + *')).toBeTruthy();
-  });
-
-  it('collapses and reopens the assistant panel, announcing its state', async () => {
-    const { fixture, el } = await renderApp();
-    const toggle = () => el.querySelector<HTMLButtonElement>('header button[aria-controls="assistant-panel"]')!;
-    const panel = () => el.querySelector<HTMLElement>('aside#assistant-panel')!;
-
-    expect(toggle().getAttribute('aria-expanded')).toBe('true');
-    expect(panel().hidden).toBe(false);
-
-    toggle().click();
-    await fixture.whenStable();
-    expect(toggle().getAttribute('aria-expanded')).toBe('false');
-    expect(panel().hidden).toBe(true);
-    expect(toggle().textContent).toContain('Assistant');
-
-    toggle().click();
-    await fixture.whenStable();
-    expect(panel().hidden).toBe(false);
+    expect(el.querySelector('main app-workspace-page')).toBeTruthy();
   });
 
   it('marks the current page in the navigation, and links to dev pages in dev builds', async () => {
@@ -74,24 +63,37 @@ describe('E3-S1: app shell', () => {
   });
 });
 
-describe('E3-S3: reconnect banner', () => {
-  it('shows a non-blocking banner while the transport reconnects', async () => {
-    TestBed.configureTestingModule({
-      imports: [App],
-      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer(), provideAgentTransport(MockTransport), provideTestCopilotKit()],
-    });
-    const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
-    const el = fixture.nativeElement as HTMLElement;
-    expect(el.querySelector('main .ui-alert')).toBeNull();
+describe('E5-S5: assistant sidebar', () => {
+  it("shows CopilotKit's sidebar chat once the trading agent is available", async () => {
+    const { el } = await renderApp(true);
+    expect(el.querySelector('copilot-sidebar')).toBeTruthy();
+    expect(el.querySelector('copilot-sidebar copilot-chat')).toBeTruthy();
+    expect(el.querySelector('ui-app-layout header button')).toBeNull(); // no separate assistant toggle in the app header
+  });
 
+  it('shows no chat until the runtime lists the agent', async () => {
+    const { el } = await renderApp(false);
+    expect(el.querySelector('copilot-sidebar')).toBeNull();
+  });
+});
+
+describe('E3-S3: transport banners', () => {
+  it('shows a non-blocking banner while reconnecting, and an error when the transport gives up', async () => {
+    const { fixture, el } = await renderApp();
+    expect(el.querySelector('main .ui-alert')).toBeNull();
     const transport = TestBed.inject(AgentTransport) as MockTransport;
+
     transport.status.set('reconnecting');
     transport.error.set({ message: 'Connection to the assistant lost. Reconnecting…', retrying: true });
     await fixture.whenStable();
-    const banner = el.querySelector('main .ui-alert')!;
-    expect(banner.getAttribute('role')).toBe('status');
-    expect(banner.textContent).toContain('Reconnecting');
+    expect(el.querySelector('main .ui-alert')!.getAttribute('role')).toBe('status');
+    expect(el.querySelector('main .ui-alert')!.textContent).toContain('Reconnecting');
+
+    transport.status.set('error');
+    transport.error.set({ message: "The assistant isn't available right now.", retrying: false });
+    await fixture.whenStable();
+    expect(el.querySelector('main .ui-alert')!.getAttribute('role')).toBe('alert');
+    expect(el.querySelector('main .ui-alert')!.textContent).toContain("isn't available");
 
     transport.status.set('idle');
     await fixture.whenStable();

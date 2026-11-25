@@ -40,7 +40,7 @@ Three processes, each in its own terminal:
 
 1. Agent service: put `LLM_API_KEY=...` (Groq) in `services/agent-service/.env`, then `cd services/agent-service && npm ci && npm run dev` (port 8090).
 2. CopilotKit runtime: `cd services/copilot-runtime && npm ci && npm run dev` (port 4000).
-3. Frontend: `cd frontend && npx ng serve`, then open http://localhost:4200 and ask the assistant for a view.
+3. Frontend: `cd frontend && npx ng serve`, then open http://localhost:4200 and ask the assistant (the sidebar on the right) for a view.
 
 The browser only talks to the app's own origin; `/api/copilotkit` is proxied to the runtime, which calls the agent service, which calls Groq. Without the backend, switch `provideAgentTransport(CopilotKitTransport)` to `MockTransport` in `frontend/src/app/app.config.ts` to replay recorded views.
 
@@ -73,5 +73,5 @@ Frontend versions, confirmed by E0-S1 on 2026-11-23. Use these exact versions un
 2. **Two `web_core` copies for A2UI.** `@a2ui/angular` 0.14.0 depends on `web_core` ^0.15.0, but `@a2ui/markdown-it` 0.2.2 only accepts ^0.14.0. The renderer runs on 0.15.0, and the markdown plugin and our imports use 0.14.0. CopilotKit adds a third copy (0.10.4), which we never use.
 3. **Strict validation must be configured.** `web_core` 0.14 does not export `STRICT_VALIDATION`, and by default unknown component types are only logged, not rejected. We pass our own `STRICT_SPEC_VALIDATION` (rule 1). Undeclared props are always rejected because catalog schemas are `.strict()`.
 4. **npm 10 crash without the Vite pin.** Vitest's peer range otherwise pulls Vite 8, and npm 10.9 crashes with `Cannot read properties of null (reading 'edgesOut')`. The `overrides` entry in `package.json` prevents this.
-5. **Bundle size.** The initial bundle is 2.19 MB (441 kB gzipped), over Angular's default 1 MB budget; the error budget is 2.5 MB. Most of it is `@copilotkit/angular` (one bundle with chat, markdown, katex and highlight.js), A2UI and the Material stand-in. Lazy-loading CopilotKit is the next step (decision 2026-11-25), and is required before the MCP App bundle (E8).
+5. **Bundle size.** The initial bundle is 5.01 MB (1.55 MB gzipped); the error budget is 5.5 MB. Most of it is CopilotKit's chat (`@copilotkit/angular` with highlight.js and katex), then A2UI and the Material stand-in. Without CopilotKit's chat UI it is about 2.2 MB. Revisit before the MCP App bundle (E8), which must be small.
 6. **`npm audit`.** `zod` 3.x (high), `dompurify` 3.4.11 via `@a2ui/markdown-it` (moderate XSS plus lows), `katex` (low), and `glob`/`minimatch` (CLI tooling only, not shipped). Flagged to security (E0-S4). Don't render agent text as markdown until DOMPurify is current.

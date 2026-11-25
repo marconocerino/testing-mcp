@@ -1,19 +1,19 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { UiAlertComponent, UiAppLayoutComponent, UiBadgeComponent, UiButtonComponent, UiNavLinkComponent, UiStackComponent, UiTextComponent } from '@app/ui';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { UiAlertComponent, UiAppLayoutComponent, UiBadgeComponent, UiNavLinkComponent, UiStackComponent, UiTextComponent } from '@app/ui';
 import { DEV_ROUTES } from '../dev/dev.routes';
 import { AgentTransport } from '../transport/agent-transport';
 
 /**
- * App shell (E3-S1): header with navigation, the main region for the routed page, and a
- * collapsible panel reserved for the assistant. No sign-in yet: SSO is deferred for the MVP
- * (see docs/decisions.md), so every visitor is the mock user.
+ * App shell (E3-S1): header with navigation and the main region for the routed page. The
+ * assistant is CopilotKit's sidebar next to it (E5-S5), with its own open and close control.
+ * No sign-in yet: SSO is deferred for the MVP (see docs/decisions.md).
  */
 @Component({
   selector: 'app-shell',
-  imports: [UiAlertComponent, UiAppLayoutComponent, UiTextComponent, UiBadgeComponent, UiNavLinkComponent, UiButtonComponent, UiStackComponent],
+  imports: [UiAlertComponent, UiAppLayoutComponent, UiTextComponent, UiBadgeComponent, UiNavLinkComponent, UiStackComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ui-app-layout [panelOpen]="panelOpen()" panelLabel="Assistant" panelId="assistant-panel">
+    <ui-app-layout>
       <ng-container uiAppHeader>
         <ui-text variant="title">Trading</ui-text>
         <ui-badge tone="warning">Mock data</ui-badge>
@@ -25,29 +25,23 @@ import { AgentTransport } from '../transport/agent-transport';
             }
           </ui-stack>
         </nav>
-        <span class="ui-spacer"></span>
-        <ui-button
-          [ariaExpanded]="panelOpen()"
-          ariaControls="assistant-panel"
-          (pressed)="panelOpen.set(!panelOpen())"
-        >{{ panelOpen() ? 'Hide assistant' : 'Assistant' }}</ui-button>
       </ng-container>
 
-      @if (transport.status() === 'reconnecting') {
-        <!-- Non-blocking (E3-S3): the page stays usable while the transport retries. -->
-        <ui-alert tone="warning">{{ transport.error()?.message }}</ui-alert>
+      @switch (transport.status()) {
+        @case ('reconnecting') {
+          <!-- Non-blocking (E3-S3): the page stays usable while the transport retries. -->
+          <ui-alert tone="warning">{{ transport.error()?.message }}</ui-alert>
+        }
+        @case ('error') {
+          <ui-alert tone="danger">{{ transport.error()?.message }}</ui-alert>
+        }
       }
       <ng-content />
-
-      <ng-container uiAppPanel>
-        <ng-content select="[appAssistant]" />
-      </ng-container>
     </ui-app-layout>
   `,
 })
 export class ShellComponent {
   protected readonly transport = inject(AgentTransport);
-  protected readonly panelOpen = signal(true);
   /** Dev-only pages; empty in production builds (dev.routes.prod.ts). */
   protected readonly devLinks = DEV_ROUTES.map((r) => ({ to: `/${r.path}`, label: String(r.title ?? r.path) }));
 }
