@@ -1,0 +1,141 @@
+{
+  "component": "Row",
+  "samples": [
+    {
+      "name": "Weighted children",
+      "kind": "default",
+      "note": "weight works like flex-grow.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Row",
+          "children": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "id": "a",
+          "component": "Text",
+          "text": "Wide (weight 2)",
+          "weight": 2
+        },
+        {
+          "id": "b",
+          "component": "Text",
+          "text": "Narrow (weight 1)",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "name": "Many children wrap",
+      "kind": "edge",
+      "note": "Badges wrap onto a second line when they don't fit.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Row",
+          "children": [
+            "b0",
+            "b1",
+            "b2",
+            "b3",
+            "b4",
+            "b5",
+            "b6",
+            "b7",
+            "b8",
+            "b9",
+            "b10",
+            "b11"
+          ]
+        },
+        {
+          "id": "b0",
+          "component": "Badge",
+          "text": "Tag 1"
+        },
+        {
+          "id": "b1",
+          "component": "Badge",
+          "text": "Tag 2"
+        },
+        {
+          "id": "b2",
+          "component": "Badge",
+          "text": "Tag 3"
+        },
+        {
+          "id": "b3",
+          "component": "Badge",
+          "text": "Tag 4"
+        },
+        {
+          "id": "b4",
+          "component": "Badge",
+          "text": "Tag 5"
+        },
+        {
+          "id": "b5",
+          "component": "Badge",
+          "text": "Tag 6"
+        },
+        {
+          "id": "b6",
+          "component": "Badge",
+          "text": "Tag 7"
+        },
+        {
+          "id": "b7",
+          "component": "Badge",
+          "text": "Tag 8"
+        },
+        {
+          "id": "b8",
+          "component": "Badge",
+          "text": "Tag 9"
+        },
+        {
+          "id": "b9",
+          "component": "Badge",
+          "text": "Tag 10"
+        },
+        {
+          "id": "b10",
+          "component": "Badge",
+          "text": "Tag 11"
+        },
+        {
+          "id": "b11",
+          "component": "Badge",
+          "text": "Tag 12"
+        }
+      ]
+    },
+    {
+      "name": "Orphan component",
+      "kind": "invalid",
+      "note": "Rejected: a component nothing points to.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Row",
+          "children": [
+            "a"
+          ]
+        },
+        {
+          "id": "a",
+          "component": "Text",
+          "text": "Shown"
+        },
+        {
+          "id": "lost",
+          "component": "Text",
+          "text": "Nobody references me"
+        }
+      ]
+    }
+  ]
+}

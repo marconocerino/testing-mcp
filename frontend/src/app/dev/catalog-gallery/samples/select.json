@@ -1,0 +1,156 @@
+{
+  "component": "Select",
+  "samples": [
+    {
+      "name": "Account filter",
+      "kind": "default",
+      "note": "The choice is written to /filter/account, then filterTransactions is emitted.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Select",
+          "label": "Account",
+          "options": [
+            {
+              "value": "ACC-1",
+              "label": "Everyday"
+            },
+            {
+              "value": "ACC-2",
+              "label": "Savings"
+            }
+          ],
+          "value": {
+            "path": "/filter/account"
+          },
+          "action": {
+            "event": {
+              "name": "filterTransactions",
+              "context": {
+                "account": {
+                  "path": "/filter/account"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "data": {
+        "/filter/account": "ACC-2"
+      }
+    },
+    {
+      "name": "Nothing selected, many options",
+      "kind": "edge",
+      "note": "No bound value yet; 20 options.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Select",
+          "label": "Instrument",
+          "options": [
+            {
+              "value": "I0",
+              "label": "Instrument 1"
+            },
+            {
+              "value": "I1",
+              "label": "Instrument 2"
+            },
+            {
+              "value": "I2",
+              "label": "Instrument 3"
+            },
+            {
+              "value": "I3",
+              "label": "Instrument 4"
+            },
+            {
+              "value": "I4",
+              "label": "Instrument 5"
+            },
+            {
+              "value": "I5",
+              "label": "Instrument 6"
+            },
+            {
+              "value": "I6",
+              "label": "Instrument 7"
+            },
+            {
+              "value": "I7",
+              "label": "Instrument 8"
+            },
+            {
+              "value": "I8",
+              "label": "Instrument 9"
+            },
+            {
+              "value": "I9",
+              "label": "Instrument 10"
+            },
+            {
+              "value": "I10",
+              "label": "Instrument 11"
+            },
+            {
+              "value": "I11",
+              "label": "Instrument 12"
+            },
+            {
+              "value": "I12",
+              "label": "Instrument 13"
+            },
+            {
+              "value": "I13",
+              "label": "Instrument 14"
+            },
+            {
+              "value": "I14",
+              "label": "Instrument 15"
+            },
+            {
+              "value": "I15",
+              "label": "Instrument 16"
+            },
+            {
+              "value": "I16",
+              "label": "Instrument 17"
+            },
+            {
+              "value": "I17",
+              "label": "Instrument 18"
+            },
+            {
+              "value": "I18",
+              "label": "Instrument 19"
+            },
+            {
+              "value": "I19",
+              "label": "Instrument 20"
+            }
+          ],
+          "value": {
+            "path": "/filter/instrument"
+          }
+        }
+      ]
+    },
+    {
+      "name": "No options",
+      "kind": "invalid",
+      "note": "Rejected: at least one option.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Select",
+          "label": "Account",
+          "options": [],
+          "value": {
+            "path": "/filter/account"
+          }
+        }
+      ]
+    }
+  ]
+}

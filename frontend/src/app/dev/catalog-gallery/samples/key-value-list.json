@@ -1,0 +1,98 @@
+{
+  "component": "KeyValueList",
+  "samples": [
+    {
+      "name": "Order summary",
+      "kind": "default",
+      "note": "Each value is bound and formatted.",
+      "components": [
+        {
+          "id": "root",
+          "component": "KeyValueList",
+          "items": [
+            {
+              "label": "Instrument",
+              "value": {
+                "path": "/o/instrument"
+              }
+            },
+            {
+              "label": "Quantity",
+              "value": {
+                "path": "/o/qty"
+              },
+              "format": "number"
+            },
+            {
+              "label": "Estimated cost",
+              "value": {
+                "path": "/o/cost"
+              },
+              "format": "currency"
+            },
+            {
+              "label": "Placed",
+              "value": {
+                "path": "/o/date"
+              },
+              "format": "date"
+            }
+          ]
+        }
+      ],
+      "data": {
+        "/o/instrument": "ALPN",
+        "/o/qty": 10,
+        "/o/cost": 1284,
+        "/o/date": "2026-11-24"
+      }
+    },
+    {
+      "name": "Other currency, missing value",
+      "kind": "edge",
+      "note": "currency sets the code; a missing value shows a dash.",
+      "components": [
+        {
+          "id": "root",
+          "component": "KeyValueList",
+          "currency": "EUR",
+          "items": [
+            {
+              "label": "Fees",
+              "value": {
+                "path": "/fees"
+              },
+              "format": "currency"
+            },
+            {
+              "label": "Settlement",
+              "value": {
+                "path": "/missing"
+              }
+            }
+          ]
+        }
+      ],
+      "data": {
+        "/fees": 2.5
+      }
+    },
+    {
+      "name": "Literal value",
+      "kind": "invalid",
+      "note": "Rejected (rule 5): values must be bound.",
+      "components": [
+        {
+          "id": "root",
+          "component": "KeyValueList",
+          "items": [
+            {
+              "label": "Fees",
+              "value": 1.5
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

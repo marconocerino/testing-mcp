@@ -1,0 +1,77 @@
+{
+  "component": "Card",
+  "samples": [
+    {
+      "name": "Card with a column",
+      "kind": "default",
+      "note": "A Card holds one child, usually a Column.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Card",
+          "child": "col"
+        },
+        {
+          "id": "col",
+          "component": "Column",
+          "children": [
+            "t",
+            "s"
+          ]
+        },
+        {
+          "id": "t",
+          "component": "Text",
+          "text": "Everyday account",
+          "variant": "heading"
+        },
+        {
+          "id": "s",
+          "component": "Stat",
+          "label": "Balance",
+          "value": {
+            "path": "/account/balance"
+          },
+          "format": "currency"
+        }
+      ],
+      "data": {
+        "/account/balance": 16306.35
+      }
+    },
+    {
+      "name": "Bound text, long content",
+      "kind": "edge",
+      "note": "Text from the data model; long text wraps inside the card.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Card",
+          "child": "t"
+        },
+        {
+          "id": "t",
+          "component": "Text",
+          "text": {
+            "path": "/account/description"
+          }
+        }
+      ],
+      "data": {
+        "/account/description": "Mock brokerage account used for paper trading. This description is deliberately long so you can check how the card wraps text that goes on well past a single line on a normal laptop screen."
+      }
+    },
+    {
+      "name": "Child that doesn't exist",
+      "kind": "invalid",
+      "note": "Rejected: the child id is dangling.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Card",
+          "child": "nothing-here"
+        }
+      ]
+    }
+  ]
+}

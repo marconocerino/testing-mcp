@@ -1,0 +1,66 @@
+{
+  "component": "DateField",
+  "samples": [
+    {
+      "name": "Bound date",
+      "kind": "default",
+      "note": "Writes YYYY-MM-DD to /filter/from and emits filterTransactions.",
+      "components": [
+        {
+          "id": "root",
+          "component": "DateField",
+          "label": "From",
+          "value": {
+            "path": "/filter/from"
+          },
+          "action": {
+            "event": {
+              "name": "filterTransactions",
+              "context": {
+                "from": {
+                  "path": "/filter/from"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "data": {
+        "/filter/from": "2026-11-02"
+      }
+    },
+    {
+      "name": "Empty, with limits",
+      "kind": "edge",
+      "note": "No value yet; min and max limit the picker to 2026.",
+      "components": [
+        {
+          "id": "root",
+          "component": "DateField",
+          "label": "To",
+          "value": {
+            "path": "/filter/to"
+          },
+          "min": "2026-01-01",
+          "max": "2026-12-31"
+        }
+      ]
+    },
+    {
+      "name": "Bad min date",
+      "kind": "invalid",
+      "note": "Rejected: min must be YYYY-MM-DD.",
+      "components": [
+        {
+          "id": "root",
+          "component": "DateField",
+          "label": "From",
+          "value": {
+            "path": "/filter/from"
+          },
+          "min": "02/11/2026"
+        }
+      ]
+    }
+  ]
+}

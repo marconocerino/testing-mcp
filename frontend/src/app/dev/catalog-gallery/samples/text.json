@@ -1,0 +1,90 @@
+{
+  "component": "Text",
+  "samples": [
+    {
+      "name": "All variants",
+      "kind": "default",
+      "note": "title and heading render as heading elements.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Column",
+          "children": [
+            "t",
+            "h",
+            "b",
+            "c"
+          ]
+        },
+        {
+          "id": "t",
+          "component": "Text",
+          "text": "Title",
+          "variant": "title"
+        },
+        {
+          "id": "h",
+          "component": "Text",
+          "text": "Heading",
+          "variant": "heading"
+        },
+        {
+          "id": "b",
+          "component": "Text",
+          "text": "Body text, the default."
+        },
+        {
+          "id": "c",
+          "component": "Text",
+          "text": "Caption, for small print",
+          "variant": "caption"
+        }
+      ]
+    },
+    {
+      "name": "Bound text with markup characters",
+      "kind": "edge",
+      "note": "Plain text only: tags in the data are shown, not rendered. A missing path shows nothing.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Column",
+          "children": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "id": "a",
+          "component": "Text",
+          "text": {
+            "path": "/note"
+          }
+        },
+        {
+          "id": "b",
+          "component": "Text",
+          "text": {
+            "path": "/missing"
+          }
+        }
+      ],
+      "data": {
+        "/note": "<b>Not bold</b> & not **markdown**"
+      }
+    },
+    {
+      "name": "HTML prop",
+      "kind": "invalid",
+      "note": "Rejected: Text has no html prop.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Text",
+          "text": "hi",
+          "html": "<b>x</b>"
+        }
+      ]
+    }
+  ]
+}

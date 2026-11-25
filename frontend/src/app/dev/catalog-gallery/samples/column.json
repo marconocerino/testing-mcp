@@ -1,0 +1,85 @@
+{
+  "component": "Column",
+  "samples": [
+    {
+      "name": "Stacked content",
+      "kind": "default",
+      "note": "Children render top to bottom in order.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Column",
+          "children": [
+            "h",
+            "b",
+            "c"
+          ]
+        },
+        {
+          "id": "h",
+          "component": "Text",
+          "text": "Accounts overview",
+          "variant": "heading"
+        },
+        {
+          "id": "b",
+          "component": "Text",
+          "text": "Two accounts, both in paper trading."
+        },
+        {
+          "id": "c",
+          "component": "Text",
+          "text": "Updated just now",
+          "variant": "caption"
+        }
+      ]
+    },
+    {
+      "name": "Centred, spaced out",
+      "kind": "edge",
+      "note": "justify and align map to the stack.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Column",
+          "children": [
+            "a",
+            "b"
+          ],
+          "justify": "spaceBetween",
+          "align": "center"
+        },
+        {
+          "id": "a",
+          "component": "Text",
+          "text": "First"
+        },
+        {
+          "id": "b",
+          "component": "Text",
+          "text": "Second"
+        }
+      ]
+    },
+    {
+      "name": "Missing child",
+      "kind": "invalid",
+      "note": "Rejected: a child id that no component has.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Column",
+          "children": [
+            "a",
+            "missing"
+          ]
+        },
+        {
+          "id": "a",
+          "component": "Text",
+          "text": "Only child"
+        }
+      ]
+    }
+  ]
+}

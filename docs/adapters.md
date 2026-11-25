@@ -20,6 +20,7 @@ The reference adapters are [card.adapter.ts](../frontend/src/app/catalog/card.ad
    - selector `app-catalog-<name>`, `ChangeDetectionStrategy.OnPush`.
 3. **Register** it in [catalog.ts](../frontend/src/app/catalog/catalog.ts): `{ ...XxxApi, component: XxxAdapterComponent }`. The type name comes from the API object, so it must be on the v1 list.
 4. **Test** it in `frontend/src/app/catalog/adapters.spec.ts` (or a file next to it): required props, optional props and their defaults, a data-bound prop that changes, children if it has any, and each action.
+5. **Gallery sample.** Add `frontend/src/app/dev/catalog-gallery/samples/<name>.json` with a `default`, an `edge` and an `invalid` sample, and import it in `samples.ts`. The gallery test fails until every catalog type has one. Check it at `/dev/catalog` under `npx ng serve`.
 
 ## The three things an adapter does
 

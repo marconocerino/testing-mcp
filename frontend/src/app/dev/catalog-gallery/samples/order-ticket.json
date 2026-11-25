@@ -1,0 +1,48 @@
+{
+  "component": "OrderTicket",
+  "samples": [
+    {
+      "name": "Pre-filled",
+      "kind": "default",
+      "note": "Locked placeholder: shows the pre-fill values only (E4-S4 adds the flow).",
+      "components": [
+        {
+          "id": "root",
+          "component": "OrderTicket",
+          "instrument": "ALPN",
+          "side": "buy",
+          "quantity": 10,
+          "orderType": "market"
+        }
+      ]
+    },
+    {
+      "name": "Nothing pre-filled",
+      "kind": "edge",
+      "note": "Every field shows a dash.",
+      "components": [
+        {
+          "id": "root",
+          "component": "OrderTicket"
+        }
+      ]
+    },
+    {
+      "name": "With an action",
+      "kind": "invalid",
+      "note": "Rejected (rule 4): a spec can't wire actions into the order ticket.",
+      "components": [
+        {
+          "id": "root",
+          "component": "OrderTicket",
+          "instrument": "ALPN",
+          "action": {
+            "event": {
+              "name": "placeOrder"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

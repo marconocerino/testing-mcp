@@ -1,0 +1,80 @@
+{
+  "component": "Stat",
+  "samples": [
+    {
+      "name": "Currency with change",
+      "kind": "default",
+      "note": "A positive change shows as a green badge.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Stat",
+          "label": "Total balance",
+          "value": {
+            "path": "/total"
+          },
+          "format": "currency",
+          "change": {
+            "path": "/today"
+          }
+        }
+      ],
+      "data": {
+        "/total": 48210.55,
+        "/today": 412.3
+      }
+    },
+    {
+      "name": "Negative percent, missing value",
+      "kind": "edge",
+      "note": "Negative change is red; a missing value shows a dash.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Row",
+          "children": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "id": "a",
+          "component": "Stat",
+          "label": "Return",
+          "value": {
+            "path": "/ret"
+          },
+          "format": "percent",
+          "change": {
+            "path": "/retChange"
+          }
+        },
+        {
+          "id": "b",
+          "component": "Stat",
+          "label": "Not loaded",
+          "value": {
+            "path": "/missing"
+          }
+        }
+      ],
+      "data": {
+        "/ret": 4.12,
+        "/retChange": -0.83
+      }
+    },
+    {
+      "name": "Literal figure",
+      "kind": "invalid",
+      "note": "Rejected (rule 5): the value must be bound to the data model, never written in the spec.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Stat",
+          "label": "Total balance",
+          "value": 48210.55
+        }
+      ]
+    }
+  ]
+}

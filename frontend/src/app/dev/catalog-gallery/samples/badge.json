@@ -1,0 +1,83 @@
+{
+  "component": "Badge",
+  "samples": [
+    {
+      "name": "All tones",
+      "kind": "default",
+      "note": "neutral, info, success, warning, danger.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Row",
+          "children": [
+            "n",
+            "i",
+            "s",
+            "w",
+            "d"
+          ]
+        },
+        {
+          "id": "n",
+          "component": "Badge",
+          "text": "Paper trading"
+        },
+        {
+          "id": "i",
+          "component": "Badge",
+          "text": "New",
+          "tone": "info"
+        },
+        {
+          "id": "s",
+          "component": "Badge",
+          "text": "Filled",
+          "tone": "success"
+        },
+        {
+          "id": "w",
+          "component": "Badge",
+          "text": "Pending",
+          "tone": "warning"
+        },
+        {
+          "id": "d",
+          "component": "Badge",
+          "text": "Rejected",
+          "tone": "danger"
+        }
+      ]
+    },
+    {
+      "name": "Bound, long text",
+      "kind": "edge",
+      "note": "Text from the data model.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Badge",
+          "text": {
+            "path": "/status"
+          },
+          "tone": "warning"
+        }
+      ],
+      "data": {
+        "/status": "Pending review by the compliance desk"
+      }
+    },
+    {
+      "name": "Unknown tone",
+      "kind": "invalid",
+      "note": "Rejected: tone must be one of the five tones.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Badge",
+          "text": "Hot",
+          "tone": "pink"
+        }
+      ]
+    }
+  ]
+}

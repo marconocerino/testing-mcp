@@ -1,0 +1,35 @@
+// Page layout only. Samples render with catalog adapters and @app/ui, unstyled here.
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.gallery-sample__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.gallery-render {
+  padding: 12px;
+  border: 1px dashed var(--mat-sys-outline-variant);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.gallery-error,
+.gallery-json {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+}
+
+.gallery-json {
+  max-height: 240px;
+  overflow: auto;
+  margin: 8px 0 0;
+}
