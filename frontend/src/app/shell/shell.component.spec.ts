@@ -5,7 +5,7 @@ import { App } from '../app';
 import { routes } from '../app.routes';
 import { a2uiConfig } from '../catalog/catalog';
 import { provideCatalogRenderer } from '../catalog/catalog-renderer.service';
-import { provideAgentTransport } from '../transport/agent-transport';
+import { AgentTransport, provideAgentTransport } from '../transport/agent-transport';
 import { MockTransport } from '../transport/mock-transport';
 
 describe('E3-S1: app shell', () => {
@@ -70,5 +70,31 @@ describe('E3-S1: app shell', () => {
     expect(TestBed.inject(Router).url).toBe('/dev/catalog');
     expect(el.querySelector('header')).toBe(header);
     expect(el.querySelector('main')?.textContent).toContain('Catalog gallery');
+  });
+});
+
+describe('E3-S3: reconnect banner', () => {
+  it('shows a non-blocking banner while the transport reconnects', async () => {
+    TestBed.configureTestingModule({
+      imports: [App],
+      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer(), provideAgentTransport(MockTransport)],
+    });
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const el = fixture.nativeElement as HTMLElement;
+    expect(el.querySelector('main .ui-alert')).toBeNull();
+
+    const transport = TestBed.inject(AgentTransport) as MockTransport;
+    transport.status.set('reconnecting');
+    transport.error.set({ message: 'Connection to the assistant lost. Reconnecting…', retrying: true });
+    await fixture.whenStable();
+    const banner = el.querySelector('main .ui-alert')!;
+    expect(banner.getAttribute('role')).toBe('status');
+    expect(banner.textContent).toContain('Reconnecting');
+    expect(el.querySelector('textarea')?.disabled).toBe(false);
+
+    transport.status.set('idle');
+    await fixture.whenStable();
+    expect(el.querySelector('main .ui-alert')).toBeNull();
   });
 });

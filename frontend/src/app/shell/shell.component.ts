@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { UiAppLayoutComponent, UiBadgeComponent, UiButtonComponent, UiNavLinkComponent, UiStackComponent, UiTextComponent } from '@app/ui';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { UiAlertComponent, UiAppLayoutComponent, UiBadgeComponent, UiButtonComponent, UiNavLinkComponent, UiStackComponent, UiTextComponent } from '@app/ui';
 import { DEV_ROUTES } from '../dev/dev.routes';
+import { AgentTransport } from '../transport/agent-transport';
 
 /**
  * App shell (E3-S1): header with navigation, the main region for the routed page, and a
@@ -9,7 +10,7 @@ import { DEV_ROUTES } from '../dev/dev.routes';
  */
 @Component({
   selector: 'app-shell',
-  imports: [UiAppLayoutComponent, UiTextComponent, UiBadgeComponent, UiNavLinkComponent, UiButtonComponent, UiStackComponent],
+  imports: [UiAlertComponent, UiAppLayoutComponent, UiTextComponent, UiBadgeComponent, UiNavLinkComponent, UiButtonComponent, UiStackComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ui-app-layout [panelOpen]="panelOpen()" panelLabel="Assistant" panelId="assistant-panel">
@@ -32,6 +33,10 @@ import { DEV_ROUTES } from '../dev/dev.routes';
         >{{ panelOpen() ? 'Hide assistant' : 'Assistant' }}</ui-button>
       </ng-container>
 
+      @if (transport.status() === 'reconnecting') {
+        <!-- Non-blocking (E3-S3): the page stays usable while the transport retries. -->
+        <ui-alert tone="warning">{{ transport.error()?.message }}</ui-alert>
+      }
       <ng-content />
 
       <ng-container uiAppPanel>
@@ -41,6 +46,7 @@ import { DEV_ROUTES } from '../dev/dev.routes';
   `,
 })
 export class ShellComponent {
+  protected readonly transport = inject(AgentTransport);
   protected readonly panelOpen = signal(true);
   /** Dev-only pages; empty in production builds (dev.routes.prod.ts). */
   protected readonly devLinks = DEV_ROUTES.map((r) => ({ to: `/${r.path}`, label: String(r.title ?? r.path) }));
