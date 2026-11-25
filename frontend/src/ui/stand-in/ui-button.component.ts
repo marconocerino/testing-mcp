@@ -6,14 +6,23 @@ export type UiButtonVariant = 'default' | 'primary' | 'borderless';
 
 /**
  * Stand-in for the internal library's Button (`FttButton`). Part of the `@app/ui` contract:
- * selector `ui-button`, inputs `variant` and `disabled`, output `pressed`, label as content.
+ * selector `ui-button`, inputs `variant`, `disabled`, `type`, and the accessibility inputs
+ * `ariaLabel`, `ariaExpanded`, `ariaControls`; output `pressed`; label as content.
  */
 @Component({
   selector: 'ui-button',
   imports: [MatButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button type="button" [matButton]="appearance()" [disabled]="disabled()" (click)="pressed.emit()">
+    <button
+      [type]="type()"
+      [matButton]="appearance()"
+      [disabled]="disabled()"
+      [attr.aria-label]="ariaLabel() ?? null"
+      [attr.aria-expanded]="ariaExpanded() ?? null"
+      [attr.aria-controls]="ariaControls() ?? null"
+      (click)="pressed.emit()"
+    >
       <ng-content />
     </button>
   `,
@@ -21,6 +30,11 @@ export type UiButtonVariant = 'default' | 'primary' | 'borderless';
 export class UiButtonComponent {
   readonly variant = input<UiButtonVariant>('default');
   readonly disabled = input(false);
+  /** `submit` inside a form, so Enter in a field submits it. */
+  readonly type = input<'button' | 'submit'>('button');
+  readonly ariaLabel = input<string>();
+  readonly ariaExpanded = input<boolean>();
+  readonly ariaControls = input<string>();
   readonly pressed = output<void>();
 
   protected readonly appearance = computed(() => APPEARANCE[this.variant()]);
