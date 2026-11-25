@@ -1,0 +1,65 @@
+{
+  "component": "Alert",
+  "samples": [
+    {
+      "name": "Tones",
+      "kind": "default",
+      "note": "info and warning are status messages; danger is announced as an alert.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Column",
+          "children": [
+            "i",
+            "w",
+            "d"
+          ]
+        },
+        {
+          "id": "i",
+          "component": "Alert",
+          "text": "Balances are mock data."
+        },
+        {
+          "id": "w",
+          "component": "Alert",
+          "tone": "warning",
+          "title": "Market closed",
+          "text": "Orders will be queued until the next session."
+        },
+        {
+          "id": "d",
+          "component": "Alert",
+          "tone": "danger",
+          "title": "Order rejected",
+          "text": "Insufficient funds."
+        }
+      ]
+    },
+    {
+      "name": "Disclaimer from the store",
+      "kind": "edge",
+      "note": "disclaimerId shows approved wording; spec text is ignored.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Alert",
+          "disclaimerId": "paper-trading",
+          "text": "This text is ignored."
+        }
+      ]
+    },
+    {
+      "name": "Made-up disclaimer",
+      "kind": "invalid",
+      "note": "Rejected: only ids from the central disclaimer store.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Alert",
+          "disclaimerId": "guaranteed-returns"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,260 @@
+{
+  "component": "Table",
+  "samples": [
+    {
+      "name": "Orders, clickable rows",
+      "kind": "default",
+      "note": "Picking a row writes its id to /ui/selected and emits openOrder.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Table",
+          "rows": {
+            "path": "/orders"
+          },
+          "columns": [
+            {
+              "key": "instrument",
+              "header": "Instrument"
+            },
+            {
+              "key": "side",
+              "header": "Side"
+            },
+            {
+              "key": "qty",
+              "header": "Qty",
+              "format": "number",
+              "align": "end"
+            },
+            {
+              "key": "total",
+              "header": "Total",
+              "format": "currency",
+              "align": "end"
+            },
+            {
+              "key": "status",
+              "header": "Status",
+              "format": "status"
+            }
+          ],
+          "pageSize": 5,
+          "selection": {
+            "path": "/ui/selected"
+          },
+          "rowAction": {
+            "event": {
+              "name": "openOrder",
+              "context": {
+                "orderId": {
+                  "path": "/ui/selected"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "data": {
+        "/orders": [
+          {
+            "id": "ORD-1",
+            "instrument": "ALPN",
+            "side": "sell",
+            "qty": 5,
+            "total": 120.5,
+            "status": "filled"
+          },
+          {
+            "id": "ORD-2",
+            "instrument": "BRVX",
+            "side": "buy",
+            "qty": 10,
+            "total": 241.0,
+            "status": "pending"
+          },
+          {
+            "id": "ORD-3",
+            "instrument": "CTLM",
+            "side": "buy",
+            "qty": 15,
+            "total": 361.5,
+            "status": "rejected"
+          },
+          {
+            "id": "ORD-4",
+            "instrument": "DNSQ",
+            "side": "sell",
+            "qty": 20,
+            "total": 482.0,
+            "status": "cancelled"
+          },
+          {
+            "id": "ORD-5",
+            "instrument": "ALPN",
+            "side": "buy",
+            "qty": 25,
+            "total": 602.5,
+            "status": "filled"
+          },
+          {
+            "id": "ORD-6",
+            "instrument": "BRVX",
+            "side": "buy",
+            "qty": 30,
+            "total": 723.0,
+            "status": "pending"
+          },
+          {
+            "id": "ORD-7",
+            "instrument": "CTLM",
+            "side": "sell",
+            "qty": 35,
+            "total": 843.5,
+            "status": "rejected"
+          },
+          {
+            "id": "ORD-8",
+            "instrument": "DNSQ",
+            "side": "buy",
+            "qty": 40,
+            "total": 964.0,
+            "status": "cancelled"
+          },
+          {
+            "id": "ORD-9",
+            "instrument": "ALPN",
+            "side": "buy",
+            "qty": 45,
+            "total": 1084.5,
+            "status": "filled"
+          },
+          {
+            "id": "ORD-10",
+            "instrument": "BRVX",
+            "side": "sell",
+            "qty": 50,
+            "total": 1205.0,
+            "status": "pending"
+          },
+          {
+            "id": "ORD-11",
+            "instrument": "CTLM",
+            "side": "buy",
+            "qty": 55,
+            "total": 1325.5,
+            "status": "rejected"
+          },
+          {
+            "id": "ORD-12",
+            "instrument": "DNSQ",
+            "side": "buy",
+            "qty": 60,
+            "total": 1446.0,
+            "status": "cancelled"
+          }
+        ]
+      }
+    },
+    {
+      "name": "No rows",
+      "kind": "edge",
+      "note": "An empty list.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Table",
+          "rows": {
+            "path": "/orders"
+          },
+          "columns": [
+            {
+              "key": "instrument",
+              "header": "Instrument"
+            },
+            {
+              "key": "side",
+              "header": "Side"
+            },
+            {
+              "key": "qty",
+              "header": "Qty",
+              "format": "number",
+              "align": "end"
+            },
+            {
+              "key": "total",
+              "header": "Total",
+              "format": "currency",
+              "align": "end"
+            },
+            {
+              "key": "status",
+              "header": "Status",
+              "format": "status"
+            }
+          ]
+        }
+      ],
+      "data": {
+        "/orders": []
+      }
+    },
+    {
+      "name": "Literal rows",
+      "kind": "invalid",
+      "note": "Rejected (rule 5): rows must be bound, never written in the spec.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Table",
+          "rows": [
+            {
+              "id": "ORD-1",
+              "instrument": "ALPN",
+              "side": "sell",
+              "qty": 5,
+              "total": 120.5,
+              "status": "filled"
+            },
+            {
+              "id": "ORD-2",
+              "instrument": "BRVX",
+              "side": "buy",
+              "qty": 10,
+              "total": 241.0,
+              "status": "pending"
+            }
+          ],
+          "columns": [
+            {
+              "key": "instrument",
+              "header": "Instrument"
+            },
+            {
+              "key": "side",
+              "header": "Side"
+            },
+            {
+              "key": "qty",
+              "header": "Qty",
+              "format": "number",
+              "align": "end"
+            },
+            {
+              "key": "total",
+              "header": "Total",
+              "format": "currency",
+              "align": "end"
+            },
+            {
+              "key": "status",
+              "header": "Status",
+              "format": "status"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

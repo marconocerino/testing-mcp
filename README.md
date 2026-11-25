@@ -29,6 +29,8 @@ All data is mock data until security and compliance sign off (CLAUDE.md rule 6).
 
 **Everything at once (local dev environment):** `docker compose up --build`. Frontend on http://localhost:4200, services on ports 8081 and 8082 (`/actuator/health`).
 
+**Catalog gallery (dev only):** with `npx ng serve`, open http://localhost:4200/dev/catalog to see every catalog component rendered from the sample specs in `frontend/src/app/dev/catalog-gallery/samples/`. Production builds, including the compose image, leave the page out.
+
 Requirements: Node `^22.12.0` (`frontend/.nvmrc`), JDK 21 (Amazon Corretto) for running services outside Docker, Docker for compose.
 
 ## Secrets

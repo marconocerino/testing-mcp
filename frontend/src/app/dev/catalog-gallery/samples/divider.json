@@ -1,0 +1,78 @@
+{
+  "component": "Divider",
+  "samples": [
+    {
+      "name": "Horizontal",
+      "kind": "default",
+      "note": "The default axis.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Column",
+          "children": [
+            "a",
+            "d",
+            "b"
+          ]
+        },
+        {
+          "id": "a",
+          "component": "Text",
+          "text": "Above"
+        },
+        {
+          "id": "d",
+          "component": "Divider"
+        },
+        {
+          "id": "b",
+          "component": "Text",
+          "text": "Below"
+        }
+      ]
+    },
+    {
+      "name": "Vertical in a row",
+      "kind": "edge",
+      "note": "axis: vertical separates items in a Row.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Row",
+          "children": [
+            "a",
+            "d",
+            "b"
+          ]
+        },
+        {
+          "id": "a",
+          "component": "Text",
+          "text": "Left"
+        },
+        {
+          "id": "d",
+          "component": "Divider",
+          "axis": "vertical"
+        },
+        {
+          "id": "b",
+          "component": "Text",
+          "text": "Right"
+        }
+      ]
+    },
+    {
+      "name": "Unknown axis",
+      "kind": "invalid",
+      "note": "Rejected: axis must be horizontal or vertical.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Divider",
+          "axis": "diagonal"
+        }
+      ]
+    }
+  ]
+}

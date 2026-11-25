@@ -1,0 +1,49 @@
+{
+  "component": "EmptyState",
+  "samples": [
+    {
+      "name": "With next step",
+      "kind": "default",
+      "note": "The button emits openOrderTicket.",
+      "components": [
+        {
+          "id": "root",
+          "component": "EmptyState",
+          "title": "No orders yet",
+          "text": "Place your first paper trade.",
+          "actionLabel": "New order",
+          "action": {
+            "event": {
+              "name": "openOrderTicket"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Label without action",
+      "kind": "edge",
+      "note": "No button unless both actionLabel and action are set.",
+      "components": [
+        {
+          "id": "root",
+          "component": "EmptyState",
+          "title": "No accounts",
+          "actionLabel": "Add"
+        }
+      ]
+    },
+    {
+      "name": "No title",
+      "kind": "invalid",
+      "note": "Rejected: title is required.",
+      "components": [
+        {
+          "id": "root",
+          "component": "EmptyState",
+          "text": "Nothing to see."
+        }
+      ]
+    }
+  ]
+}

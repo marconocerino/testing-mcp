@@ -1,21 +1,13 @@
-import { Component, inject } from '@angular/core';
-import { A2uiRendererService, SurfaceComponent } from '@a2ui/angular';
-import { ACCOUNT_CARD_SPEC, MOCK_DATA, SURFACE_ID } from './spec/account-card.a2ui';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [SurfaceComponent],
+  imports: [RouterOutlet],
   styleUrl: './app.scss',
   template: `
     <h1>Trading app</h1>
-    <a2ui-v09-surface [surfaceId]="surfaceId" />
+    <router-outlet />
   `,
 })
-export class App {
-  protected readonly surfaceId = SURFACE_ID;
-
-  constructor() {
-    const renderer = inject(A2uiRendererService);
-    renderer.processMessages([...ACCOUNT_CARD_SPEC, ...MOCK_DATA]);
-  }
-}
+export class App {}

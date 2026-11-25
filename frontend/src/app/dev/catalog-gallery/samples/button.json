@@ -1,0 +1,118 @@
+{
+  "component": "Button",
+  "samples": [
+    {
+      "name": "Variants",
+      "kind": "default",
+      "note": "primary is filled, default outlined, borderless text-only. Each emits its action.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Row",
+          "children": [
+            "p",
+            "d",
+            "b"
+          ]
+        },
+        {
+          "id": "p",
+          "component": "Button",
+          "child": "pl",
+          "variant": "primary",
+          "action": {
+            "event": {
+              "name": "newOrder"
+            }
+          }
+        },
+        {
+          "id": "pl",
+          "component": "Text",
+          "text": "New order"
+        },
+        {
+          "id": "d",
+          "component": "Button",
+          "child": "dl",
+          "action": {
+            "event": {
+              "name": "viewAll"
+            }
+          }
+        },
+        {
+          "id": "dl",
+          "component": "Text",
+          "text": "View all"
+        },
+        {
+          "id": "b",
+          "component": "Button",
+          "child": "bl",
+          "variant": "borderless",
+          "action": {
+            "event": {
+              "name": "dismiss"
+            }
+          }
+        },
+        {
+          "id": "bl",
+          "component": "Text",
+          "text": "Dismiss"
+        }
+      ]
+    },
+    {
+      "name": "Action with bound context",
+      "kind": "edge",
+      "note": "The context is resolved at click time from the data model.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Button",
+          "child": "l",
+          "action": {
+            "event": {
+              "name": "openAccount",
+              "context": {
+                "accountId": {
+                  "path": "/account/id"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "l",
+          "component": "Text",
+          "text": {
+            "path": "/account/name"
+          }
+        }
+      ],
+      "data": {
+        "/account/id": "ACC-2",
+        "/account/name": "Open Savings"
+      }
+    },
+    {
+      "name": "No action",
+      "kind": "invalid",
+      "note": "Rejected: A2UI's Button schema requires action.",
+      "components": [
+        {
+          "id": "root",
+          "component": "Button",
+          "child": "l"
+        },
+        {
+          "id": "l",
+          "component": "Text",
+          "text": "Does nothing"
+        }
+      ]
+    }
+  ]
+}
