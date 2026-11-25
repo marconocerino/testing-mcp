@@ -57,6 +57,17 @@ describe('E5-S1: AG-UI endpoint', () => {
     assert.equal(ev[4]!.delta, 'Your recent orders.');
   });
 
+  it('gives a follow-up in the same thread the view on screen, so it can change it (E5-S5)', async () => {
+    model = scriptedModel(JSON.stringify(VALID_VIEW), JSON.stringify(VALID_VIEW), JSON.stringify(VALID_VIEW));
+    await events(await run({ ...input('Show my recent orders', 'f1'), threadId: 'follow-up-thread' }));
+    await events(await run({ ...input('Add a title', 'f2'), threadId: 'follow-up-thread' }));
+    await events(await run({ ...input('Show my recent orders', 'f3'), threadId: 'other-thread' }));
+    const current = (call: number) => model.calls[call]!.find((m) => m.role === 'system' && m.content.startsWith('The view on screen now is'));
+    assert.equal(current(0), undefined);
+    assert.match(current(1)!.content, /"id":"orders"/);
+    assert.equal(current(2), undefined, 'other threads start fresh');
+  });
+
   it('puts the run id in every log line as the trace id', async () => {
     model = scriptedModel(JSON.stringify(VALID_VIEW));
     logs.length = 0;

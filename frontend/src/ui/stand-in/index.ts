@@ -17,7 +17,6 @@ export { UiDividerComponent } from './ui-divider.component';
 export { UiEmptyStateComponent } from './ui-empty-state.component';
 export { UiNavLinkComponent } from './ui-nav-link.component';
 export { UiKeyValueListComponent, type UiKeyValueItem } from './ui-key-value-list.component';
-export { UiPromptInputComponent } from './ui-prompt-input.component';
 export { UiSelectComponent, type UiSelectOption } from './ui-select.component';
 export { UiSkeletonComponent } from './ui-skeleton.component';
 export { UiStackComponent, type UiStackAlign, type UiStackDirection, type UiStackJustify } from './ui-stack.component';

@@ -9,6 +9,8 @@ export interface GenerateViewRequest {
   history?: ChatMessage[];
   /** Surface the view replaces. */
   surfaceId: string;
+  /** The components currently on that surface, so follow-ups can change the view (E5-S5). */
+  currentView?: A2uiComponent[];
 }
 
 export interface GenerateViewDeps {
@@ -22,6 +24,8 @@ export interface GenerateViewDeps {
 export interface GeneratedView {
   /** Short text for the chat. */
   reply: string;
+  /** The components of the view (for follow-ups). */
+  components: A2uiComponent[];
   /** A2UI messages that put the view on the surface. Always valid. */
   messages: A2uiMessage[];
   /** How the view was produced. */
@@ -39,6 +43,14 @@ export async function generateView(request: GenerateViewRequest, deps: GenerateV
   const conversation: ChatMessage[] = [
     { role: 'system', content: deps.systemPrompt },
     ...(request.history ?? []),
+    ...(request.currentView
+      ? [
+          {
+            role: 'system' as const,
+            content: `The view on screen now is:\n${JSON.stringify(request.currentView)}\nIf the user asks to change it, return the whole updated view; otherwise build a new one.`,
+          },
+        ]
+      : []),
     { role: 'user', content: request.prompt },
   ];
 
@@ -69,18 +81,15 @@ export async function generateView(request: GenerateViewRequest, deps: GenerateV
   }
 
   deps.log('view.fallback', { errors: second.result.errors, ms: Date.now() - started, repairMs: Date.now() - repairStarted });
-  return {
-    reply: FALLBACK_REPLY,
-    messages: viewMessages(request.surfaceId, deps.catalogId, [
-      {
-        id: 'root',
-        component: 'EmptyState',
-        title: "I couldn't build that view",
-        text: 'Try asking for your accounts, recent orders or spending, or to prepare an order.',
-      },
-    ]),
-    outcome: 'fallback',
-  };
+  const fallback: A2uiComponent[] = [
+    {
+      id: 'root',
+      component: 'EmptyState',
+      title: "I couldn't build that view",
+      text: 'Try asking for your accounts, recent orders or spending, or to prepare an order.',
+    },
+  ];
+  return { reply: FALLBACK_REPLY, components: fallback, messages: viewMessages(request.surfaceId, deps.catalogId, fallback), outcome: 'fallback' };
 }
 
 interface Answer {
@@ -112,5 +121,5 @@ export function parseAnswer(raw: string): Answer | null {
 }
 
 function view(answer: Answer, outcome: GeneratedView['outcome'], surfaceId: string, catalogId: string): GeneratedView {
-  return { reply: answer.reply || 'Here is your view.', messages: viewMessages(surfaceId, catalogId, answer.components), outcome };
+  return { reply: answer.reply || 'Here is your view.', components: answer.components, messages: viewMessages(surfaceId, catalogId, answer.components), outcome };
 }

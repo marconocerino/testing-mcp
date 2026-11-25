@@ -104,7 +104,6 @@ ui-divider .mat-divider-vertical { min-height: 1.5em; }
 
 .ui-spacer { flex: 1; }
 
-.ui-prompt-input { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
 
 // Loading skeleton (E3-S4).
 .ui-skeleton { display: flex; flex-direction: column; gap: 16px; }
@@ -118,3 +117,17 @@ ui-divider .mat-divider-vertical { min-height: 1.5em; }
 .ui-skeleton__block { height: 96px; }
 @keyframes ui-skeleton-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 @media (prefers-reduced-motion: reduce) { .ui-skeleton__line, .ui-skeleton__block { animation: none; } }
+
+// CopilotKit chat (E5-S5) follows the library theme through its CSS variables.
+:root {
+  --copilot-kit-primary-color: var(--mat-sys-primary);
+  --copilot-kit-contrast-color: var(--mat-sys-on-primary);
+  --copilot-kit-background-color: var(--mat-sys-surface-container-low);
+  --copilot-kit-input-background-color: var(--mat-sys-surface);
+  --copilot-kit-secondary-color: var(--mat-sys-surface-container-high);
+  --copilot-kit-secondary-contrast-color: var(--mat-sys-on-surface);
+  --copilot-kit-separator-color: var(--mat-sys-outline-variant);
+  --copilot-kit-muted-color: var(--mat-sys-on-surface-variant);
+  --cpk-default-font-family: Roboto, sans-serif;
+}
+.ui-app-layout__panel copilot-chat { display: block; height: calc(100vh - 220px); min-height: 360px; }

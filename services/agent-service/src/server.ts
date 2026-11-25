@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { type BaseEvent, EventType, type Message, RunAgentInputSchema } from '@ag-ui/core';
 import { EventEncoder } from '@ag-ui/encoder';
 import express, { type Express } from 'express';
+import type { A2uiComponent } from './a2ui.js';
 import { type GenerateViewDeps, generateView } from './generate-view.js';
 import { type ChatMessage, ModelBusyError } from './llm.js';
 
@@ -18,6 +19,7 @@ export type Logger = (event: string, data?: Record<string, unknown>) => void;
  */
 export function createServer(deps: Omit<GenerateViewDeps, 'log'>, log: Logger): Express {
   const app = express();
+  const views = new ViewMemory(500);
   app.use(express.json({ limit: '256kb' }));
 
   app.get('/health', (_req, res) => {
@@ -48,7 +50,9 @@ export function createServer(deps: Omit<GenerateViewDeps, 'log'>, log: Logger): 
       if (!request) throw new UserFacingError('Send a message to get a view.');
       trace('run.started', { prompt: request.prompt.slice(0, 200), surfaceId: request.surfaceId });
 
-      const result = await generateView(request, { ...deps, log: trace }, abort.signal);
+      const viewKey = `${input.threadId}/${request.surfaceId}`;
+      const result = await generateView({ ...request, currentView: views.get(viewKey) }, { ...deps, log: trace }, abort.signal);
+      if (result.outcome !== 'fallback') views.set(viewKey, result.components);
       for (const message of result.messages) {
         send({ type: EventType.CUSTOM, name: A2UI_EVENT, value: message } as BaseEvent);
       }
@@ -81,6 +85,24 @@ export function createServer(deps: Omit<GenerateViewDeps, 'log'>, log: Logger): 
 }
 
 class UserFacingError extends Error {}
+
+/**
+ * The last valid view per conversation thread and surface, so a follow-up ("add the last 5
+ * orders below the accounts") can change it. In memory and bounded: a restart forgets it,
+ * which only means the next request builds a fresh view. Layout only, never data.
+ */
+class ViewMemory {
+  private readonly views = new Map<string, A2uiComponent[]>();
+  constructor(private readonly max: number) {}
+  get(key: string): A2uiComponent[] | undefined {
+    return this.views.get(key);
+  }
+  set(key: string, components: A2uiComponent[]): void {
+    this.views.delete(key);
+    this.views.set(key, components);
+    if (this.views.size > this.max) this.views.delete(this.views.keys().next().value!);
+  }
+}
 
 /**
  * The request for `generate_view`: the last user message is the prompt, earlier text turns are

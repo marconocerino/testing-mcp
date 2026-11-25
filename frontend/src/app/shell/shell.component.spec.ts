@@ -7,12 +7,13 @@ import { a2uiConfig } from '../catalog/catalog';
 import { provideCatalogRenderer } from '../catalog/catalog-renderer.service';
 import { AgentTransport, provideAgentTransport } from '../transport/agent-transport';
 import { MockTransport } from '../transport/mock-transport';
+import { provideTestCopilotKit } from '../transport/testing/test-copilotkit';
 
 describe('E3-S1: app shell', () => {
   async function renderApp() {
     TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer(), provideAgentTransport(MockTransport)],
+      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer(), provideAgentTransport(MockTransport), provideTestCopilotKit()],
     });
     const fixture = TestBed.createComponent(App);
     await TestBed.inject(Router).navigateByUrl('/');
@@ -77,7 +78,7 @@ describe('E3-S3: reconnect banner', () => {
   it('shows a non-blocking banner while the transport reconnects', async () => {
     TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer(), provideAgentTransport(MockTransport)],
+      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer(), provideAgentTransport(MockTransport), provideTestCopilotKit()],
     });
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
@@ -91,7 +92,6 @@ describe('E3-S3: reconnect banner', () => {
     const banner = el.querySelector('main .ui-alert')!;
     expect(banner.getAttribute('role')).toBe('status');
     expect(banner.textContent).toContain('Reconnecting');
-    expect(el.querySelector('textarea')?.disabled).toBe(false);
 
     transport.status.set('idle');
     await fixture.whenStable();
