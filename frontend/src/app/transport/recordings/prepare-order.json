@@ -1,0 +1,71 @@
+{
+  "id": "prepare-order",
+  "title": "Prepare an order",
+  "keywords": [
+    "buy",
+    "sell",
+    "purchase",
+    "shares"
+  ],
+  "messages": [
+    {
+      "version": "v0.9",
+      "createSurface": {
+        "surfaceId": "main",
+        "catalogId": "urn:trading-app:catalog:v1"
+      }
+    },
+    {
+      "version": "v0.9",
+      "updateComponents": {
+        "surfaceId": "main",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "title",
+              "ticket"
+            ]
+          },
+          {
+            "id": "title",
+            "component": "Text",
+            "text": "New order",
+            "variant": "title"
+          },
+          {
+            "id": "ticket",
+            "component": "OrderTicket",
+            "instrument": "ALPN",
+            "side": "buy",
+            "quantity": 10,
+            "orderType": "market"
+          }
+        ]
+      }
+    },
+    {
+      "version": "v0.9",
+      "updateComponents": {
+        "surfaceId": "main",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "title",
+              "ticket",
+              "note"
+            ]
+          },
+          {
+            "id": "note",
+            "component": "Alert",
+            "disclaimerId": "paper-trading"
+          }
+        ]
+      }
+    }
+  ]
+}

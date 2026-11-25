@@ -1,0 +1,139 @@
+{
+  "id": "recent-orders",
+  "title": "Recent orders",
+  "keywords": [
+    "order",
+    "orders",
+    "trade",
+    "trades",
+    "recent"
+  ],
+  "messages": [
+    {
+      "version": "v0.9",
+      "createSurface": {
+        "surfaceId": "main",
+        "catalogId": "urn:trading-app:catalog:v1"
+      }
+    },
+    {
+      "version": "v0.9",
+      "updateComponents": {
+        "surfaceId": "main",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "title"
+            ]
+          },
+          {
+            "id": "title",
+            "component": "Text",
+            "text": "Recent orders",
+            "variant": "title"
+          }
+        ]
+      }
+    },
+    {
+      "version": "v0.9",
+      "updateComponents": {
+        "surfaceId": "main",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "title",
+              "card"
+            ]
+          },
+          {
+            "id": "card",
+            "component": "Card",
+            "child": "cardCol"
+          },
+          {
+            "id": "cardCol",
+            "component": "Column",
+            "children": [
+              "table",
+              "actions"
+            ]
+          },
+          {
+            "id": "table",
+            "component": "Table",
+            "rows": {
+              "path": "/orders"
+            },
+            "pageSize": 5,
+            "columns": [
+              {
+                "key": "placed",
+                "header": "Date",
+                "format": "date"
+              },
+              {
+                "key": "symbol",
+                "header": "Symbol"
+              },
+              {
+                "key": "side",
+                "header": "Side"
+              },
+              {
+                "key": "quantity",
+                "header": "Qty",
+                "format": "number"
+              },
+              {
+                "key": "total",
+                "header": "Total",
+                "format": "currency"
+              },
+              {
+                "key": "status",
+                "header": "Status",
+                "format": "status"
+              }
+            ]
+          },
+          {
+            "id": "actions",
+            "component": "Row",
+            "children": [
+              "new",
+              "paper"
+            ],
+            "align": "center"
+          },
+          {
+            "id": "new",
+            "component": "Button",
+            "child": "newL",
+            "variant": "primary",
+            "action": {
+              "event": {
+                "name": "openOrderTicket"
+              }
+            }
+          },
+          {
+            "id": "newL",
+            "component": "Text",
+            "text": "New order"
+          },
+          {
+            "id": "paper",
+            "component": "Badge",
+            "text": "Paper trading",
+            "tone": "info"
+          }
+        ]
+      }
+    }
+  ]
+}

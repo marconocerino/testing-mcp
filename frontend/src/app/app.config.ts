@@ -5,6 +5,8 @@ import { provideCopilotKit } from '@copilotkit/angular';
 import { routes } from './app.routes';
 import { a2uiConfig } from './catalog/catalog';
 import { provideCatalogRenderer } from './catalog/catalog-renderer.service';
+import { provideAgentTransport } from './transport/agent-transport';
+import { MockTransport } from './transport/mock-transport';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,6 +14,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideA2Ui(a2uiConfig()),
     provideCatalogRenderer(),
+    // The agent connection. MockTransport replays recorded views; swap for HttpTransport (E3-S3).
+    provideAgentTransport(MockTransport),
     // Only proves CopilotKit bootstraps alongside A2UI on the same Angular version.
     // No runtimeUrl: the self-hosted runtime arrives in a later story.
     provideCopilotKit({}),

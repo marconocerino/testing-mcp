@@ -1,0 +1,113 @@
+{
+  "id": "spending",
+  "title": "Spending this month",
+  "keywords": [
+    "spend",
+    "spending",
+    "month",
+    "category",
+    "categories"
+  ],
+  "messages": [
+    {
+      "version": "v0.9",
+      "createSurface": {
+        "surfaceId": "main",
+        "catalogId": "urn:trading-app:catalog:v1"
+      }
+    },
+    {
+      "version": "v0.9",
+      "updateComponents": {
+        "surfaceId": "main",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "title"
+            ]
+          },
+          {
+            "id": "title",
+            "component": "Text",
+            "text": "Spending this month",
+            "variant": "title"
+          }
+        ]
+      }
+    },
+    {
+      "version": "v0.9",
+      "updateComponents": {
+        "surfaceId": "main",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "title",
+              "total",
+              "card"
+            ]
+          },
+          {
+            "id": "total",
+            "component": "Stat",
+            "label": "Total spent in November",
+            "value": {
+              "path": "/spending/total"
+            },
+            "format": "currency"
+          },
+          {
+            "id": "card",
+            "component": "Card",
+            "child": "kv"
+          },
+          {
+            "id": "kv",
+            "component": "KeyValueList",
+            "items": [
+              {
+                "label": "Rent and bills",
+                "value": {
+                  "path": "/spending/rent"
+                },
+                "format": "currency"
+              },
+              {
+                "label": "Groceries",
+                "value": {
+                  "path": "/spending/groceries"
+                },
+                "format": "currency"
+              },
+              {
+                "label": "Transport",
+                "value": {
+                  "path": "/spending/transport"
+                },
+                "format": "currency"
+              },
+              {
+                "label": "Eating out",
+                "value": {
+                  "path": "/spending/eatingOut"
+                },
+                "format": "currency"
+              },
+              {
+                "label": "Other",
+                "value": {
+                  "path": "/spending/other"
+                },
+                "format": "currency"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

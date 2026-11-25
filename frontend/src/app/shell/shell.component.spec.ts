@@ -5,12 +5,14 @@ import { App } from '../app';
 import { routes } from '../app.routes';
 import { a2uiConfig } from '../catalog/catalog';
 import { provideCatalogRenderer } from '../catalog/catalog-renderer.service';
+import { provideAgentTransport } from '../transport/agent-transport';
+import { MockTransport } from '../transport/mock-transport';
 
 describe('E3-S1: app shell', () => {
   async function renderApp() {
     TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer()],
+      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer(), provideAgentTransport(MockTransport)],
     });
     const fixture = TestBed.createComponent(App);
     await TestBed.inject(Router).navigateByUrl('/');

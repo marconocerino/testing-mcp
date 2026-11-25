@@ -101,3 +101,5 @@ ui-divider .mat-divider-vertical { min-height: 1.5em; }
 .ui-nav-link--active { background: var(--mat-sys-secondary-container); }
 
 .ui-spacer { flex: 1; }
+
+.ui-prompt-input { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
