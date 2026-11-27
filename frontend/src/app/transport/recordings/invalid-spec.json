@@ -1,0 +1,35 @@
+{
+  "id": "invalid-spec",
+  "title": "Invalid spec (demo of the fallback card)",
+  "keywords": [
+    "broken",
+    "invalid"
+  ],
+  "messages": [
+    {
+      "version": "v0.9",
+      "createSurface": {
+        "surfaceId": "main",
+        "catalogId": "urn:trading-app:catalog:v1"
+      }
+    },
+    {
+      "version": "v0.9",
+      "updateComponents": {
+        "surfaceId": "main",
+        "components": [
+          {
+            "id": "root",
+            "component": "Card",
+            "child": "frame"
+          },
+          {
+            "id": "frame",
+            "component": "Iframe",
+            "src": "https://example.com"
+          }
+        ]
+      }
+    }
+  ]
+}

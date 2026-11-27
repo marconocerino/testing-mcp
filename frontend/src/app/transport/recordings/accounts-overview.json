@@ -1,0 +1,169 @@
+{
+  "id": "accounts-overview",
+  "title": "Accounts overview",
+  "keywords": [
+    "account",
+    "balance",
+    "overview",
+    "cash",
+    "compact"
+  ],
+  "messages": [
+    {
+      "version": "v0.9",
+      "createSurface": {
+        "surfaceId": "main",
+        "catalogId": "urn:trading-app:catalog:v1"
+      }
+    },
+    {
+      "version": "v0.9",
+      "updateComponents": {
+        "surfaceId": "main",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "title"
+            ]
+          },
+          {
+            "id": "title",
+            "component": "Text",
+            "text": "Your accounts",
+            "variant": "title"
+          }
+        ]
+      }
+    },
+    {
+      "version": "v0.9",
+      "updateComponents": {
+        "surfaceId": "main",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "title",
+              "tiles"
+            ]
+          },
+          {
+            "id": "tiles",
+            "component": "Row",
+            "children": [
+              "c1",
+              "c2"
+            ]
+          },
+          {
+            "id": "c1",
+            "component": "Card",
+            "child": "s1",
+            "weight": 1
+          },
+          {
+            "id": "s1",
+            "component": "Stat",
+            "label": "Total balance",
+            "value": {
+              "path": "/totals/balance"
+            },
+            "change": {
+              "path": "/totals/todayChange"
+            },
+            "format": "currency"
+          },
+          {
+            "id": "c2",
+            "component": "Card",
+            "child": "s2",
+            "weight": 1
+          },
+          {
+            "id": "s2",
+            "component": "Stat",
+            "label": "Cash",
+            "value": {
+              "path": "/totals/cash"
+            },
+            "format": "currency"
+          }
+        ]
+      }
+    },
+    {
+      "version": "v0.9",
+      "updateComponents": {
+        "surfaceId": "main",
+        "components": [
+          {
+            "id": "root",
+            "component": "Column",
+            "children": [
+              "title",
+              "tiles",
+              "acc"
+            ]
+          },
+          {
+            "id": "acc",
+            "component": "Card",
+            "child": "accCol"
+          },
+          {
+            "id": "accCol",
+            "component": "Column",
+            "children": [
+              "accH",
+              "accT"
+            ]
+          },
+          {
+            "id": "accH",
+            "component": "Text",
+            "text": "Accounts",
+            "variant": "heading"
+          },
+          {
+            "id": "accT",
+            "component": "Table",
+            "rows": {
+              "path": "/accounts"
+            },
+            "columns": [
+              {
+                "key": "name",
+                "header": "Account"
+              },
+              {
+                "key": "type",
+                "header": "Type"
+              },
+              {
+                "key": "balance",
+                "header": "Balance",
+                "format": "currency"
+              }
+            ],
+            "selection": {
+              "path": "/ui/account"
+            },
+            "rowAction": {
+              "event": {
+                "name": "showAccount",
+                "context": {
+                  "accountId": {
+                    "path": "/ui/account"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

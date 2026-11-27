@@ -7,6 +7,8 @@ html {
   @include mat.theme((color: mat.$azure-palette, typography: Roboto, density: 0));
 }
 
+body { margin: 0; font: var(--mat-sys-body-medium); }
+
 // Typography (Title, Microcopy, Label in the internal library).
 .ui-type-headline { font: var(--mat-sys-headline-small); margin: 0; }
 .ui-type-title { font: var(--mat-sys-title-medium); margin: 0; }
@@ -58,3 +60,56 @@ ui-divider .mat-divider-vertical { min-height: 1.5em; }
 .ui-empty-state { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 24px; text-align: center; }
 
 .ui-field { width: 100%; }
+
+// Application frame (E3-S1): header on top, main region below.
+.ui-app-layout {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}
+.ui-app-layout__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 24px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface-container-low);
+}
+.ui-app-layout__main { padding: 24px; min-width: 0; outline: none; }
+.ui-app-layout__skip {
+  position: absolute;
+  left: -9999px;
+  &:focus { left: 8px; top: 8px; z-index: 10; padding: 8px 12px; background: var(--mat-sys-surface); }
+}
+.ui-nav-link--active { background: var(--mat-sys-secondary-container); }
+
+.ui-spacer { flex: 1; }
+
+
+// Loading skeleton (E3-S4).
+.ui-skeleton { display: flex; flex-direction: column; gap: 16px; }
+.ui-skeleton__line, .ui-skeleton__block {
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--mat-sys-surface-container) 25%, var(--mat-sys-surface-container-high) 50%, var(--mat-sys-surface-container) 75%);
+  background-size: 200% 100%;
+  animation: ui-skeleton-shimmer 1.4s ease-in-out infinite;
+}
+.ui-skeleton__line--title { height: 28px; width: 40%; }
+.ui-skeleton__block { height: 96px; }
+@keyframes ui-skeleton-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .ui-skeleton__line, .ui-skeleton__block { animation: none; } }
+
+// CopilotKit's sidebar chat (E5-S5) follows the library theme through its CSS variables.
+:root {
+  --copilot-kit-primary-color: var(--mat-sys-primary);
+  --copilot-kit-contrast-color: var(--mat-sys-on-primary);
+  --copilot-kit-background-color: var(--mat-sys-surface-container-low);
+  --copilot-kit-input-background-color: var(--mat-sys-surface);
+  --copilot-kit-secondary-color: var(--mat-sys-surface-container-high);
+  --copilot-kit-secondary-contrast-color: var(--mat-sys-on-surface);
+  --copilot-kit-separator-color: var(--mat-sys-outline-variant);
+  --copilot-kit-muted-color: var(--mat-sys-on-surface-variant);
+  --cpk-default-font-family: Roboto, sans-serif;
+}

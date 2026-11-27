@@ -1,38 +1,51 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { A2uiRendererService, provideA2Ui } from '@a2ui/angular';
 import { provideCopilotKit } from '@copilotkit/angular';
-import { App } from './app';
 import { routes } from './app.routes';
 import { DEV_ROUTES } from './dev/dev.routes';
 import { a2uiConfig } from './catalog/catalog';
 import { provideCatalogRenderer } from './catalog/catalog-renderer.service';
-import { HomePage } from './home/home.page';
-import { SURFACE_ID } from './spec/account-card.a2ui';
+import { ACCOUNT_CARD_SPEC, MOCK_DATA, SURFACE_ID } from './spec/account-card.a2ui';
+import { SURFACE_DATA } from './data/mock-data';
+import { SurfaceHostComponent } from './surface/surface-host.component';
+import { SurfaceSessionService } from './surface/surface-session.service';
+import { A2uiMessage, provideAgentTransport } from './transport/agent-transport';
+import { MockTransport } from './transport/mock-transport';
+
+@Component({ imports: [SurfaceHostComponent], template: `<app-surface-host surfaceId="${SURFACE_ID}" />` })
+class CardHost {}
 
 describe('E0-S1: library component renders from a hand-written A2UI spec', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [App, HomePage],
-      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer(), provideCopilotKit({})],
-    }).compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [CardHost],
+      providers: [
+        provideA2Ui(a2uiConfig()),
+        provideCatalogRenderer(),
+        provideCopilotKit({}),
+        provideAgentTransport(MockTransport),
+        // This spec brings its own data (MOCK_DATA below).
+        { provide: SURFACE_DATA, useValue: () => ({}) },
+      ],
+    });
   });
 
   it('renders the spec Card through the @app/ui card with bound mock data', async () => {
-    const fixture = TestBed.createComponent(HomePage);
+    TestBed.inject(SurfaceSessionService).load([...ACCOUNT_CARD_SPEC, ...MOCK_DATA] as unknown as A2uiMessage[]);
+    const fixture = TestBed.createComponent(CardHost);
     await fixture.whenStable();
-    const el = fixture.nativeElement as HTMLElement;
-
-    const card = el.querySelector('ui-card[data-testid="library-card"] mat-card');
+    const card = (fixture.nativeElement as HTMLElement).querySelector('ui-card[data-testid="library-card"] mat-card');
     expect(card).toBeTruthy();
     expect(card?.classList).toContain('mat-mdc-card');
     expect(card?.textContent).toContain('Mock Brokerage Account');
   });
 
   it('rejects a spec that uses a component outside the catalog', () => {
-    TestBed.createComponent(HomePage);
     const renderer = TestBed.inject(A2uiRendererService);
+    renderer.processMessages([ACCOUNT_CARD_SPEC[0]] as never);
     expect(() =>
       renderer.processMessages([
         {
@@ -42,34 +55,34 @@ describe('E0-S1: library component renders from a hand-written A2UI spec', () =>
             { id: 'x', component: 'Iframe', src: 'https://example.com' },
           ] },
         },
-      ]),
+      ] as never),
     ).toThrow(/Iframe/);
   });
 
   it('rejects props the catalog schema does not declare', () => {
-    TestBed.createComponent(HomePage);
     const renderer = TestBed.inject(A2uiRendererService);
+    renderer.processMessages([ACCOUNT_CARD_SPEC[0]] as never);
     expect(() =>
       renderer.processMessages([
         {
           version: 'v0.9',
           updateComponents: { surfaceId: SURFACE_ID, components: [{ id: 'account-name', component: 'Text', text: 'hi', html: '<b>x</b>' }] },
         },
-      ]),
+      ] as never),
     ).toThrow(/Unrecognized key/);
   });
 });
 
-describe('E1-S5: routes', () => {
+describe('routes', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer()],
+      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer(), provideAgentTransport(MockTransport)],
     });
   });
 
-  it('the shell shows the home page at /', async () => {
+  it('shows the workspace at /, with a welcome until the assistant builds a view', async () => {
     const harness = await RouterTestingHarness.create('/');
-    expect(harness.routeNativeElement?.querySelector('mat-card')?.textContent).toContain('Mock Brokerage Account');
+    expect(harness.routeNativeElement?.querySelector('app-surface-host')?.textContent).toContain('No view yet');
   });
 
   it('serves the catalog gallery at /dev/catalog in dev mode', async () => {
@@ -80,7 +93,6 @@ describe('E1-S5: routes', () => {
 
   it('the gallery is only in the dev routes, so production builds leave it out', () => {
     expect(DEV_ROUTES.map((r) => r.path)).toEqual(['dev/catalog']);
-    // Tests and `ng serve` use dev.routes.ts; production builds replace it with an empty list.
     expect(routes.some((r) => r.path === 'dev/catalog')).toBe(true);
   });
 });

@@ -1,0 +1,28 @@
+{
+  "id": "fallback",
+  "title": "No recording matches",
+  "keywords": [],
+  "messages": [
+    {
+      "version": "v0.9",
+      "createSurface": {
+        "surfaceId": "main",
+        "catalogId": "urn:trading-app:catalog:v1"
+      }
+    },
+    {
+      "version": "v0.9",
+      "updateComponents": {
+        "surfaceId": "main",
+        "components": [
+          {
+            "id": "root",
+            "component": "EmptyState",
+            "title": "I can't build that view yet",
+            "text": "In this demo I can show your accounts, recent orders or spending, or prepare an order."
+          }
+        ]
+      }
+    }
+  ]
+}

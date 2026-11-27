@@ -1,13 +1,17 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AssistantSidebarComponent } from './shell/assistant-sidebar.component';
+import { ShellComponent } from './shell/shell.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, ShellComponent, AssistantSidebarComponent],
   styleUrl: './app.scss',
   template: `
-    <h1>Trading app</h1>
-    <router-outlet />
+    <app-shell>
+      <router-outlet />
+    </app-shell>
+    <app-assistant-sidebar />
   `,
 })
 export class App {}
