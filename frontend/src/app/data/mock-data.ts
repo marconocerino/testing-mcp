@@ -37,7 +37,7 @@ export interface MockTransaction {
   runningBalance: number;
 }
 
-const DESCRIPTIONS = ['Salary', 'Groceries', 'Rent', 'Coffee shop', 'Transfer from Everyday', 'Electricity bill', 'Restaurant', 'Train ticket', 'Online shop', 'Interest', 'Phone bill', 'Pharmacy'];
+const DESCRIPTIONS = ['Salary', 'Groceries', 'Rent', 'Coffee shop', 'Transfer in', 'Electricity bill', 'Restaurant', 'Train ticket', 'Online shop', 'Interest', 'Phone bill', 'Pharmacy'];
 
 /**
  * Deterministic mock transactions: 18 per account in November 2026, newest first, with the
@@ -50,7 +50,7 @@ export function mockTransactions(accounts: { id: string; balance: number }[]): M
     for (let i = 0; i < 18; i++) {
       const day = 24 - Math.floor(i * 1.3);
       const description = DESCRIPTIONS[(i * 5 + a * 3) % DESCRIPTIONS.length]!;
-      const incoming = description === 'Salary' || description === 'Interest' || description.startsWith('Transfer');
+      const incoming = description === 'Salary' || description === 'Interest' || description === 'Transfer in';
       const amount = Math.round(((((i + 3) * (a + 7) * 37) % 9000) / 100 + 5) * (incoming ? 4 : 1) * (incoming ? 1 : -1) * 100) / 100;
       out.push({ id: `${account.id}-T${i + 1}`, accountId: account.id, date: `2026-11-${String(day).padStart(2, '0')}`, description, amount, runningBalance: Math.round(balance * 100) / 100 });
       balance -= amount;
@@ -62,7 +62,17 @@ export function mockTransactions(accounts: { id: string; balance: number }[]): M
 /** The full mock data model, with derived lists the default views bind to. */
 export function mockDataModel(): Record<string, unknown> {
   const model = structuredClone(MOCK_DATA_MODEL);
-  return { ...model, recentOrders: model.orders.slice(0, 5), transactions: mockTransactions(model.accounts) };
+  return {
+    ...model,
+    recentOrders: model.orders.slice(0, 5),
+    transactions: mockTransactions(model.accounts),
+    // Short texts the views show next to figures; data, so they live here, not in specs.
+    summary: {
+      asOf: 'Data as of Nov 27, 10:42',
+      cashCaption: `Across ${model.accounts.length} accounts`,
+      investedCaption: 'In your Portfolio account',
+    },
+  };
 }
 
 /** Initial data for a new surface. Tests provide their own. */

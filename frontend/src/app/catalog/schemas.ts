@@ -61,6 +61,8 @@ export const StatApi = {
       format: z.enum(['number', 'currency', 'percent']).default('number').describe('How to display value and change.').optional(),
       currency,
       change: bound('Optional change since the previous period, bound to a number, shown in the same format as value.').optional(),
+      changeLabel: dynString('Optional words after the change, such as "today".').optional(),
+      caption: dynString('Optional small line under the figure, such as "Across 4 accounts". Bind it when it contains data.').optional(),
       weight,
     })
     .strict(),

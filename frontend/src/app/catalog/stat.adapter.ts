@@ -9,7 +9,9 @@ import { StatApi } from './schemas';
   selector: 'app-catalog-stat',
   imports: [UiStatComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<ui-stat [label]="label()" [value]="value()" [change]="change()" [trend]="trend()" />`,
+  template: `
+    <ui-stat [label]="label()" [value]="value()" [change]="change()" [changeLabel]="changeLabel()" [caption]="caption()" [trend]="trend()" />
+  `,
 })
 export class StatAdapterComponent extends CatalogAdapter<typeof StatApi> {
   private readonly format = this.prop<ValueFormat>('format', 'number');
@@ -18,6 +20,8 @@ export class StatAdapterComponent extends CatalogAdapter<typeof StatApi> {
   private readonly rawChange = this.prop<number | undefined>('change', undefined);
 
   protected readonly label = this.prop<string>('label', '');
+  protected readonly changeLabel = this.prop<string | undefined>('changeLabel', undefined);
+  protected readonly caption = this.prop<string | undefined>('caption', undefined);
   protected readonly value = computed(() => formatValue(this.rawValue(), this.format(), this.currency()));
   protected readonly change = computed(() =>
     this.rawChange() === undefined ? undefined : formatValue(this.rawChange(), this.format(), this.currency(), true),

@@ -1,4 +1,4 @@
-# UI component catalog urn:trading-app:catalog:v1 (schema 1.0.0, A2UI v0.9)
+# UI component catalog urn:trading-app:catalog:v1 (schema 1.1.0, A2UI v0.9)
 
 ## Rules
 
@@ -63,6 +63,8 @@ Use Stat for one headline figure with a label and optional change, such as total
 - `format` (one of "number" | "currency" | "percent", optional, default "number"): How to display value and change.
 - `currency` (text, or a binding {"path": "/..."}, optional): ISO 4217 currency code for `currency` values. Defaults to USD.
 - `change` (binding only: {"path": "/..."}, optional): Optional change since the previous period, bound to a number, shown in the same format as value.
+- `changeLabel` (text, or a binding {"path": "/..."}, optional): Optional words after the change, such as "today".
+- `caption` (text, or a binding {"path": "/..."}, optional): Optional small line under the figure, such as "Across 4 accounts". Bind it when it contains data.
 - `weight` (number, optional): Relative weight inside a Row or Column, like CSS 'flex-grow'. Only for direct children of a Row or Column.
 
 ### KeyValueList

@@ -11,14 +11,25 @@ describe('E1-S3: content adapters', () => {
       const el = await h.render([{ ...stat, format: 'currency', change: { path: '/today' } }], { '/total': 48210.55, '/today': 412.3 });
       expect(el.querySelector('.ui-stat__label')?.textContent).toBe('Total balance');
       expect(el.querySelector('.ui-stat__value')?.textContent).toBe('$48,210.55');
-      expect(el.querySelector('ui-badge')?.textContent?.trim()).toBe('+$412.30');
-      expect(el.querySelector('ui-badge mat-chip')?.classList).toContain('ui-tone--success');
+      expect(el.querySelector('.ui-stat__change')?.textContent?.trim()).toBe('+$412.30');
+      expect(el.querySelector('.ui-stat__change')?.classList).toContain('ui-trend--up');
+    });
+
+    it('shows a change label after the change and a caption under the figure (catalog 1.1)', async () => {
+      const el = await h.render(
+        [{ ...stat, format: 'currency', change: { path: '/today' }, changeLabel: 'today', caption: { path: '/caption' } }],
+        { '/total': 48210.55, '/today': -12.5, '/caption': 'Across 4 accounts' },
+      );
+      expect(el.querySelector('.ui-stat__change')?.textContent?.replace(/\s+/g, ' ').trim()).toBe('-$12.50 today');
+      expect(el.querySelector('.ui-stat__change')?.classList).toContain('ui-trend--down');
+      expect(el.querySelector('.ui-stat__caption')?.textContent).toBe('Across 4 accounts');
     });
 
     it('defaults to plain numbers, hides the change when absent and shows a dash for missing data', async () => {
       const el = await h.render([stat]);
       expect(el.querySelector('.ui-stat__value')?.textContent).toBe('—');
-      expect(el.querySelector('ui-badge')).toBeNull();
+      expect(el.querySelector('.ui-stat__change')).toBeNull();
+      expect(el.querySelector('.ui-stat__caption')).toBeNull();
       await h.updateData('/total', 1234.5);
       expect(el.querySelector('.ui-stat__value')?.textContent).toBe('1,234.5');
     });

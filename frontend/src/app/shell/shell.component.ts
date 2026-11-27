@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { UiAppLayoutComponent, UiBadgeComponent, UiNavLinkComponent, UiStackComponent, UiTextComponent } from '@app/ui';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { UiAppLayoutComponent, UiAvatarComponent, UiBadgeComponent, UiNavLinkComponent, UiStackComponent } from '@app/ui';
+import { SURFACE_DATA } from '../data/mock-data';
 import { DEV_ROUTES } from '../dev/dev.routes';
 
 /**
@@ -9,12 +10,11 @@ import { DEV_ROUTES } from '../dev/dev.routes';
  */
 @Component({
   selector: 'app-shell',
-  imports: [UiAppLayoutComponent, UiTextComponent, UiBadgeComponent, UiNavLinkComponent, UiStackComponent],
+  imports: [UiAppLayoutComponent, UiAvatarComponent, UiBadgeComponent, UiNavLinkComponent, UiStackComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ui-app-layout>
+    <ui-app-layout appName="Trading">
       <ng-container uiAppHeader>
-        <ui-text variant="title">Trading</ui-text>
         <ui-badge tone="warning">Mock data</ui-badge>
         <nav aria-label="Main">
           <ui-stack direction="horizontal" align="center">
@@ -26,6 +26,8 @@ import { DEV_ROUTES } from '../dev/dev.routes';
             }
           </ui-stack>
         </nav>
+        <span class="ui-spacer"></span>
+        <ui-avatar [name]="userName" />
       </ng-container>
 
       <ng-content />
@@ -33,6 +35,8 @@ import { DEV_ROUTES } from '../dev/dev.routes';
   `,
 })
 export class ShellComponent {
+  /** The signed-in user; the mock user until SSO (E3-S1, deferred). */
+  protected readonly userName = String((inject(SURFACE_DATA)()['user'] as { name?: string } | undefined)?.name ?? '');
   /** The default views, then the tab where the user builds their own. */
   protected readonly tabs = [
     { to: '/dashboard', label: 'Dashboard' },

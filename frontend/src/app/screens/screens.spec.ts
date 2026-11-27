@@ -82,9 +82,14 @@ describe('E4-S2: Dashboard', () => {
   it('shows total balance, cash and invested, the accounts and the five most recent orders with status', async () => {
     const { main } = await renderAt('/dashboard');
     const stats = [...main().querySelectorAll('.ui-stat')].map((s) =>
-      [...s.querySelectorAll('.ui-stat__label, .ui-stat__value, ui-badge')].map((x) => x.textContent?.trim()).join(' '),
+      [...s.querySelectorAll('.ui-stat__label, .ui-stat__value, .ui-stat__change, .ui-stat__caption')].map((x) => x.textContent?.replace(/\s+/g, ' ').trim()).join(' | '),
     );
-    expect(stats).toEqual(['Total balance $48,210.55 +$412.30', 'Cash $16,306.35', 'Invested $31,904.20']);
+    expect(stats).toEqual([
+      'Total balance | $48,210.55 | +$412.30 today',
+      'Invested | $31,904.20 | In your Portfolio account',
+      'Cash | $16,306.35 | Across 4 accounts',
+    ]);
+    expect(main().textContent).toContain('Data as of Nov 27, 10:42');
     expect(rows(main(), 0).map(cells)[0]).toEqual(['Everyday', 'Current', '$4,812.10']);
     expect(rows(main(), 0)).toHaveLength(4);
     expect(rows(main(), 1)).toHaveLength(5);
@@ -110,7 +115,9 @@ describe('E4-S2: Dashboard', () => {
 
   it('"View all" opens the matching tab', async () => {
     const { fixture, main } = await renderAt('/dashboard');
-    [...main().querySelectorAll('button')].find((b) => b.textContent?.includes('View all orders'))!.click();
+    const viewAll = [...main().querySelectorAll('button')].filter((b) => b.textContent?.trim() === 'View all');
+    expect(viewAll).toHaveLength(2);
+    viewAll[1]!.click(); // the Recent orders card's link
     await settle();
     await fixture.whenStable();
     expect(TestBed.inject(Router).url).toBe('/orders');

@@ -1,6 +1,6 @@
 {
   "id": "orders",
-  "version": 1,
+  "version": 2,
   "title": "Orders",
   "description": "Every order, newest first, with date, instrument, side, quantity, total and status. Use it when the user wants to see or check their orders.",
   "components": [
@@ -16,23 +16,38 @@
       "id": "header",
       "component": "Row",
       "children": [
-        "title",
-        "paper"
+        "heading",
+        "header-right"
       ],
       "justify": "spaceBetween",
-      "align": "center"
+      "align": "end"
+    },
+    {
+      "id": "heading",
+      "component": "Column",
+      "children": [
+        "title",
+        "subtitle"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "subtitle",
+      "component": "Text",
+      "text": "Every order, newest first. Paper trading: nothing here moves real money.",
+      "variant": "caption"
+    },
+    {
+      "component": "Badge",
+      "text": "Paper trading",
+      "tone": "info",
+      "id": "header-right"
     },
     {
       "id": "title",
       "component": "Text",
       "text": "Orders",
       "variant": "title"
-    },
-    {
-      "id": "paper",
-      "component": "Badge",
-      "text": "Paper trading",
-      "tone": "info"
     },
     {
       "id": "orders-card",

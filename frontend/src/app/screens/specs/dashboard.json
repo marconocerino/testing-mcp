@@ -1,6 +1,6 @@
 {
   "id": "dashboard",
-  "version": 1,
+  "version": 2,
   "title": "Dashboard",
   "description": "Overview: total balance, cash and invested amounts, a summary of every account, and the five most recent orders with their status. Use it as the home screen or when the user asks for an overview.",
   "components": [
@@ -8,11 +8,43 @@
       "id": "root",
       "component": "Column",
       "children": [
-        "title",
+        "header",
         "tiles",
-        "accounts-card",
-        "orders-card"
+        "cards"
       ]
+    },
+    {
+      "id": "header",
+      "component": "Row",
+      "children": [
+        "heading",
+        "header-right"
+      ],
+      "justify": "spaceBetween",
+      "align": "end"
+    },
+    {
+      "id": "heading",
+      "component": "Column",
+      "children": [
+        "title",
+        "subtitle"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "subtitle",
+      "component": "Text",
+      "text": "Default view \u00b7 built from a hand-authored A2UI spec",
+      "variant": "caption"
+    },
+    {
+      "component": "Text",
+      "text": {
+        "path": "/summary/asOf"
+      },
+      "variant": "caption",
+      "id": "header-right"
     },
     {
       "id": "title",
@@ -25,8 +57,8 @@
       "component": "Row",
       "children": [
         "balance-card",
-        "cash-card",
-        "invested-card"
+        "invested-card",
+        "cash-card"
       ]
     },
     {
@@ -45,21 +77,7 @@
       "change": {
         "path": "/totals/todayChange"
       },
-      "format": "currency"
-    },
-    {
-      "id": "cash-card",
-      "component": "Card",
-      "child": "cash",
-      "weight": 1
-    },
-    {
-      "id": "cash",
-      "component": "Stat",
-      "label": "Cash",
-      "value": {
-        "path": "/totals/cash"
-      },
+      "changeLabel": "today",
       "format": "currency"
     },
     {
@@ -75,12 +93,43 @@
       "value": {
         "path": "/totals/invested"
       },
+      "caption": {
+        "path": "/summary/investedCaption"
+      },
       "format": "currency"
+    },
+    {
+      "id": "cash-card",
+      "component": "Card",
+      "child": "cash",
+      "weight": 1
+    },
+    {
+      "id": "cash",
+      "component": "Stat",
+      "label": "Cash",
+      "value": {
+        "path": "/totals/cash"
+      },
+      "caption": {
+        "path": "/summary/cashCaption"
+      },
+      "format": "currency"
+    },
+    {
+      "id": "cards",
+      "component": "Row",
+      "children": [
+        "accounts-card",
+        "orders-card"
+      ],
+      "align": "start"
     },
     {
       "id": "accounts-card",
       "component": "Card",
-      "child": "accounts-col"
+      "child": "accounts-col",
+      "weight": 1
     },
     {
       "id": "accounts-col",
@@ -117,7 +166,7 @@
     {
       "id": "accounts-all-l",
       "component": "Text",
-      "text": "View all accounts"
+      "text": "View all"
     },
     {
       "id": "accounts-title",
@@ -150,7 +199,8 @@
     {
       "id": "orders-card",
       "component": "Card",
-      "child": "orders-col"
+      "child": "orders-col",
+      "weight": 2
     },
     {
       "id": "orders-col",
@@ -187,7 +237,7 @@
     {
       "id": "orders-all-l",
       "component": "Text",
-      "text": "View all orders"
+      "text": "View all"
     },
     {
       "id": "orders-title",

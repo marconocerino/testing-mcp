@@ -1,6 +1,6 @@
 {
   "id": "accounts",
-  "version": 1,
+  "version": 2,
   "title": "Accounts",
   "description": "Every account with its type, currency and balance. Picking an account shows its transactions (date, description, amount, running balance), filterable by a date range. Use it when the user wants to check balances or look through transactions.",
   "onLoad": "selectAccount",
@@ -9,10 +9,43 @@
       "id": "root",
       "component": "Column",
       "children": [
-        "title",
+        "header",
         "accounts-card",
         "transactions-card"
       ]
+    },
+    {
+      "id": "header",
+      "component": "Row",
+      "children": [
+        "heading",
+        "header-right"
+      ],
+      "justify": "spaceBetween",
+      "align": "end"
+    },
+    {
+      "id": "heading",
+      "component": "Column",
+      "children": [
+        "title",
+        "subtitle"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "subtitle",
+      "component": "Text",
+      "text": "Balances and transactions for each account. Pick an account to see its transactions.",
+      "variant": "caption"
+    },
+    {
+      "component": "Text",
+      "text": {
+        "path": "/summary/asOf"
+      },
+      "variant": "caption",
+      "id": "header-right"
     },
     {
       "id": "title",
