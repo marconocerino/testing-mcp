@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { CopilotKit, CopilotSidebar } from '@copilotkit/angular';
 import { TRADING_AGENT_ID } from '../transport/copilotkit-transport';
 
-/** Surface the assistant's views go to (the workspace page shows it). */
+/** Surface the assistant's views go to (the Build a view tab shows it). */
 export const MAIN_SURFACE_ID = 'main';
 
 /**

@@ -5,6 +5,7 @@ import { provideCopilotChatConfiguration, provideCopilotKit } from '@copilotkit/
 import { routes } from './app.routes';
 import { a2uiConfig } from './catalog/catalog';
 import { provideCatalogRenderer } from './catalog/catalog-renderer.service';
+import { provideScreenActions } from './screens/screen-actions';
 import { provideActionHandlers } from './surface/action-router';
 import { SurfaceSessionService } from './surface/surface-session.service';
 import { provideAgentTransport } from './transport/agent-transport';
@@ -23,6 +24,8 @@ export const appConfig: ApplicationConfig = {
     provideEnvironmentInitializer(() => inject(SurfaceSessionService)),
     // Allow-list of actions generated views may trigger (E3-S4). 'agent' forwards to the agent.
     provideActionHandlers({ showAccount: 'agent', openOrderTicket: 'agent', filterTransactions: 'agent' }),
+    // Navigation, account selection and transaction filters in the default views (E4-S3).
+    provideScreenActions(),
     // The self-hosted CopilotKit runtime (services/copilot-runtime), proxied same-origin.
     provideCopilotKit({ runtimeUrl: '/api/copilotkit' }),
     // The sidebar chat talks to the trading agent.

@@ -1,0 +1,175 @@
+{
+  "id": "accounts",
+  "version": 1,
+  "title": "Accounts",
+  "description": "Every account with its type, currency and balance. Picking an account shows its transactions (date, description, amount, running balance), filterable by a date range. Use it when the user wants to check balances or look through transactions.",
+  "onLoad": "selectAccount",
+  "components": [
+    {
+      "id": "root",
+      "component": "Column",
+      "children": [
+        "title",
+        "accounts-card",
+        "transactions-card"
+      ]
+    },
+    {
+      "id": "title",
+      "component": "Text",
+      "text": "Accounts",
+      "variant": "title"
+    },
+    {
+      "id": "accounts-card",
+      "component": "Card",
+      "child": "accounts-table"
+    },
+    {
+      "id": "accounts-table",
+      "component": "Table",
+      "rows": {
+        "path": "/accounts"
+      },
+      "rowKey": "id",
+      "selection": {
+        "path": "/ui/accountId"
+      },
+      "rowAction": {
+        "event": {
+          "name": "selectAccount"
+        }
+      },
+      "columns": [
+        {
+          "key": "name",
+          "header": "Account"
+        },
+        {
+          "key": "type",
+          "header": "Type"
+        },
+        {
+          "key": "currency",
+          "header": "Currency"
+        },
+        {
+          "key": "balance",
+          "header": "Balance",
+          "format": "currency"
+        }
+      ]
+    },
+    {
+      "id": "transactions-card",
+      "component": "Card",
+      "child": "transactions-col"
+    },
+    {
+      "id": "transactions-col",
+      "component": "Column",
+      "children": [
+        "transactions-title",
+        "filters",
+        "transactions-table"
+      ]
+    },
+    {
+      "id": "transactions-title",
+      "component": "Text",
+      "text": {
+        "path": "/ui/transactionsTitle"
+      },
+      "variant": "heading"
+    },
+    {
+      "id": "filters",
+      "component": "Row",
+      "children": [
+        "from",
+        "to"
+      ]
+    },
+    {
+      "id": "from",
+      "component": "DateField",
+      "label": "From",
+      "value": {
+        "path": "/ui/filter/from"
+      },
+      "min": "2026-01-01",
+      "max": "2026-12-31",
+      "action": {
+        "event": {
+          "name": "applyTransactionFilter"
+        }
+      },
+      "weight": 1
+    },
+    {
+      "id": "to",
+      "component": "DateField",
+      "label": "To",
+      "value": {
+        "path": "/ui/filter/to"
+      },
+      "min": "2026-01-01",
+      "max": "2026-12-31",
+      "action": {
+        "event": {
+          "name": "applyTransactionFilter"
+        }
+      },
+      "weight": 1
+    },
+    {
+      "id": "transactions-table",
+      "component": "Table",
+      "rows": {
+        "path": "/ui/transactions"
+      },
+      "pageSize": 10,
+      "columns": [
+        {
+          "key": "date",
+          "header": "Date",
+          "format": "date"
+        },
+        {
+          "key": "description",
+          "header": "Description"
+        },
+        {
+          "key": "amount",
+          "header": "Amount",
+          "format": "currency"
+        },
+        {
+          "key": "runningBalance",
+          "header": "Running balance",
+          "format": "currency"
+        }
+      ]
+    }
+  ],
+  "emptyStates": [
+    {
+      "path": "/accounts",
+      "replace": "root",
+      "with": {
+        "component": "EmptyState",
+        "title": "No accounts yet",
+        "text": "Once an account is linked, it shows here with its transactions.",
+        "actionLabel": "Go to Dashboard",
+        "action": {
+          "event": {
+            "name": "goTo",
+            "context": {
+              "to": "dashboard"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

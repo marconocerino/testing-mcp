@@ -83,7 +83,13 @@ ui-divider .mat-divider-vertical { min-height: 1.5em; }
   left: -9999px;
   &:focus { left: 8px; top: 8px; z-index: 10; padding: 8px 12px; background: var(--mat-sys-surface); }
 }
-.ui-nav-link--active { background: var(--mat-sys-secondary-container); }
+// The current tab. Material's button styles win over a plain class, so set its token too.
+a.ui-nav-link.ui-nav-link--active {
+  --mat-button-text-container-color: var(--mat-sys-secondary-container);
+  --mat-button-text-label-text-color: var(--mat-sys-on-secondary-container);
+  background-color: var(--mat-sys-secondary-container);
+  font-weight: 600;
+}
 
 .ui-spacer { flex: 1; }
 

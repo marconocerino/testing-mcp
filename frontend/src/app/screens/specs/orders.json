@@ -1,0 +1,101 @@
+{
+  "id": "orders",
+  "version": 1,
+  "title": "Orders",
+  "description": "Every order, newest first, with date, instrument, side, quantity, total and status. Use it when the user wants to see or check their orders.",
+  "components": [
+    {
+      "id": "root",
+      "component": "Column",
+      "children": [
+        "header",
+        "orders-card"
+      ]
+    },
+    {
+      "id": "header",
+      "component": "Row",
+      "children": [
+        "title",
+        "paper"
+      ],
+      "justify": "spaceBetween",
+      "align": "center"
+    },
+    {
+      "id": "title",
+      "component": "Text",
+      "text": "Orders",
+      "variant": "title"
+    },
+    {
+      "id": "paper",
+      "component": "Badge",
+      "text": "Paper trading",
+      "tone": "info"
+    },
+    {
+      "id": "orders-card",
+      "component": "Card",
+      "child": "orders-table"
+    },
+    {
+      "id": "orders-table",
+      "component": "Table",
+      "rows": {
+        "path": "/orders"
+      },
+      "pageSize": 10,
+      "columns": [
+        {
+          "key": "placed",
+          "header": "Date",
+          "format": "date"
+        },
+        {
+          "key": "symbol",
+          "header": "Symbol"
+        },
+        {
+          "key": "side",
+          "header": "Side"
+        },
+        {
+          "key": "quantity",
+          "header": "Qty",
+          "format": "number"
+        },
+        {
+          "key": "total",
+          "header": "Total",
+          "format": "currency"
+        },
+        {
+          "key": "status",
+          "header": "Status",
+          "format": "status"
+        }
+      ]
+    }
+  ],
+  "emptyStates": [
+    {
+      "path": "/orders",
+      "replace": "orders-table",
+      "with": {
+        "component": "EmptyState",
+        "title": "No orders yet",
+        "text": "Your paper trades will show here. Ask the assistant to prepare one.",
+        "actionLabel": "Build a view",
+        "action": {
+          "event": {
+            "name": "goTo",
+            "context": {
+              "to": "build"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

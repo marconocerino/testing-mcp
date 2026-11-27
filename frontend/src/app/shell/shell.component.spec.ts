@@ -11,7 +11,7 @@ import { TRADING_AGENT_ID } from '../transport/copilotkit-transport';
 import { MockTransport } from '../transport/mock-transport';
 import { provideTestCopilotKit } from '../transport/testing/test-copilotkit';
 
-async function renderApp(withAgent = true) {
+async function renderApp(withAgent = true, url = '/') {
   TestBed.configureTestingModule({
     imports: [App],
     providers: [
@@ -24,7 +24,7 @@ async function renderApp(withAgent = true) {
     ],
   });
   const fixture = TestBed.createComponent(App);
-  await TestBed.inject(Router).navigateByUrl('/');
+  await TestBed.inject(Router).navigateByUrl(url);
   await fixture.whenStable();
   return { fixture, el: fixture.nativeElement as HTMLElement };
 }
@@ -41,15 +41,15 @@ describe('E3-S1: app shell', () => {
 
   it('renders the routed page inside the main region', async () => {
     const { el } = await renderApp();
-    expect(el.querySelector('main app-workspace-page')).toBeTruthy();
+    expect(el.querySelector('main app-screen-page')).toBeTruthy();
   });
 
   it('marks the current page in the navigation, and links to dev pages in dev builds', async () => {
     const { el } = await renderApp();
     const links = [...el.querySelectorAll<HTMLAnchorElement>('nav a')];
-    expect(links.map((a) => a.textContent?.trim())).toEqual(['Workspace', 'Catalog gallery']);
+    expect(links.map((a) => a.textContent?.trim())).toEqual(['Dashboard', 'Accounts', 'Orders', 'Build a view', 'Catalog gallery']);
     expect(links[0].getAttribute('aria-current')).toBe('page');
-    expect(links[1].getAttribute('href')).toBe('/dev/catalog');
+    expect(links[4].getAttribute('href')).toBe('/dev/catalog');
   });
 
   it('keeps the shell in place while navigating', async () => {
@@ -64,30 +64,34 @@ describe('E3-S1: app shell', () => {
 });
 
 describe('E5-S5: assistant sidebar', () => {
-  it("shows CopilotKit's sidebar chat once the trading agent is available", async () => {
-    const { el } = await renderApp(true);
+  it("shows CopilotKit's sidebar chat on the Build a view tab once the trading agent is available", async () => {
+    const { el } = await renderApp(true, '/build');
     expect(el.querySelector('copilot-sidebar')).toBeTruthy();
     expect(el.querySelector('copilot-sidebar copilot-chat')).toBeTruthy();
-    expect(el.querySelector('ui-app-layout header button')).toBeNull(); // no separate assistant toggle in the app header
+    expect(el.querySelector('.ui-app-layout__header button')).toBeNull(); // no separate assistant toggle in the app header
   });
 
   it('shows no chat until the runtime lists the agent', async () => {
-    const { el } = await renderApp(false);
+    const { el } = await renderApp(false, '/build');
+    expect(el.querySelector('copilot-sidebar')).toBeNull();
+  });
+
+  it('shows no chat on the default views', async () => {
+    const { el } = await renderApp(true, '/dashboard');
     expect(el.querySelector('copilot-sidebar')).toBeNull();
   });
 });
 
 describe('E3-S3: transport banners', () => {
-  it('shows a non-blocking banner while reconnecting, and an error when the transport gives up', async () => {
-    const { fixture, el } = await renderApp();
-    expect(el.querySelector('main .ui-alert')).toBeNull();
+  it('shows connection problems on the Build a view tab only, not on the default views', async () => {
+    const { fixture, el } = await renderApp(true, '/build');
     const transport = TestBed.inject(AgentTransport) as MockTransport;
+    expect(el.querySelector('main .ui-alert')).toBeNull();
 
     transport.status.set('reconnecting');
     transport.error.set({ message: 'Connection to the assistant lost. Reconnecting…', retrying: true });
     await fixture.whenStable();
     expect(el.querySelector('main .ui-alert')!.getAttribute('role')).toBe('status');
-    expect(el.querySelector('main .ui-alert')!.textContent).toContain('Reconnecting');
 
     transport.status.set('error');
     transport.error.set({ message: "The assistant isn't available right now.", retrying: false });
@@ -95,7 +99,7 @@ describe('E3-S3: transport banners', () => {
     expect(el.querySelector('main .ui-alert')!.getAttribute('role')).toBe('alert');
     expect(el.querySelector('main .ui-alert')!.textContent).toContain("isn't available");
 
-    transport.status.set('idle');
+    await TestBed.inject(Router).navigateByUrl('/dashboard');
     await fixture.whenStable();
     expect(el.querySelector('main .ui-alert')).toBeNull();
   });

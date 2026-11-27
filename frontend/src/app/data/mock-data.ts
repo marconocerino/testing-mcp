@@ -1,7 +1,7 @@
 import { InjectionToken } from '@angular/core';
 
 /**
- * The data model every agent-built surface starts with (MVP). Specs only bind to these paths
+ * The data model every surface starts with (MVP), generated or hand-authored. Specs only bind to these paths
  * (rule 5); the agent never sends the figures. E4-S1 replaces this with data loaded from the
  * domain services (E2). All mock (rule 6).
  */
@@ -27,7 +27,45 @@ export const MOCK_DATA_MODEL = {
   ui: {},
 };
 
+/** A transaction on an account, newest first, with the balance after it. */
+export interface MockTransaction {
+  id: string;
+  accountId: string;
+  date: string;
+  description: string;
+  amount: number;
+  runningBalance: number;
+}
+
+const DESCRIPTIONS = ['Salary', 'Groceries', 'Rent', 'Coffee shop', 'Transfer from Everyday', 'Electricity bill', 'Restaurant', 'Train ticket', 'Online shop', 'Interest', 'Phone bill', 'Pharmacy'];
+
+/**
+ * Deterministic mock transactions: 18 per account in November 2026, newest first, with the
+ * running balance worked back from the account's current balance.
+ */
+export function mockTransactions(accounts: { id: string; balance: number }[]): MockTransaction[] {
+  const out: MockTransaction[] = [];
+  accounts.forEach((account, a) => {
+    let balance = account.balance;
+    for (let i = 0; i < 18; i++) {
+      const day = 24 - Math.floor(i * 1.3);
+      const description = DESCRIPTIONS[(i * 5 + a * 3) % DESCRIPTIONS.length]!;
+      const incoming = description === 'Salary' || description === 'Interest' || description.startsWith('Transfer');
+      const amount = Math.round(((((i + 3) * (a + 7) * 37) % 9000) / 100 + 5) * (incoming ? 4 : 1) * (incoming ? 1 : -1) * 100) / 100;
+      out.push({ id: `${account.id}-T${i + 1}`, accountId: account.id, date: `2026-11-${String(day).padStart(2, '0')}`, description, amount, runningBalance: Math.round(balance * 100) / 100 });
+      balance -= amount;
+    }
+  });
+  return out;
+}
+
+/** The full mock data model, with derived lists the default views bind to. */
+export function mockDataModel(): Record<string, unknown> {
+  const model = structuredClone(MOCK_DATA_MODEL);
+  return { ...model, recentOrders: model.orders.slice(0, 5), transactions: mockTransactions(model.accounts) };
+}
+
 /** Initial data for a new surface. Tests provide their own. */
 export const SURFACE_DATA = new InjectionToken<() => Record<string, unknown>>('SurfaceData', {
-  factory: () => () => structuredClone(MOCK_DATA_MODEL),
+  factory: () => mockDataModel,
 });

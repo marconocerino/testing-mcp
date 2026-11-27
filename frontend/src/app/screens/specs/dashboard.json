@@ -1,0 +1,274 @@
+{
+  "id": "dashboard",
+  "version": 1,
+  "title": "Dashboard",
+  "description": "Overview: total balance, cash and invested amounts, a summary of every account, and the five most recent orders with their status. Use it as the home screen or when the user asks for an overview.",
+  "components": [
+    {
+      "id": "root",
+      "component": "Column",
+      "children": [
+        "title",
+        "tiles",
+        "accounts-card",
+        "orders-card"
+      ]
+    },
+    {
+      "id": "title",
+      "component": "Text",
+      "text": "Dashboard",
+      "variant": "title"
+    },
+    {
+      "id": "tiles",
+      "component": "Row",
+      "children": [
+        "balance-card",
+        "cash-card",
+        "invested-card"
+      ]
+    },
+    {
+      "id": "balance-card",
+      "component": "Card",
+      "child": "balance",
+      "weight": 1
+    },
+    {
+      "id": "balance",
+      "component": "Stat",
+      "label": "Total balance",
+      "value": {
+        "path": "/totals/balance"
+      },
+      "change": {
+        "path": "/totals/todayChange"
+      },
+      "format": "currency"
+    },
+    {
+      "id": "cash-card",
+      "component": "Card",
+      "child": "cash",
+      "weight": 1
+    },
+    {
+      "id": "cash",
+      "component": "Stat",
+      "label": "Cash",
+      "value": {
+        "path": "/totals/cash"
+      },
+      "format": "currency"
+    },
+    {
+      "id": "invested-card",
+      "component": "Card",
+      "child": "invested",
+      "weight": 1
+    },
+    {
+      "id": "invested",
+      "component": "Stat",
+      "label": "Invested",
+      "value": {
+        "path": "/totals/invested"
+      },
+      "format": "currency"
+    },
+    {
+      "id": "accounts-card",
+      "component": "Card",
+      "child": "accounts-col"
+    },
+    {
+      "id": "accounts-col",
+      "component": "Column",
+      "children": [
+        "accounts-header",
+        "accounts-table"
+      ]
+    },
+    {
+      "id": "accounts-header",
+      "component": "Row",
+      "children": [
+        "accounts-title",
+        "accounts-all"
+      ],
+      "justify": "spaceBetween",
+      "align": "center"
+    },
+    {
+      "id": "accounts-all",
+      "component": "Button",
+      "child": "accounts-all-l",
+      "variant": "borderless",
+      "action": {
+        "event": {
+          "name": "goTo",
+          "context": {
+            "to": "accounts"
+          }
+        }
+      }
+    },
+    {
+      "id": "accounts-all-l",
+      "component": "Text",
+      "text": "View all accounts"
+    },
+    {
+      "id": "accounts-title",
+      "component": "Text",
+      "text": "Accounts",
+      "variant": "heading"
+    },
+    {
+      "id": "accounts-table",
+      "component": "Table",
+      "rows": {
+        "path": "/accounts"
+      },
+      "columns": [
+        {
+          "key": "name",
+          "header": "Account"
+        },
+        {
+          "key": "type",
+          "header": "Type"
+        },
+        {
+          "key": "balance",
+          "header": "Balance",
+          "format": "currency"
+        }
+      ]
+    },
+    {
+      "id": "orders-card",
+      "component": "Card",
+      "child": "orders-col"
+    },
+    {
+      "id": "orders-col",
+      "component": "Column",
+      "children": [
+        "orders-header",
+        "orders-table"
+      ]
+    },
+    {
+      "id": "orders-header",
+      "component": "Row",
+      "children": [
+        "orders-title",
+        "orders-all"
+      ],
+      "justify": "spaceBetween",
+      "align": "center"
+    },
+    {
+      "id": "orders-all",
+      "component": "Button",
+      "child": "orders-all-l",
+      "variant": "borderless",
+      "action": {
+        "event": {
+          "name": "goTo",
+          "context": {
+            "to": "orders"
+          }
+        }
+      }
+    },
+    {
+      "id": "orders-all-l",
+      "component": "Text",
+      "text": "View all orders"
+    },
+    {
+      "id": "orders-title",
+      "component": "Text",
+      "text": "Recent orders",
+      "variant": "heading"
+    },
+    {
+      "id": "orders-table",
+      "component": "Table",
+      "rows": {
+        "path": "/recentOrders"
+      },
+      "columns": [
+        {
+          "key": "placed",
+          "header": "Date",
+          "format": "date"
+        },
+        {
+          "key": "symbol",
+          "header": "Symbol"
+        },
+        {
+          "key": "side",
+          "header": "Side"
+        },
+        {
+          "key": "quantity",
+          "header": "Qty",
+          "format": "number"
+        },
+        {
+          "key": "total",
+          "header": "Total",
+          "format": "currency"
+        },
+        {
+          "key": "status",
+          "header": "Status",
+          "format": "status"
+        }
+      ]
+    }
+  ],
+  "emptyStates": [
+    {
+      "path": "/accounts",
+      "replace": "accounts-table",
+      "with": {
+        "component": "EmptyState",
+        "title": "No accounts yet",
+        "text": "Once an account is linked, its balance shows here.",
+        "actionLabel": "Go to Accounts",
+        "action": {
+          "event": {
+            "name": "goTo",
+            "context": {
+              "to": "accounts"
+            }
+          }
+        }
+      }
+    },
+    {
+      "path": "/recentOrders",
+      "replace": "orders-table",
+      "with": {
+        "component": "EmptyState",
+        "title": "No orders yet",
+        "text": "Your paper trades will show here. Ask the assistant to prepare one.",
+        "actionLabel": "Build a view",
+        "action": {
+          "event": {
+            "name": "goTo",
+            "context": {
+              "to": "build"
+            }
+          }
+        }
+      }
+    }
+  ]
+}
