@@ -26,7 +26,7 @@ import {
  * existing spec invalid or change its meaning. The major version is part of {@link CATALOG_ID},
  * so specs and saved layouts built against another major version fail at render time.
  */
-export const CATALOG_SCHEMA_VERSION = '1.0.0';
+export const CATALOG_SCHEMA_VERSION = '1.1.0';
 
 export const CATALOG_MAJOR_VERSION = Number(CATALOG_SCHEMA_VERSION.split('.')[0]);
 

@@ -9,6 +9,7 @@
  */
 export { UiAlertComponent, type UiAlertTone } from './ui-alert.component';
 export { UiAppLayoutComponent } from './ui-app-layout.component';
+export { UiAvatarComponent } from './ui-avatar.component';
 export { UiBadgeComponent, type UiTone } from './ui-badge.component';
 export { UiButtonComponent, type UiButtonVariant } from './ui-button.component';
 export { UiCardComponent } from './ui-card.component';

@@ -22,6 +22,14 @@ export const BLOCKED_ACTIONS: ReadonlySet<string> = new Set([
   'deposit',
 ]);
 
+/**
+ * Adds client handlers built inside an injection context, so they can use services (the
+ * router, the session). Same allow-list rules as {@link provideActionHandlers}.
+ */
+export function provideActionHandlerFactory(factory: () => Record<string, ActionHandler>): Provider {
+  return { provide: ACTION_HANDLERS, multi: true, useFactory: factory };
+}
+
 const ACTION_HANDLERS = new InjectionToken<Record<string, ActionHandler>[]>('ActionHandlers');
 
 /**

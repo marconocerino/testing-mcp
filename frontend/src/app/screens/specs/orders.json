@@ -1,0 +1,116 @@
+{
+  "id": "orders",
+  "version": 2,
+  "title": "Orders",
+  "description": "Every order, newest first, with date, instrument, side, quantity, total and status. Use it when the user wants to see or check their orders.",
+  "components": [
+    {
+      "id": "root",
+      "component": "Column",
+      "children": [
+        "header",
+        "orders-card"
+      ]
+    },
+    {
+      "id": "header",
+      "component": "Row",
+      "children": [
+        "heading",
+        "header-right"
+      ],
+      "justify": "spaceBetween",
+      "align": "end"
+    },
+    {
+      "id": "heading",
+      "component": "Column",
+      "children": [
+        "title",
+        "subtitle"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "subtitle",
+      "component": "Text",
+      "text": "Every order, newest first. Paper trading: nothing here moves real money.",
+      "variant": "caption"
+    },
+    {
+      "component": "Badge",
+      "text": "Paper trading",
+      "tone": "info",
+      "id": "header-right"
+    },
+    {
+      "id": "title",
+      "component": "Text",
+      "text": "Orders",
+      "variant": "title"
+    },
+    {
+      "id": "orders-card",
+      "component": "Card",
+      "child": "orders-table"
+    },
+    {
+      "id": "orders-table",
+      "component": "Table",
+      "rows": {
+        "path": "/orders"
+      },
+      "pageSize": 10,
+      "columns": [
+        {
+          "key": "placed",
+          "header": "Date",
+          "format": "date"
+        },
+        {
+          "key": "symbol",
+          "header": "Symbol"
+        },
+        {
+          "key": "side",
+          "header": "Side"
+        },
+        {
+          "key": "quantity",
+          "header": "Qty",
+          "format": "number"
+        },
+        {
+          "key": "total",
+          "header": "Total",
+          "format": "currency"
+        },
+        {
+          "key": "status",
+          "header": "Status",
+          "format": "status"
+        }
+      ]
+    }
+  ],
+  "emptyStates": [
+    {
+      "path": "/orders",
+      "replace": "orders-table",
+      "with": {
+        "component": "EmptyState",
+        "title": "No orders yet",
+        "text": "Your paper trades will show here. Ask the assistant to prepare one.",
+        "actionLabel": "Build a view",
+        "action": {
+          "event": {
+            "name": "goTo",
+            "context": {
+              "to": "build"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

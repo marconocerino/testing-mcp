@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { A2uiRendererService, provideA2Ui } from '@a2ui/angular';
-import { provideCopilotKit } from '@copilotkit/angular';
+import { provideCopilotChatConfiguration, provideCopilotKit } from '@copilotkit/angular';
 import { routes } from './app.routes';
 import { DEV_ROUTES } from './dev/dev.routes';
 import { a2uiConfig } from './catalog/catalog';
@@ -14,6 +14,8 @@ import { SurfaceHostComponent } from './surface/surface-host.component';
 import { SurfaceSessionService } from './surface/surface-session.service';
 import { A2uiMessage, provideAgentTransport } from './transport/agent-transport';
 import { MockTransport } from './transport/mock-transport';
+import { provideTestCopilotKit } from './transport/testing/test-copilotkit';
+import { TRADING_AGENT_ID } from './transport/copilotkit-transport';
 
 @Component({ imports: [SurfaceHostComponent], template: `<app-surface-host surfaceId="${SURFACE_ID}" />` })
 class CardHost {}
@@ -76,13 +78,19 @@ describe('E0-S1: library component renders from a hand-written A2UI spec', () =>
 describe('routes', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer(), provideAgentTransport(MockTransport)],
+      providers: [provideRouter(routes), provideA2Ui(a2uiConfig()), provideCatalogRenderer(), provideAgentTransport(MockTransport), provideTestCopilotKit(), provideCopilotChatConfiguration({ agentId: TRADING_AGENT_ID })],
     });
   });
 
-  it('shows the workspace at /, with a welcome until the assistant builds a view', async () => {
+  it('opens the dashboard at /', async () => {
     const harness = await RouterTestingHarness.create('/');
-    expect(harness.routeNativeElement?.querySelector('app-surface-host')?.textContent).toContain('No view yet');
+    expect(TestBed.inject(Router).url).toBe('/dashboard');
+    expect(harness.routeNativeElement?.textContent).toContain('Dashboard');
+  });
+
+  it('serves the Build a view tab with a welcome until the assistant builds a view', async () => {
+    const harness = await RouterTestingHarness.create('/build');
+    expect(harness.routeNativeElement?.querySelector('app-surface-host')?.textContent).toContain('Build your own view');
   });
 
   it('serves the catalog gallery at /dev/catalog in dev mode', async () => {

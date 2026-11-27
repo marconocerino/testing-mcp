@@ -34,13 +34,17 @@ All data is mock data until security and compliance sign off (CLAUDE.md rule 6).
 
 Requirements: Node `^22.12.0` (`frontend/.nvmrc`), JDK 21 (Amazon Corretto) for running services outside Docker, Docker for compose.
 
+## Screens
+
+Tabs: **Dashboard**, **Accounts** and **Orders** are hand-authored A2UI specs (`frontend/src/app/screens/specs/*.json`) rendered with the catalog; **Build a view** is where the user asks the assistant for their own view. All data is mock (`frontend/src/app/data/mock-data.ts`) until the domain services (E2) are connected. The default tabs work without any backend.
+
 ## Generative UI (MVP)
 
 Three processes, each in its own terminal:
 
 1. Agent service: put `LLM_API_KEY=...` (Groq) in `services/agent-service/.env`, then `cd services/agent-service && npm ci && npm run dev` (port 8090).
 2. CopilotKit runtime: `cd services/copilot-runtime && npm ci && npm run dev` (port 4000).
-3. Frontend: `cd frontend && npx ng serve`, then open http://localhost:4200 and ask the assistant (the sidebar on the right) for a view.
+3. Frontend: `cd frontend && npx ng serve`, then open http://localhost:4200, go to **Build a view** and ask the assistant (the sidebar on the right) for a view.
 
 The browser only talks to the app's own origin; `/api/copilotkit` is proxied to the runtime, which calls the agent service, which calls Groq. Without the backend, switch `provideAgentTransport(CopilotKitTransport)` to `MockTransport` in `frontend/src/app/app.config.ts` to replay recorded views.
 

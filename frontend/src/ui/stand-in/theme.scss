@@ -1,103 +1,237 @@
 // Stand-in theme for `@app/ui` (Angular Material). The real build swaps this
 // file for the internal library's theme. Everything here styles the `ui-*`
-// wrappers only, using Material's system tokens; adapters and screens add no CSS.
+// wrappers only; adapters and screens add no CSS.
+//
+// The look follows the design mockups in docs/design/: system sans-serif, a light grey page,
+// white cards with a hairline border, one blue accent. Colours use light-dark() so the MCP
+// widget can follow the host's dark mode. No web fonts are loaded (the widget's CSP allows none).
 @use '@angular/material' as mat;
 
+$font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif;
+
 html {
-  @include mat.theme((color: mat.$azure-palette, typography: Roboto, density: 0));
+  @include mat.theme((
+    color: mat.$azure-palette,
+    typography: (plain-family: $font, brand-family: $font, bold-weight: 700, medium-weight: 600, regular-weight: 400),
+    density: 0,
+  ));
+  // The mockups' palette.
+  @include mat.theme-overrides((
+    primary: light-dark(#2b5ce6, #9db4ff),
+    on-primary: light-dark(#ffffff, #0b1a4a),
+    primary-container: light-dark(#e8eefd, #1f2b4d),
+    on-primary-container: light-dark(#1f4bc8, #c9d6ff),
+    secondary-container: light-dark(#e8eefd, #1f2b4d),
+    on-secondary-container: light-dark(#1f4bc8, #c9d6ff),
+    background: light-dark(#f6f7f9, #0f1115),
+    surface: light-dark(#ffffff, #16181d),
+    surface-container-lowest: light-dark(#ffffff, #16181d),
+    surface-container-low: light-dark(#ffffff, #16181d),
+    surface-container: light-dark(#f3f5f8, #1c1f25),
+    surface-container-high: light-dark(#eef1f5, #22262d),
+    on-surface: light-dark(#1b1f27, #e6e8ec),
+    on-surface-variant: light-dark(#5b6472, #a3abb8),
+    outline: light-dark(#c9d1dc, #3a3f48),
+    outline-variant: light-dark(#dde1e7, #2b2f37),
+    error: light-dark(#b42318, #ffb4ab),
+    error-container: light-dark(#fde7e4, #5c1610),
+    on-error-container: light-dark(#8f1d14, #ffdad6),
+  ));
+  // Extra colours the mockups use for gains and losses.
+  --ui-positive: light-dark(#1e7f3b, #6fd08c);
+  --ui-negative: light-dark(#b42318, #ff8a7e);
+  --ui-hairline: light-dark(#eef0f3, #262a31);
 }
 
-body { margin: 0; font: var(--mat-sys-body-medium); }
+body {
+  margin: 0;
+  font-family: $font;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--mat-sys-on-surface);
+  background: var(--mat-sys-background);
+  -webkit-font-smoothing: antialiased;
+}
 
 // Typography (Title, Microcopy, Label in the internal library).
-.ui-type-headline { font: var(--mat-sys-headline-small); margin: 0; }
-.ui-type-title { font: var(--mat-sys-title-medium); margin: 0; }
-.ui-type-title-small { font: var(--mat-sys-title-small); margin: 0; }
-.ui-type-body { font: var(--mat-sys-body-medium); margin: 0; }
-.ui-type-small { font: var(--mat-sys-body-small); margin: 0; color: var(--mat-sys-on-surface-variant); }
-.ui-type-label { font: var(--mat-sys-label-medium); color: var(--mat-sys-on-surface-variant); }
+.ui-type-headline { font-size: 32px; line-height: 1.2; font-weight: 700; letter-spacing: -0.01em; margin: 0; }
+.ui-type-title { font-size: 17px; line-height: 1.3; font-weight: 700; margin: 0; }
+.ui-type-title-small { font-size: 15px; line-height: 1.4; font-weight: 600; margin: 0; }
+.ui-type-body { font-size: 15px; line-height: 1.5; margin: 0; }
+.ui-type-small { font-size: 14px; line-height: 1.45; margin: 0; color: var(--mat-sys-on-surface-variant); }
+.ui-type-label { font-size: 14px; color: var(--mat-sys-on-surface-variant); }
 
 // Layout (Grid in the internal library).
 .ui-stack { display: flex; flex-direction: column; gap: 16px; width: 100%; box-sizing: border-box; }
 .ui-stack--horizontal { flex-direction: row; flex-wrap: wrap; }
+.ui-stack > * { min-width: 0; }
+// A page title with its subtitle sits tight, as in the mockups.
+.ui-stack:has(> * > * > ui-text > h2.ui-type-headline) { gap: 4px; }
+
+// Cards: white, hairline border, 14px corners, generous padding.
+ui-card {
+  display: block;
+  @include mat.card-overrides((
+    outlined-container-shape: 14px,
+    outlined-outline-color: var(--mat-sys-outline-variant),
+    outlined-container-color: var(--mat-sys-surface),
+  ));
+  .mat-mdc-card-content { padding: 20px !important; }
+}
+
+// Buttons: rounded rectangles; the borderless variant is a blue text link.
+ui-button, ui-empty-state, ui-nav-link {
+  @include mat.button-overrides((
+    filled-container-shape: 8px,
+    outlined-container-shape: 8px,
+    outlined-outline-color: var(--mat-sys-outline),
+    outlined-label-text-color: var(--mat-sys-on-surface),
+    filled-label-text-weight: 600,
+    outlined-label-text-weight: 600,
+    text-label-text-weight: 600,
+    text-container-shape: 8px,
+  ));
+}
 
 // Tones shared by badges and alerts.
 .ui-tone--neutral { --ui-tone-bg: var(--mat-sys-surface-container-high); --ui-tone-fg: var(--mat-sys-on-surface); }
 .ui-tone--info { --ui-tone-bg: var(--mat-sys-primary-container); --ui-tone-fg: var(--mat-sys-on-primary-container); }
-// Material has no success or warning roles; the stand-in uses fixed colours.
-.ui-tone--success { --ui-tone-bg: #cdeccf; --ui-tone-fg: #0f3d14; }
-.ui-tone--warning { --ui-tone-bg: #ffe08a; --ui-tone-fg: #3d2e00; }
+// Material has no success or warning roles; the stand-in uses the mockups' colours.
+.ui-tone--success { --ui-tone-bg: light-dark(#e3f4e8, #17351f); --ui-tone-fg: light-dark(#1e7f3b, #8fe0a7); }
+.ui-tone--warning { --ui-tone-bg: light-dark(#fdecc8, #3d2e00); --ui-tone-fg: light-dark(#8a5300, #ffd98a); }
 .ui-tone--danger { --ui-tone-bg: var(--mat-sys-error-container); --ui-tone-fg: var(--mat-sys-on-error-container); }
 
+// Badges: small rounded pills (like "Mock data" in the mockups).
 .ui-badge {
   @include mat.chips-overrides((
     outline-width: 0,
     elevated-container-color: var(--ui-tone-bg),
     label-text-color: var(--ui-tone-fg),
+    container-shape-radius: 999px,
+    container-height: 24px,
+    label-text-size: 12px,
+    label-text-weight: 600,
   ));
 }
 
 // A vertical divider inside a row has no height of its own.
 ui-divider .mat-divider-vertical { min-height: 1.5em; }
 
+// Stat: label, big figure, then a coloured change or a muted caption.
 .ui-stat { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.ui-stat__label { font-size: 14px; color: var(--mat-sys-on-surface-variant); }
+.ui-stat__value { font-size: 30px; line-height: 1.2; font-weight: 700; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.ui-stat__change { font-size: 14px; font-weight: 600; }
+.ui-stat__caption { font-size: 14px; color: var(--mat-sys-on-surface-variant); }
+.ui-trend--up { color: var(--ui-positive); }
+.ui-trend--down { color: var(--ui-negative); }
+.ui-trend--flat { color: var(--mat-sys-on-surface-variant); }
 
 .ui-key-value-list { margin: 0; }
-.ui-key-value-list__row { display: flex; justify-content: space-between; gap: 16px; padding: 4px 0; }
-.ui-key-value-list dt { color: var(--mat-sys-on-surface-variant); }
+.ui-key-value-list__row { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; border-bottom: 1px solid var(--ui-hairline); }
+.ui-key-value-list__row:last-child { border-bottom: 0; }
+.ui-key-value-list dt { color: var(--mat-sys-on-surface); }
 .ui-key-value-list dd { margin: 0; text-align: end; font-variant-numeric: tabular-nums; }
 
-.ui-table { width: 100%; }
+// Tables: compact, small muted headers, hairline rows, bold first column.
+.ui-table {
+  width: 100%;
+  @include mat.table-overrides((
+    background-color: transparent,
+    header-headline-color: var(--mat-sys-on-surface-variant),
+    header-headline-size: 13px,
+    header-headline-weight: 600,
+    header-container-height: 36px,
+    row-item-label-text-size: 15px,
+    row-item-container-height: 42px,
+    row-item-outline-color: var(--ui-hairline),
+  ));
+  .mat-mdc-header-cell, .mat-mdc-cell { padding: 0 12px; }
+  .mat-mdc-header-cell:first-child, .mat-mdc-cell:first-child { padding-left: 0; }
+  .mat-mdc-header-cell:last-child, .mat-mdc-cell:last-child { padding-right: 0; }
+  .mat-mdc-cell:first-child { font-weight: 600; }
+}
 .ui-table .ui-table__end { text-align: end; font-variant-numeric: tabular-nums; }
 .ui-table__row--selectable { cursor: pointer; }
 .ui-table__row--selectable:hover,
-.ui-table__row--selectable:focus-visible { background: var(--mat-sys-surface-container-high); outline: none; }
+.ui-table__row--selectable:focus-visible { background: var(--mat-sys-surface-container); outline: none; }
 
-.ui-alert { padding: 12px 16px; border-radius: 8px; background: var(--ui-tone-bg); color: var(--ui-tone-fg); }
-.ui-alert--disclosure { padding: 8px 12px; background: var(--mat-sys-surface-container); color: var(--mat-sys-on-surface-variant); }
+.ui-alert { padding: 12px 16px; border-radius: 10px; background: var(--ui-tone-bg); color: var(--ui-tone-fg); }
+.ui-alert--disclosure { padding: 10px 12px; background: var(--mat-sys-surface-container); color: var(--mat-sys-on-surface-variant); }
 .ui-alert__title { margin-bottom: 4px; }
 
 .ui-empty-state { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 24px; text-align: center; }
 
 .ui-field { width: 100%; }
 
-// Application frame (E3-S1): header on top, main region below.
+// Application frame (E3-S1): white header bar on top, grey page below.
 .ui-app-layout {
   display: grid;
   grid-template-rows: auto 1fr;
   min-height: 100vh;
-  background: var(--mat-sys-surface);
+  background: var(--mat-sys-background);
   color: var(--mat-sys-on-surface);
 }
 .ui-app-layout__header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 8px 24px;
+  gap: 12px;
+  height: 60px;
+  padding: 0 24px;
+  box-sizing: border-box;
   border-bottom: 1px solid var(--mat-sys-outline-variant);
-  background: var(--mat-sys-surface-container-low);
+  background: var(--mat-sys-surface);
 }
-.ui-app-layout__main { padding: 24px; min-width: 0; outline: none; }
+.ui-app-layout__brand { display: inline-flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; margin-right: 4px; }
+.ui-app-layout__logo { width: 28px; height: 28px; border-radius: 8px; background: var(--mat-sys-primary); }
+.ui-app-layout__header nav { margin-left: 16px; }
+.ui-app-layout__header nav .ui-stack { gap: 4px; }
+.ui-app-layout__main { padding: 32px; min-width: 0; outline: none; }
 .ui-app-layout__skip {
   position: absolute;
   left: -9999px;
   &:focus { left: 8px; top: 8px; z-index: 10; padding: 8px 12px; background: var(--mat-sys-surface); }
 }
-.ui-nav-link--active { background: var(--mat-sys-secondary-container); }
+
+// Tabs: plain text, the current one a light-blue pill with blue text.
+a.ui-nav-link {
+  --mat-button-text-label-text-color: var(--mat-sys-on-surface);
+  font-weight: 500;
+}
+// Material's button styles win over a plain class, so set its tokens too.
+a.ui-nav-link.ui-nav-link--active {
+  --mat-button-text-container-color: var(--mat-sys-secondary-container);
+  --mat-button-text-label-text-color: var(--mat-sys-on-secondary-container);
+  background-color: var(--mat-sys-secondary-container);
+  font-weight: 600;
+}
+
+// Avatar: initials in a grey circle.
+.ui-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 13px;
+  font-weight: 700;
+}
 
 .ui-spacer { flex: 1; }
-
 
 // Loading skeleton (E3-S4).
 .ui-skeleton { display: flex; flex-direction: column; gap: 16px; }
 .ui-skeleton__line, .ui-skeleton__block {
-  border-radius: 8px;
+  border-radius: 12px;
   background: linear-gradient(90deg, var(--mat-sys-surface-container) 25%, var(--mat-sys-surface-container-high) 50%, var(--mat-sys-surface-container) 75%);
   background-size: 200% 100%;
   animation: ui-skeleton-shimmer 1.4s ease-in-out infinite;
 }
-.ui-skeleton__line--title { height: 28px; width: 40%; }
-.ui-skeleton__block { height: 96px; }
+.ui-skeleton__line--title { height: 32px; width: 40%; }
+.ui-skeleton__block { height: 120px; }
 @keyframes ui-skeleton-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 @media (prefers-reduced-motion: reduce) { .ui-skeleton__line, .ui-skeleton__block { animation: none; } }
 
@@ -105,11 +239,11 @@ ui-divider .mat-divider-vertical { min-height: 1.5em; }
 :root {
   --copilot-kit-primary-color: var(--mat-sys-primary);
   --copilot-kit-contrast-color: var(--mat-sys-on-primary);
-  --copilot-kit-background-color: var(--mat-sys-surface-container-low);
+  --copilot-kit-background-color: var(--mat-sys-surface);
   --copilot-kit-input-background-color: var(--mat-sys-surface);
-  --copilot-kit-secondary-color: var(--mat-sys-surface-container-high);
+  --copilot-kit-secondary-color: var(--mat-sys-surface-container);
   --copilot-kit-secondary-contrast-color: var(--mat-sys-on-surface);
   --copilot-kit-separator-color: var(--mat-sys-outline-variant);
   --copilot-kit-muted-color: var(--mat-sys-on-surface-variant);
-  --cpk-default-font-family: Roboto, sans-serif;
+  --cpk-default-font-family: #{$font};
 }

@@ -1,20 +1,24 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { UiBadgeComponent, type UiTone } from './ui-badge.component';
 
 /**
  * Headline figure. The internal library has no Stat, so this is composed from Label, Title and
- * Tag (here: typography classes and the stand-in badge). Values arrive already formatted.
+ * Microcopy. Values arrive already formatted. A change is shown as coloured text (up green, down
+ * red) followed by its label, for example "+$412.30 today"; a caption is a small muted line.
  */
 @Component({
   selector: 'ui-stat',
-  imports: [UiBadgeComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="ui-stat">
-      <span class="ui-type-label ui-stat__label">{{ label() }}</span>
-      <span class="ui-type-headline ui-stat__value">{{ value() }}</span>
+      <span class="ui-stat__label">{{ label() }}</span>
+      <span class="ui-stat__value">{{ value() }}</span>
       @if (change()) {
-        <ui-badge [tone]="TREND_TONE[trend()]">{{ change() }}</ui-badge>
+        <span class="ui-stat__change" [class]="'ui-stat__change ui-trend--' + trend()">
+          {{ change() }}@if (changeLabel()) {<span> {{ changeLabel() }}</span>}
+        </span>
+      }
+      @if (caption()) {
+        <span class="ui-stat__caption">{{ caption() }}</span>
       }
     </div>
   `,
@@ -23,7 +27,7 @@ export class UiStatComponent {
   readonly label = input.required<string>();
   readonly value = input.required<string>();
   readonly change = input<string>();
+  readonly changeLabel = input<string>();
+  readonly caption = input<string>();
   readonly trend = input<'up' | 'down' | 'flat'>('flat');
-
-  protected readonly TREND_TONE: Record<'up' | 'down' | 'flat', UiTone> = { up: 'success', down: 'danger', flat: 'neutral' };
 }
